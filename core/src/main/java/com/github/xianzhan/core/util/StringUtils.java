@@ -13,6 +13,28 @@ public class StringUtils {
     private static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
     /**
+     * 删除指定的字符集合
+     *
+     * @param inString
+     * @param charsToDelete
+     * @return
+     */
+    public static String deleteAny(String inString, String charsToDelete) {
+        if (isEmpty(inString) || isEmpty(charsToDelete)) {
+            return inString;
+        }
+
+        StringBuilder sb = new StringBuilder(inString.length());
+        for (int i = 0; i < inString.length(); i++) {
+            char c = inString.charAt(i);
+            if (charsToDelete.indexOf(i) == -1) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * 检查字符串是否为 IP 地址
      *
      * @param value
