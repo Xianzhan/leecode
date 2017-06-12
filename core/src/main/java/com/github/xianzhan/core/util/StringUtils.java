@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * @author Lee
  * @since 2017/6/10
  */
-public class StringUtil {
+public class StringUtils {
 
     private static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
