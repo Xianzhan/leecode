@@ -1,4 +1,4 @@
-package com.github.xianzhan.tool.util;
+package com.github.xianzhan.core.util;
 
 import java.util.regex.Pattern;
 
