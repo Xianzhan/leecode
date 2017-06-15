@@ -8,7 +8,7 @@ import org.junit.Test;
  * @author Lee
  * @since 2017/6/10
  */
-public class StringUtislTest {
+public class StringUtilsTest {
 
     @Test
     public void isIP() {
