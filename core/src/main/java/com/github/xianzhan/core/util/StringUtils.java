@@ -10,7 +10,46 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
-    private static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
+    public static final String SPACE = " ";
+    public static final String TAP = "    ";
+    public static final String DOT = ".";
+    public static final String SLASH = "/";
+    public static final String BACK_SLASH = "\\";
+    public static final String EMPTY = "";
+    public static final String LF = "\n";
+    public static final String CRLF = "\r\n";
+    public static final String CR = "\r";
+    public static final String UNDERLINE = "_";
+    public static final String COMMA = ",";
+    public static final String DELIM_START = "{";
+    public static final String DELIM_END = "}";
+    public static final String BRACKET_START = "[";
+    public static final String BRACKET_END = "]";
+    public static final String COLON = ":";
+
+    /**
+     * space
+     */
+    public static final String HTML_NBSP = "&nbsp;";
+    /**
+     * and &
+     */
+    public static final String HTML_AMP = "&amp;";
+    /**
+     * quote "
+     */
+    public static final String HTML_QUOTE = "&quot;";
+    /**
+     * less than sign <
+     */
+    public static final String HTML_LT = "&lt;";
+    /**
+     * greater than sign >
+     */
+    public static final String HTML_GT = "&gt;";
+
+    public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
+            "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
     /**
      * 删除指定的字符集合
@@ -53,7 +92,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isEmpty(String value) {
-        return value == null || "".equals(value);
+        return value == null || EMPTY.equals(value);
     }
 
     private StringUtils() {
