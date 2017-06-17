@@ -18,4 +18,19 @@ public class StringUtilsTest {
             System.out.println(StringUtils.isIP(ip));
         }
     }
+
+    @Test
+    public void deleteAny() {
+        String str = "lskdjflsjaflskdjflskjdfoiwejfkldfjljk";
+        System.out.println(StringUtils.deleteAny(str, "ls"));
+    }
+
+    @Test
+    public void isRealNumber() {
+        String[] strings = {"234", "45.", "234543.5656", ".156464"};
+        for (String str : strings) {
+            System.out.println(StringUtils.isRealNumber(str));
+        }
+    }
+
 }

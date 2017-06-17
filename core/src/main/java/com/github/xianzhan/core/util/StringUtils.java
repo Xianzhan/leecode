@@ -52,6 +52,18 @@ public class StringUtils {
             "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
     /**
+     * 判断是否是实数(整数和小数的集合)
+     *
+     * @param value
+     * @return
+     */
+    public static boolean isRealNumber(String value) {
+        String regex = "^\\d+(\\.\\d+)?$";
+        return isEmpty(value) ? false
+                : Pattern.compile(regex).matcher(value).find();
+    }
+
+    /**
      * 删除指定的字符集合
      *
      * @param inString
@@ -66,7 +78,8 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder(inString.length());
         for (int i = 0; i < inString.length(); i++) {
             char c = inString.charAt(i);
-            if (charsToDelete.indexOf(i) == -1) {
+            int index = charsToDelete.indexOf(c);
+            if (index == -1) {
                 sb.append(c);
             }
         }
