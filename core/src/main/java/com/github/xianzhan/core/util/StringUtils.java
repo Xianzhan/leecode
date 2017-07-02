@@ -51,6 +51,16 @@ public class StringUtils {
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
             "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
+    public static String repeat(String value, int time) {
+        if (isEmpty(value))
+            throw new NullPointerException("value 不能为空!");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < time; i++) {
+            sb.append(value);
+        }
+        return sb.toString();
+    }
+
     /**
      * 判断是否是实数(整数和小数的集合)
      *

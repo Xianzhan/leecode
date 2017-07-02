@@ -33,4 +33,9 @@ public class StringUtilsTest {
         }
     }
 
+    @Test
+    public void repeat() {
+        String value = "abc";
+        System.out.println(StringUtils.repeat(value, 3));
+    }
 }
