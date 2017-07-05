@@ -9,12 +9,12 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
 /**
- * 描述：
+ * 描述：EchoServer 业务逻辑处理类
  *
  * @author Lee
  * @since 2017/7/3
  */
-@ChannelHandler.Sharable
+@ChannelHandler.Sharable // 标示一个 ChannelHandler 可以被多个 Channel 安全地共享
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override

@@ -11,6 +11,7 @@
     <modules>
         <module>algorithm</module>
         <module>core</module>
+        <module>net</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -18,6 +19,7 @@
         <!-- version -->
         <version.junit>4.12</version.junit>
         <version.slf4j>1.7.25</version.slf4j>
+        <version.netty>4.1.12.Final</version.netty>
     </properties>
 
     <dependencies>
