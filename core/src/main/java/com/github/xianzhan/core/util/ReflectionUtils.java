@@ -17,7 +17,7 @@ public class ReflectionUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtils.class);
 
     /**
-     * 将 Map 数据映射到 clazz 实体类
+     * 将 Map 数据映射到 JavaBean
      *
      * @param clazz Entity.class
      * @param map   数据, key 对应 field
@@ -69,5 +69,14 @@ public class ReflectionUtils {
         }
 
         return null;
+    }
+
+    public static String[] getMethodNames(Class<?> clazz) {
+        Method[] methods = clazz.getMethods();
+        String[] names = new String[methods.length];
+        for (int i = 0; i < names.length; i++) {
+            names[i] = methods[i].getName();
+        }
+        return names;
     }
 }
