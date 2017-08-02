@@ -12,6 +12,7 @@
         <module>algorithm</module>
         <module>core</module>
         <module>net</module>
+        <module>http1-1</module>
     </modules>
     <packaging>pom</packaging>
 
