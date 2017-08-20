@@ -97,4 +97,32 @@ public class IOUtils {
                 bos.close();
         }
     }
+
+    public static Object readObject(String fileName) throws
+            Exception {
+        ObjectInputStream ois = null;
+        Object result;
+
+        try {
+            ois = new ObjectInputStream(new FileInputStream(fileName));
+            result = ois.readObject();
+        } finally {
+            if (Objects.nonNull(ois))
+                ois.close();
+        }
+        return result;
+    }
+
+    public static void writeObject(String fileName, Serializable serializable) throws
+            IOException {
+        ObjectOutputStream oos = null;
+
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream(fileName));
+            oos.writeObject(serializable);
+        } finally {
+            if (Objects.nonNull(oos))
+                oos.close();
+        }
+    }
 }
