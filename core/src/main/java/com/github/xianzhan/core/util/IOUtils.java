@@ -98,6 +98,13 @@ public class IOUtils {
         }
     }
 
+    /**
+     * 从文件中读入 object
+     *
+     * @param fileName 文件名
+     * @return 返回对象
+     * @throws Exception
+     */
     public static Object readObject(String fileName) throws
             Exception {
         ObjectInputStream ois = null;
@@ -113,6 +120,13 @@ public class IOUtils {
         return result;
     }
 
+    /**
+     * 将对象写入文件中
+     *
+     * @param fileName     文件名
+     * @param serializable 可序列化的对象
+     * @throws IOException
+     */
     public static void writeObject(String fileName, Serializable serializable) throws
             IOException {
         ObjectOutputStream oos = null;

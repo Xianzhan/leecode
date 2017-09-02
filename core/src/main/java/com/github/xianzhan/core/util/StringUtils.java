@@ -10,31 +10,94 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
+    /**
+     * 空格
+     */
     public static final String SPACE = " ";
-    public static final String TAP = "    ";
+
+    /**
+     * TAB
+     */
+    public static final String TAB = "    ";
+
+    /**
+     * .
+     */
     public static final String DOT = ".";
+
+    /**
+     * 斜杠
+     */
     public static final String SLASH = "/";
+
+    /**
+     * 反斜杠
+     */
     public static final String BACK_SLASH = "\\";
+
+    /**
+     * 空字符串
+     */
     public static final String EMPTY = "";
+
+    /**
+     * 换行
+     */
     public static final String LF = "\n";
+
+    /**
+     * 回车换行
+     */
     public static final String CRLF = "\r\n";
+
+    /**
+     * 回程
+     */
     public static final String CR = "\r";
+
+    /**
+     * 下划线
+     */
     public static final String UNDERLINE = "_";
+
+    /**
+     * 英文逗号
+     */
     public static final String COMMA = ",";
+
+    /**
+     * {
+     */
     public static final String DELIM_START = "{";
+
+    /**
+     * }
+     */
     public static final String DELIM_END = "}";
+
+    /**
+     * [
+     */
     public static final String BRACKET_START = "[";
+
+    /**
+     * ]
+     */
     public static final String BRACKET_END = "]";
+
+    /**
+     * 冒号
+     */
     public static final String COLON = ":";
 
     /**
      * space
      */
-    public static final String HTML_NBSP = "&nbsp;";
+    public static final String HTML_NBSP  = "&nbsp;";
     /**
      * and &
      */
-    public static final String HTML_AMP = "&amp;";
+    public static final String HTML_AMP   = "&amp;";
     /**
      * quote "
      */
@@ -42,11 +105,11 @@ public class StringUtils {
     /**
      * less than sign <
      */
-    public static final String HTML_LT = "&lt;";
+    public static final String HTML_LT    = "&lt;";
     /**
      * greater than sign >
      */
-    public static final String HTML_GT = "&gt;";
+    public static final String HTML_GT    = "&gt;";
 
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
             "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
