@@ -11,6 +11,10 @@ import java.net.UnknownHostException;
  */
 public class NetUtils {
 
+    /**
+     * 获取本地 IP 地址
+     * @return IP 地址字符串
+     */
     public static String getLocalIp() {
         try {
             InetAddress address = InetAddress.getLocalHost();
