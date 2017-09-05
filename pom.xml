@@ -21,7 +21,7 @@
         <!-- version -->
         <version.junit>4.12</version.junit>
         <version.slf4j>1.7.25</version.slf4j>
-        <version.netty>4.1.12.Final</version.netty>
+        <version.vertx>3.4.2</version.vertx>
     </properties>
 
     <dependencies>
