@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 /**
- * 描述：
+ * 描述：https://github.com/vert-x3/vertx-guide-for-java-devs
  *
  * @author Lee
  * @since 2017/9/5
