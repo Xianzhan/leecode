@@ -19,6 +19,13 @@
             <version>${version.vertx}</version>
         </dependency>
 
+        <!-- web -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${version.vertx}</version>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>junit</groupId>
