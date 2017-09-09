@@ -1,4 +1,4 @@
-package com.github.xianzhan.vertx.router;
+package com.github.xianzhan.vertx.core.router;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;

@@ -1,6 +1,6 @@
-package com.github.xianzhan.vertx.router;
+package com.github.xianzhan.vertx.core.router;
 
-import com.github.xianzhan.vertx.first.MyFirstVerticle;
+import com.github.xianzhan.vertx.core.first.MyFirstVerticle;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;

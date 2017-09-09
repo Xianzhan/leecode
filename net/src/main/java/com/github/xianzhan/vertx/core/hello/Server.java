@@ -1,4 +1,4 @@
-package com.github.xianzhan.vertx.hello;
+package com.github.xianzhan.vertx.core.hello;
 
 import com.github.xianzhan.vertx.util.Runner;
 import io.vertx.core.AbstractVerticle;

@@ -1,4 +1,4 @@
-package com.github.xianzhan.vertx.first;
+package com.github.xianzhan.vertx.core.first;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
