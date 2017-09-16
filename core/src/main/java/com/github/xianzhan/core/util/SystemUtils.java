@@ -94,7 +94,8 @@ public class SystemUtils {
     }
 
     /**
-     * 获取系统架构
+     * 获取系统架构<br>
+     * 'arm', 'arm64', 'ia32', 'mips', 'mipsel', 'ppc', 'ppc64', 's390', 's390x', 'x32', 'x64', 和 'x86'
      *
      * @return Operating System Architecture
      */
@@ -165,21 +166,16 @@ public class SystemUtils {
         return System.getProperty(USER_NAME);
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(getJavaVersion());
-//        System.out.println(getJavaVendor());
-//        System.out.println(getJavaVendorUrl());
-//        System.out.println(getJavaHome());
-//        System.out.println(getUserDir());
-//        System.out.println(getUserHome());
-//        System.out.println(getUserName());
-//        System.out.println(getJavaClassVersion());
-//        System.out.println(getJavaClassPath());
-//        System.out.println(getOsName());
-//        System.out.println(getOsArch());
-//        System.out.println(getOsVersion());
-//        System.out.println(getFileSeparator());
-//        System.out.println(getPathSeparator());
-//        System.out.println(getLineSeparator());
-//    }
+    /**
+     * 获取当前 Java 剩余可用系统内存
+     *
+     * @return 剩余字节
+     */
+    public static long getFreeMemory() {
+        return Runtime.getRuntime().freeMemory();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getFreeMemory());
+    }
 }
