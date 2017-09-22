@@ -1,9 +1,5 @@
 package com.github.xianzhan.core.loader;
 
-import sun.misc.Launcher;
-
-import java.net.URL;
-
 /**
  * 描述：
  *
@@ -11,16 +7,6 @@ import java.net.URL;
  * @since 2017/8/20
  */
 public class JavaLoader {
-
-    /**
-     * 引导类加载器
-     *
-     * @return
-     */
-    public static URL[] getBootstrapClassloader() {
-        URL[] urls = Launcher.getBootstrapClassPath().getURLs();
-        return urls;
-    }
 
     /**
      * 扩展类加载器
