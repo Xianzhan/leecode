@@ -21,18 +21,4 @@
         <version.junit>4.12</version.junit>
         <version.slf4j>1.7.25</version.slf4j>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${version.slf4j}</version>
-        </dependency>
-    </dependencies>
 </project>
