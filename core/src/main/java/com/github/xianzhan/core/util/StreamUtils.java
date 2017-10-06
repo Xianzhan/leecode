@@ -1,8 +1,5 @@
 package com.github.xianzhan.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -15,8 +12,6 @@ import java.io.ObjectOutputStream;
  * @since 2017/6/18
  */
 public class StreamUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StringUtils.class);
 
     /**
      * 字节转对象
@@ -34,7 +29,7 @@ public class StreamUtils {
             ois.close();
             bais.close();
         } catch (Exception e) {
-            LOGGER.error("[StreamUtils][streamToObjectByJava]Exception: ", e);
+
         }
         return obj;
     }
@@ -49,7 +44,7 @@ public class StreamUtils {
             oos.close();
             baos.close();
         } catch (Exception e) {
-            LOGGER.error("[StreamUtils][objectToBytesByJava]Exception: ", e);
+
         }
         return bytes;
     }

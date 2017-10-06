@@ -177,5 +177,9 @@ public class SystemUtils {
 
     public static void main(String[] args) {
         System.out.println(getFreeMemory());
+        System.out.println(getOsName());
+        System.out.println(getJavaVersion());
+        System.out.println(getJavaHome());
+        System.out.println(System.getProperties());
     }
 }

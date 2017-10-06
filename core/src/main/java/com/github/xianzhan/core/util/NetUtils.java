@@ -1,8 +1,5 @@
 package com.github.xianzhan.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -13,9 +10,6 @@ import java.net.UnknownHostException;
  * @since 2017/8/28
  */
 public class NetUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(NetUtils
-            .class);
 
     private NetUtils() {
     }
@@ -30,7 +24,7 @@ public class NetUtils {
             InetAddress address = InetAddress.getLocalHost();
             return address.getHostAddress();
         } catch (UnknownHostException e) {
-            LOGGER.error("[NetUtils][getLocalIp]获取本地 IP 地址发生异常: ", e);
+
         }
         return "";
     }

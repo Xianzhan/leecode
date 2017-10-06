@@ -1,8 +1,5 @@
 package com.github.xianzhan.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -14,8 +11,6 @@ import java.util.Map;
  */
 public class ReflectionUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtils.class);
-
     /**
      * 将 Map 数据映射到 JavaBean
      *
@@ -26,7 +21,6 @@ public class ReflectionUtils {
      */
     public static <T> T assignMapToEntityField(Class<T> clazz, Map<String, Object> map) {
         if (map == null || map.size() < 1) {
-            LOGGER.error("映射为空, 无法赋值!");
             return null;
         }
 
@@ -65,7 +59,7 @@ public class ReflectionUtils {
             }
             return clazz.cast(obj);
         } catch (Exception e) {
-            LOGGER.error("[ReflectionUtils][assignToEntity]转换发生异常:", e);
+
         }
 
         return null;

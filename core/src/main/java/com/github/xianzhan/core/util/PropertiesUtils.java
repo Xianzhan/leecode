@@ -1,8 +1,5 @@
 package com.github.xianzhan.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -15,9 +12,6 @@ import java.util.Properties;
  */
 public class PropertiesUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger
-            (PropertiesUtils.class);
-
     public static Properties getProperties(String fileName) {
         Properties properties = new Properties();
         InputStream is = PropertiesUtils.class.getClassLoader()
@@ -25,7 +19,7 @@ public class PropertiesUtils {
         try {
             properties.load(is);
         } catch (IOException e) {
-            LOGGER.error("[PropertiesUtils][getProperties]出现IOException异常:" + e);
+
         }
         return properties;
     }
