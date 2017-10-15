@@ -63,23 +63,23 @@ public class NonTerminalSymbol {
             ArrayList<>();
     public final HashSet<TerminalSymbol>            firstSet     = new HashSet<>();
 
-    NonTerminalSymbol(Exp exp) {
+    public NonTerminalSymbol(Exp exp) {
         this.exp = exp;
     }
 
-    NonTerminalSymbol ban(TerminalSymbol... args) {
+    public NonTerminalSymbol ban(TerminalSymbol... args) {
         for (TerminalSymbol node : args) {
             banList.add(node);
         }
         return this;
     }
 
-    NonTerminalSymbol or(Object... args) {
+    public NonTerminalSymbol or(Object... args) {
         expansionList.add(args);
         return this;
     }
 
-    NonTerminalSymbol sign(char sign) {
+    public NonTerminalSymbol sign(char sign) {
         this.sign = sign;
         return this;
     }

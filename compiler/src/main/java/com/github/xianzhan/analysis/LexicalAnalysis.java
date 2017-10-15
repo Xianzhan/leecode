@@ -82,7 +82,7 @@ public class LexicalAnalysis {
         this.state = State.Normal;
     }
 
-    Token read() throws IOException, LexicalAnalysisException {
+    public Token read() throws IOException, LexicalAnalysisException {
 
         if (endToken != null) {
             return endToken;

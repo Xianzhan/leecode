@@ -54,8 +54,8 @@ public class Token {
         EndSymbol;
     }
 
-    final Type   type;
-    final String value;
+    public final Type   type;
+    public final String value;
 
     Token(Type type, String value) {
         switch (type) {

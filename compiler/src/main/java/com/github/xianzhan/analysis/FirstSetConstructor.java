@@ -20,11 +20,11 @@ public class FirstSetConstructor {
     private LinkedHashSet<NonTerminalSymbol> visitedExpSet  = null;
     private HashSet<NonTerminalSymbol>       hasBuildExpSet = null;
 
-    FirstSetConstructor(HashMap<Exp, NonTerminalSymbol> expContainer) {
+    public FirstSetConstructor(HashMap<Exp, NonTerminalSymbol> expContainer) {
         this.expContainer = expContainer;
     }
 
-    void build() {
+    public void build() {
         visitedExpSet = new LinkedHashSet<>();
         hasBuildExpSet = new HashSet<>();
         for (NonTerminalSymbol node : searchAllNonTerminalSymbols()) {
