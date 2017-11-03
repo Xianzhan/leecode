@@ -1,6 +1,7 @@
 package com.github.xianzhan.core.util;
 
-import java.util.regex.Pattern;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * 描述：字符串工具类
@@ -112,7 +113,7 @@ public class StringUtils {
     public static final String HTML_GT    = "&gt;";
 
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
-            "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
+                                      "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
     public static String repeat(String value, int time) {
         if (isEmpty(value))
@@ -132,8 +133,7 @@ public class StringUtils {
      */
     public static boolean isRealNumber(String value) {
         String regex = "^\\d+(\\.\\d+)?$";
-        return isEmpty(value) ? false
-                : Pattern.compile(regex).matcher(value).find();
+        return !isEmpty(value) && value.matches(regex);
     }
 
     /**
@@ -166,8 +166,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isIP(String value) {
-        return isEmpty(value) ? false
-                : Pattern.compile(IPv4).matcher(value).find();
+        return !isEmpty(value) && value.matches(IPv4);
     }
 
     /**
@@ -179,6 +178,10 @@ public class StringUtils {
      */
     public static boolean isEmpty(String value) {
         return value == null || EMPTY.equals(value);
+    }
+
+    public static InputStream toInputStream(String content) {
+        return isEmpty(content) ? null : new ByteArrayInputStream(content.getBytes());
     }
 
     private StringUtils() {
