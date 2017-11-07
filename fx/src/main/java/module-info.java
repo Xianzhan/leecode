@@ -9,4 +9,7 @@ module fx {
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
+
+    exports com.github.xianzhan.form;
+    exports com.github.xianzhan.hello;
 }
