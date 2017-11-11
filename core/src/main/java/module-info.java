@@ -6,4 +6,5 @@
  */
 module core {
     requires java.base;
+    requires java.instrument;
 }
