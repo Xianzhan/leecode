@@ -94,11 +94,11 @@ public class StringUtils {
     /**
      * space
      */
-    public static final String HTML_NBSP  = "&nbsp;";
+    public static final String HTML_NBSP = "&nbsp;";
     /**
      * and &
      */
-    public static final String HTML_AMP   = "&amp;";
+    public static final String HTML_AMP = "&amp;";
     /**
      * quote "
      */
@@ -106,18 +106,56 @@ public class StringUtils {
     /**
      * less than sign <
      */
-    public static final String HTML_LT    = "&lt;";
+    public static final String HTML_LT = "&lt;";
     /**
      * greater than sign >
      */
-    public static final String HTML_GT    = "&gt;";
+    public static final String HTML_GT = "&gt;";
 
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
-                                      "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
+            "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
+    /**
+     * 分片
+     *
+     * @param value
+     * @param start
+     * @param end
+     * @param step
+     * @return
+     */
+    public static String slice(String value, int start, int end, int step) {
+        ifValueIsEmptyThrow(value);
+
+        int startAbs = Math.abs(start);
+        int endAbs = Math.abs(end);
+        int stepAbs = Math.abs(step);
+        ifLengthTooSmallThrow(value.length(), startAbs, endAbs, stepAbs);
+
+        int length = value.length();
+        if (start < 0) {
+            start += length;
+        }
+        if (end < 0) {
+            end += length;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = start; i < end; i += step) {
+            sb.append(value.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 重复字符串
+     *
+     * @param value 字符串
+     * @param time  次数
+     * @return value * time
+     */
     public static String repeat(String value, int time) {
-        if (isEmpty(value))
-            throw new NullPointerException("value 不能为空!");
+        ifValueIsEmptyThrow(value);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < time; i++) {
             sb.append(value);
@@ -185,5 +223,30 @@ public class StringUtils {
     }
 
     private StringUtils() {
+    }
+
+    /**
+     * 检查字符串值是否为空
+     *
+     * @param value 字符串
+     */
+    private static void ifValueIsEmptyThrow(String value) {
+        if (isEmpty(value)) {
+            throw new NullPointerException("value 不能为空!");
+        }
+    }
+
+    /**
+     * 字符串长度与其它值比较，其它值是否太大
+     *
+     * @param length
+     * @param compares
+     */
+    private static void ifLengthTooSmallThrow(int length, int... compares) {
+        for (int compare : compares) {
+            if (length < compare) {
+                throw new IllegalArgumentException("比较的值比字符串长度大");
+            }
+        }
     }
 }
