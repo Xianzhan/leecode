@@ -115,6 +115,24 @@ public class StringUtils {
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
             "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
 
+    public static String join(String flag, Object... arr) {
+        if (arr == null || arr.length == 0) {
+            return EMPTY;
+        }
+        if (arr.length == 1) {
+            return arr[0].toString();
+        }
+        if (flag == null) {
+            flag = EMPTY;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(arr[0]);
+        for (int i = 1, length = arr.length; i < length; i++) {
+            sb.append(flag).append(arr[i]);
+        }
+        return sb.toString();
+    }
+
     /**
      * 分片
      *
