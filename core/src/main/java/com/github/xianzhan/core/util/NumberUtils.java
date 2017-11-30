@@ -24,8 +24,54 @@ public class NumberUtils {
         return sb.toString();
     }
 
+    /**
+     * 判断是否为奇数
+     *
+     * @param n 待判断的数
+     * @return true 为奇数, false 为偶数
+     */
+    public static boolean isOdd(int n) {
+        // n = 2 -> 00000000 00000000 00000000 00000010
+        // & 1 -> & 00000000 00000000 00000000 00000001
+        // -------> 00000000 00000000 00000000 00000000
+        return (n & 1) != 0;
+    }
+
+    /**
+     * 判断是否为 2 的整数幂
+     * <table>
+     * <tr>
+     * <td>2 的幂</td>
+     * <td>8</td>
+     * <td>16</td>
+     * </tr>
+     * <tr>
+     * <td>n</td>
+     * <td>00001000</td>
+     * <td>00010000</td>
+     * </tr>
+     * <tr>
+     * <td>n - 1</td>
+     * <td>00000111</td>
+     * <td>00001111</td>
+     * </tr>
+     * <tr>
+     * <td> & 结果</td>
+     * <td>00000000</td>
+     * <td>00000000</td>
+     * </tr>
+     * </table>
+     *
+     * @param n 待判断的值
+     * @return true 是, false 否
+     */
+    public static boolean isPowerOf2(int n) {
+        return n != 0 && (n & (n - 1)) == 0;
+    }
+
+
+
     public static void main(String[] args) {
-        String string = "123456";
-        System.out.println(toHex(string.getBytes()));
+        System.out.println(isPowerOf2(4));
     }
 }
