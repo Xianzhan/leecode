@@ -69,9 +69,25 @@ public class NumberUtils {
         return n != 0 && (n & (n - 1)) == 0;
     }
 
-
+    /**
+     * 计算 n 的二进制数有多少个 1
+     *
+     * @param n 待计算的数
+     * @return 二进制 1 的个数
+     */
+    public static int count1(int n) {
+        int count = 0;
+        // 只遍历 31 位, 忽略最高位符号位
+        for (int i = 0; i < 30; i++) {
+            if (isOdd(n)) {
+                count++;
+            }
+            n >>= 1;
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
-        System.out.println(isPowerOf2(4));
+        System.out.println(count1(100));
     }
 }
