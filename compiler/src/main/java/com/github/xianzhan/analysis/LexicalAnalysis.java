@@ -82,6 +82,13 @@ public class LexicalAnalysis {
         this.state = State.Normal;
     }
 
+    /**
+     * 当源代码读完了, 如果状态机处于 Normal 状态, 此时应该生成一个 EndSymbol,
+     * 但如果此时不处于 Normal 状态, 那就有问题了, 必须抛出一个异常.
+     * @return
+     * @throws IOException
+     * @throws LexicalAnalysisException
+     */
     public Token read() throws IOException, LexicalAnalysisException {
 
         if (endToken != null) {

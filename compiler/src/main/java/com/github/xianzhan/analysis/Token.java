@@ -3,6 +3,7 @@ package com.github.xianzhan.analysis;
 import java.util.HashSet;
 
 /**
+ * 一.
  * 描述：用于表示词法分析器 Tokenizer 的产物.
  * 同时, 也作为下一阶段的语法分析器 Parser 的原料
  *
@@ -11,6 +12,9 @@ import java.util.HashSet;
  */
 public class Token {
 
+    /**
+     * keywordsSet 包含 tao 语言的关键字
+     */
     private static final HashSet<String> keywordsSet = new HashSet<>();
 
     static {
