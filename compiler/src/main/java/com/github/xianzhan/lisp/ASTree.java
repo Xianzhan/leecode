@@ -64,7 +64,7 @@ public class ASTree {
         if (type == TATOM) return atom;
         if (type == TSEXPR && this.len() == 0) return "nil";
         if (type == TSEXPR) {
-            String str = String.join(" ", (CharSequence) lst.stream().map(ASTree::toString).collect(Collectors.toList()));
+            String str = String.join(" ", lst.stream().map(ASTree::toString).collect(Collectors.toList()));
             return "(" + str + ")";
         }
         if (type == TLMD) return closure.toString();

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Parser {
     public ArrayList<ASTree> parse() throws IOException {
@@ -13,7 +14,7 @@ public class Parser {
     public ArrayList<ASTree> parse(InputStream inStream) throws IOException {
         // only support S-expression and atom
         ArrayList<ASTree> ret = new ArrayList<ASTree>();
-        ASTree t = null;
+        ASTree t;
         ASTree cur = null;
         int state = 0;
         StringBuffer sb = new StringBuffer();
@@ -44,7 +45,7 @@ public class Parser {
                             cur = t;
                         }
                     } else if (c == ')') {
-                        if (cur.end()) { // expression ends
+                        if (Objects.requireNonNull(cur, "cur is null").end()) { // expression ends
                             ret.add(cur);
                             cur = null;
                         } else {
@@ -59,7 +60,7 @@ public class Parser {
                 case 1: // in an atom
                     if (Character.isWhitespace(c) || c == '(' || c == ')') {
                         ASTree e = new ASTree(sb.toString());
-                        cur.add(e);
+                        Objects.requireNonNull(cur, "cur is null").add(e);
 
                         sb = new StringBuffer();
                         state = 0;
