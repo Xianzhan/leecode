@@ -3,9 +3,12 @@ package com.github.xianzhan.core.loader.hotload.manager.factory;
 import com.github.xianzhan.core.loader.hotload.HotClassLoader;
 import com.github.xianzhan.core.loader.hotload.HotLoaderInfo;
 import com.github.xianzhan.core.loader.hotload.manager.IManager;
+import com.github.xianzhan.core.loader.hotload.manager.impl.ManagerImpl;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +22,9 @@ public class ManagerFactory {
      */
     private static final Map<String, HotLoaderInfo> LOAD_INFO_MAP = new HashMap<>();
     /**
-     * 要在家的类的 classpath
+     * maven 项目路径 + class 文件路径
      */
-    private static final String CLASS_PATH = new File(".") + "/core/target/classes/";
+    private static final String CLASS_PATH = Paths.get(".") + "/core/target/classes/";
     /**
      * 实现热加载类的全名称(包名 + 类名)
      */
@@ -56,17 +59,16 @@ public class ManagerFactory {
     }
 
     private static IManager newInstance(Class<?> loadClass) {
+        IManager manager = null;
+
         try {
-            return (IManager) loadClass.getConstructor(new Class[]{}).newInstance(new Object[]{});
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+            if (loadClass.getName().equals(ManagerImpl.class.getName())) {
+                Constructor<?> constructor = loadClass.getConstructor();
+                manager = (IManager) constructor.newInstance();
+            }
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-        return null;
+        return manager;
     }
 }

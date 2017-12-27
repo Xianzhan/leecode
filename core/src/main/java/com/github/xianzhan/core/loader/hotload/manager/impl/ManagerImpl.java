@@ -8,7 +8,7 @@ import com.github.xianzhan.core.loader.hotload.manager.IManager;
 public class ManagerImpl implements IManager {
     @Override
     public void logic() {
-        System.out.println("你好, 我是热加载123");
+        System.out.println("你好, 热加载");
         System.out.println(System.currentTimeMillis());
     }
 }
