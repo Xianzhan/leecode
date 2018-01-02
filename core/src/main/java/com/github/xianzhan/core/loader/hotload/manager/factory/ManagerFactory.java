@@ -7,7 +7,6 @@ import com.github.xianzhan.core.loader.hotload.manager.impl.ManagerImpl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +65,7 @@ public class ManagerFactory {
                 Constructor<?> constructor = loadClass.getConstructor();
                 manager = (IManager) constructor.newInstance();
             }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }
         return manager;
