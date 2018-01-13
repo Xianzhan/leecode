@@ -16,10 +16,8 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
     private Snake snake;
 
-
     private int[] snakeXLength = new int[750];
     private int[] snakeYLength = new int[750];
-
 
     private ImageIcon leftMouth;
     private ImageIcon rightMouth;
@@ -29,7 +27,6 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     private ImageIcon snakeBodyImage;
 
     private Timer timer;
-    private int delay = 100;
 
 
     private int[] enemyXPos = {
@@ -67,7 +64,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        timer = new Timer(delay, this);
+        timer = new Timer(snake.SPEED, this);
         timer.start();
     }
 

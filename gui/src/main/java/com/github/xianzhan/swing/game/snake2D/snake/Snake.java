@@ -2,11 +2,15 @@ package com.github.xianzhan.swing.game.snake2D.snake;
 
 public class Snake {
 
+    public static final int SPEED = 100;
+
     private SnakeDirection direction;
 
     private static final int INITIAL_LENGTH = 3;
 
     private int moves;
+
+    private boolean state;
 
     private int lengthOfSnake;
 
@@ -25,12 +29,14 @@ public class Snake {
     public Snake() {
         direction = new SnakeDirection();
         lengthOfSnake = INITIAL_LENGTH;
+        state = true;
     }
 
     public void init() {
         over();
         moves = 0;
         lengthOfSnake = INITIAL_LENGTH;
+        state = true;
     }
 
     public boolean isLeft() {
@@ -52,6 +58,7 @@ public class Snake {
     public void over() {
         direction.stopLeftAndRight();
         direction.stopUpAndDown();
+        state = false;
     }
 
     public void turn(int i) {
@@ -62,12 +69,19 @@ public class Snake {
                 direction.stopLeftAndRight();
                 move();
             }
-        } else {
+        } else if (direction.isUp() || direction.isDown()) {
             direction.setLeft(SnakeDirection.LEFT == i);
             direction.setRight(SnakeDirection.RIGHT == i);
             if (direction.isLeft() || direction.isRight()) {
                 direction.stopUpAndDown();
                 move();
+            }
+        } else {
+            if (state) {
+                direction.setRight(SnakeDirection.RIGHT == i);
+                if (direction.isRight()) {
+                    move();
+                }
             }
         }
     }
