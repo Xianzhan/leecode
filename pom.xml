@@ -11,7 +11,7 @@
     <modules>
         <module>algorithm</module>
         <module>core</module>
-        <module>fx</module>
+        <module>gui</module>
         <module>compiler</module>
     </modules>
     <packaging>pom</packaging>

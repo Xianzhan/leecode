@@ -4,12 +4,12 @@
  * @author Lee
  * @since 2017/9/22
  */
-module fx {
+module gui {
     requires java.base;
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
 
-    exports com.github.xianzhan.form;
-    exports com.github.xianzhan.hello;
+    exports com.github.xianzhan.fx.form;
+    exports com.github.xianzhan.fx.hello;
 }

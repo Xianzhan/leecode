@@ -1,4 +1,4 @@
-package com.github.xianzhan.hello;
+package com.github.xianzhan.fx.hello;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

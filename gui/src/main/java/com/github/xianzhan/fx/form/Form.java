@@ -1,4 +1,4 @@
-package com.github.xianzhan.form;
+package com.github.xianzhan.fx.form;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
