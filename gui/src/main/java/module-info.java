@@ -10,6 +10,8 @@ module gui {
     requires javafx.graphics;
     requires javafx.controls;
 
+    requires java.desktop;
+
     exports com.github.xianzhan.fx.form;
     exports com.github.xianzhan.fx.hello;
 }
