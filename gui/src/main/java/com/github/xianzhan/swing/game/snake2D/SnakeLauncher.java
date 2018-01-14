@@ -1,5 +1,7 @@
 package com.github.xianzhan.swing.game.snake2D;
 
+import com.github.xianzhan.swing.game.snake2D.panel.SnakePanel;
+
 import javax.swing.JFrame;
 import java.awt.*;
 

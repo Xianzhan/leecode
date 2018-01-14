@@ -1,4 +1,4 @@
-package com.github.xianzhan.swing.game.snake2D;
+package com.github.xianzhan.swing.game.snake2D.panel;
 
 import com.github.xianzhan.swing.game.snake2D.snake.Snake;
 
@@ -24,7 +24,6 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     private ImageIcon upMouth;
     private ImageIcon downMouth;
 
-    private ImageIcon snakeBodyImage;
 
     private Timer timer;
 
@@ -64,7 +63,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        timer = new Timer(snake.SPEED, this);
+        timer = new Timer(Snake.SPEED, this);
         timer.start();
     }
 
@@ -130,8 +129,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
             // body
             if (a != 0) {
-                snakeBodyImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeBodyImage.png");
-                snakeBodyImage.paintIcon(this, g, snakeXLength[a], snakeYLength[a]);
+                snake.printBody(this, g, snakeXLength[a], snakeYLength[a]);
             }
         }
 
@@ -237,11 +235,6 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             snake.init();
@@ -250,6 +243,11 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         }
 
         snake.turn(e.getKeyCode());
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
     }
 
     @Override
