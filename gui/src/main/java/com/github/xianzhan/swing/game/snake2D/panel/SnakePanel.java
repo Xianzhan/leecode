@@ -1,5 +1,6 @@
 package com.github.xianzhan.swing.game.snake2D.panel;
 
+import com.github.xianzhan.swing.game.snake2D.enemy.Enemy;
 import com.github.xianzhan.swing.game.snake2D.snake.Snake;
 import com.github.xianzhan.swing.game.snake2D.snake.SnakeEnum;
 
@@ -9,13 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
 public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
     private ImageIcon titleImage;
 
     private Snake snake;
+    private Enemy enemy;
 
     private int[] snakeXLength = new int[750];
     private int[] snakeYLength = new int[750];
@@ -24,37 +25,11 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     private Timer timer;
 
 
-    private int[] enemyXPos = {
-            25, 50, 75, 100,
-            125, 150, 175, 200,
-            225, 250, 275, 300,
-            325, 350, 375, 400,
-            425, 450, 475, 500,
-            525, 550, 575, 600,
-            625, 650, 675, 700,
-            725, 750, 775, 800,
-            825, 850
-    };
-
-    private int[] enemyYPos = {
-            75, 100, 125, 150,
-            175, 200, 225, 250,
-            275, 300, 325, 350,
-            375, 400, 425, 450,
-            475, 500, 525, 550,
-            575, 600, 625
-    };
-
-    private ImageIcon enemyImage;
-    private Random random = new Random();
-    private int xPos = random.nextInt(34);
-    private int yPos = random.nextInt(23);
-
-
     private int score = 0;
 
     public SnakePanel() {
         snake = new Snake();
+        enemy = new Enemy();
 
         addKeyListener(this);
         setFocusable(true);
@@ -82,11 +57,11 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         titleImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeTitle.jpg");
         titleImage.paintIcon(this, g, 25, 11);
 
-        // draw border for gameplay
+        // draw border for snakePanel
         g.setColor(Color.WHITE);
         g.drawRect(24, 74, 851, 577);
 
-        // draw background for the gameplay
+        // draw background for the snakePanel
         g.setColor(Color.BLACK);
         g.fillRect(25, 75, 850, 575);
 
@@ -111,7 +86,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
                     snake.paintSite(SnakeEnum.LeftMouth, this, g, snakeXLength[a], snakeYLength[a]);
                 } else if (snake.isUp()) {
                     snake.paintSite(SnakeEnum.UpMouth, this, g, snakeXLength[a], snakeYLength[a]);
-                } else if (snake.isDown()){
+                } else if (snake.isDown()) {
                     snake.paintSite(SnakeEnum.DownMouth, this, g, snakeXLength[a], snakeYLength[a]);
                 }
             }
@@ -122,15 +97,13 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
             }
         }
 
-        enemyImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\enemy.png");
-        if (enemyXPos[xPos] == snakeXLength[0] && enemyYPos[yPos] == snakeYLength[0]) {
+        if (Enemy.enemyXPos[Enemy.xPos] == snakeXLength[0] && Enemy.enemyYPos[Enemy.yPos] == snakeYLength[0]) {
             score++;
             snake.grow();
-            xPos = random.nextInt(34);
-            yPos = random.nextInt(23);
+            Enemy.generate();
         }
 
-        enemyImage.paintIcon(this, g, enemyXPos[xPos], enemyYPos[yPos]);
+        enemy.paint(this, g);
 
 
         for (int b = 1; b < snake.getLength(); b++) {
