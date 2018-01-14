@@ -17,6 +17,10 @@ public class Snake {
      * 身体
      */
     private SnakeBody body;
+    /**
+     * 嘴巴
+     */
+    private SnakeMouth mouth;
 
     /**
      * 蛇初始长度
@@ -40,13 +44,20 @@ public class Snake {
 
     public Snake() {
         direction = new SnakeDirection();
+        mouth = new SnakeMouth();
         body = new SnakeBody();
         lengthOfSnake = INITIAL_LENGTH;
         state = true;
     }
 
-    public void printBody(Component c, Graphics g, int x, int y) {
-        body.paint(c, g, x, y);
+    public void paintSite(SnakeEnum site, Component c, Graphics g, int x, int y) {
+        switch (site) {
+            case Body:
+                body.paint(c, g, x, y);
+                break;
+            default:
+                mouth.paint(site, c, g, x, y);
+        }
     }
 
     public int getLength() {

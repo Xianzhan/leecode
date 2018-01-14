@@ -1,6 +1,7 @@
 package com.github.xianzhan.swing.game.snake2D.panel;
 
 import com.github.xianzhan.swing.game.snake2D.snake.Snake;
+import com.github.xianzhan.swing.game.snake2D.snake.SnakeEnum;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,11 +19,6 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
     private int[] snakeXLength = new int[750];
     private int[] snakeYLength = new int[750];
-
-    private ImageIcon leftMouth;
-    private ImageIcon rightMouth;
-    private ImageIcon upMouth;
-    private ImageIcon downMouth;
 
 
     private Timer timer;
@@ -105,31 +101,24 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("Length: " + snake.getLength(), 780, 50);
 
-
-        rightMouth = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\rightMouth.png");
-        rightMouth.paintIcon(this, g, snakeXLength[0], snakeYLength[0]);
+        snake.paintSite(SnakeEnum.RightMouth, this, g, snakeXLength[0], snakeYLength[0]);
 
         for (int a = 0; a < snake.getLength(); a++) {
-            if (a == 0 && snake.isRight()) {
-                rightMouth = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\rightMouth.png");
-                rightMouth.paintIcon(this, g, snakeXLength[a], snakeYLength[a]);
-            }
-            if (a == 0 && snake.isLeft()) {
-                leftMouth = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\leftMouth.png");
-                leftMouth.paintIcon(this, g, snakeXLength[a], snakeYLength[a]);
-            }
-            if (a == 0 && snake.isDown()) {
-                downMouth = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\downMouth.png");
-                downMouth.paintIcon(this, g, snakeXLength[a], snakeYLength[a]);
-            }
-            if (a == 0 && snake.isUp()) {
-                upMouth = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\upMouth.png");
-                upMouth.paintIcon(this, g, snakeXLength[a], snakeYLength[a]);
+            if (a == 0) {
+                if (snake.isRight()) {
+                    snake.paintSite(SnakeEnum.RightMouth, this, g, snakeXLength[a], snakeYLength[a]);
+                } else if (snake.isLeft()) {
+                    snake.paintSite(SnakeEnum.LeftMouth, this, g, snakeXLength[a], snakeYLength[a]);
+                } else if (snake.isUp()) {
+                    snake.paintSite(SnakeEnum.UpMouth, this, g, snakeXLength[a], snakeYLength[a]);
+                } else if (snake.isDown()){
+                    snake.paintSite(SnakeEnum.DownMouth, this, g, snakeXLength[a], snakeYLength[a]);
+                }
             }
 
             // body
             if (a != 0) {
-                snake.printBody(this, g, snakeXLength[a], snakeYLength[a]);
+                snake.paintSite(SnakeEnum.Body, this, g, snakeXLength[a], snakeYLength[a]);
             }
         }
 

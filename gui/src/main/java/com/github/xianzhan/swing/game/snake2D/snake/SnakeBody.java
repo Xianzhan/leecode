@@ -7,7 +7,7 @@ public class SnakeBody {
 
     private ImageIcon snakeBodyImage;
 
-    public SnakeBody() {
+    SnakeBody() {
         snakeBodyImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeBodyImage.png");
     }
 

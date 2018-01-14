@@ -11,6 +11,9 @@ public class SnakeDirection {
     private boolean up;
     private boolean down;
 
+    SnakeDirection() {
+    }
+
     public void setLeft(boolean left) {
         this.left = left;
     }
