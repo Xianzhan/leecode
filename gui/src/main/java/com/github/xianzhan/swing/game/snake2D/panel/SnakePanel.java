@@ -12,22 +12,18 @@ import java.awt.event.KeyListener;
 
 public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
-    private ImageIcon titleImage;
-
     private Snake snake;
     private SnakeEnemy enemy;
+    private ScorePanel scorePanel;
 
 
     private Timer timer;
 
 
-    private int score = 0;
-
     public SnakePanel() {
         snake = new Snake();
         enemy = new SnakeEnemy();
-
-        titleImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeTitle.jpg");
+        scorePanel = new ScorePanel();
 
         addKeyListener(this);
         setFocusable(true);
@@ -46,7 +42,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         pen.drawRect(24, 10, 851, 55);
 
         // draw the title image
-        titleImage.paintIcon(this, pen, 25, 11);
+        scorePanel.paint(this, pen);
 
         // draw border for snakePanel
         pen.setColor(Color.WHITE);
@@ -56,23 +52,14 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         pen.setColor(Color.BLACK);
         pen.fillRect(25, 75, 850, 575);
 
-
-        // draw scores
-        pen.setColor(Color.WHITE);
-        pen.setFont(new Font("arial", Font.PLAIN, 14));
-        pen.drawString("Scores: " + score, 780, 30);
-
-        // draw length of snack
-        pen.setColor(Color.WHITE);
-        pen.setFont(new Font("arial", Font.PLAIN, 14));
-        pen.drawString("Length: " + snake.getLength(), 780, 50);
+        scorePanel.paintScore(pen, snake.getLength());
 
         snake.paintRightMouth(this, pen);
 
         snake.paintAll(this, pen);
 
         if (snake.eatEnemy()) {
-            score++;
+            scorePanel.addScore();
             snake.grow();
             enemy.generate();
         }
@@ -82,12 +69,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
         if (snake.eatSelf()) {
 
-            pen.setColor(Color.WHITE);
-            pen.setFont(new Font("arial", Font.BOLD, 50));
-            pen.drawString("Game Over", 300, 300);
-
-            pen.setFont(new Font("arial", Font.BOLD, 20));
-            pen.drawString("Space to RESTART", 350, 340);
+            gameOver(pen);
         }
 
         pen.dispose();
@@ -105,7 +87,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             snake.init();
-            score = 0;
+            scorePanel.initScore();
             repaint();
         }
 
@@ -120,5 +102,14 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    private void gameOver(Graphics pen) {
+        pen.setColor(Color.WHITE);
+        pen.setFont(new Font("arial", Font.BOLD, 50));
+        pen.drawString("Game Over", 300, 300);
+
+        pen.setFont(new Font("arial", Font.BOLD, 20));
+        pen.drawString("Space to RESTART", 350, 340);
     }
 }
