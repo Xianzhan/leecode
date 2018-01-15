@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class Enemy {
+public class SnakeEnemy {
 
     public static int[] enemyXPos = {
             25, 50, 75, 100,
@@ -31,14 +31,14 @@ public class Enemy {
     public static int xPos = random.nextInt(enemyXPos.length);
     public static int yPos = random.nextInt(enemyYPos.length);
 
-    public static void generate() {
+    public void generate() {
         xPos = random.nextInt(enemyXPos.length);
         yPos = random.nextInt(enemyYPos.length);
     }
 
     private ImageIcon enemyImage;
 
-    public Enemy() {
+    public SnakeEnemy() {
         enemyImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\enemy.png");
     }
 

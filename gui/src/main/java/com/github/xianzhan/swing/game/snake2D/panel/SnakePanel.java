@@ -1,8 +1,7 @@
 package com.github.xianzhan.swing.game.snake2D.panel;
 
-import com.github.xianzhan.swing.game.snake2D.enemy.Enemy;
+import com.github.xianzhan.swing.game.snake2D.enemy.SnakeEnemy;
 import com.github.xianzhan.swing.game.snake2D.snake.Snake;
-import com.github.xianzhan.swing.game.snake2D.snake.SnakeEnum;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,10 +15,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     private ImageIcon titleImage;
 
     private Snake snake;
-    private Enemy enemy;
-
-    private int[] snakeXLength = new int[750];
-    private int[] snakeYLength = new int[750];
+    private SnakeEnemy enemy;
 
 
     private Timer timer;
@@ -29,7 +25,9 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
     public SnakePanel() {
         snake = new Snake();
-        enemy = new Enemy();
+        enemy = new SnakeEnemy();
+
+        titleImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeTitle.jpg");
 
         addKeyListener(this);
         setFocusable(true);
@@ -38,160 +36,67 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         timer.start();
     }
 
-    public void paint(Graphics g) {
-        if (snake.getMoves() == 0) {
-            snakeXLength[2] = 50;
-            snakeXLength[1] = 75;
-            snakeXLength[0] = 100;
+    @Override
+    public void paint(Graphics pen) {
 
-            snakeYLength[2] = 100;
-            snakeYLength[1] = 100;
-            snakeYLength[0] = 100;
-        }
+        snake.initializeTheLocation();
 
         // draw title image border
-        g.setColor(Color.WHITE);
-        g.drawRect(24, 10, 851, 55);
+        pen.setColor(Color.WHITE);
+        pen.drawRect(24, 10, 851, 55);
 
         // draw the title image
-        titleImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeTitle.jpg");
-        titleImage.paintIcon(this, g, 25, 11);
+        titleImage.paintIcon(this, pen, 25, 11);
 
         // draw border for snakePanel
-        g.setColor(Color.WHITE);
-        g.drawRect(24, 74, 851, 577);
+        pen.setColor(Color.WHITE);
+        pen.drawRect(24, 74, 851, 577);
 
         // draw background for the snakePanel
-        g.setColor(Color.BLACK);
-        g.fillRect(25, 75, 850, 575);
+        pen.setColor(Color.BLACK);
+        pen.fillRect(25, 75, 850, 575);
 
 
         // draw scores
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("Scores: " + score, 780, 30);
+        pen.setColor(Color.WHITE);
+        pen.setFont(new Font("arial", Font.PLAIN, 14));
+        pen.drawString("Scores: " + score, 780, 30);
 
         // draw length of snack
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("Length: " + snake.getLength(), 780, 50);
+        pen.setColor(Color.WHITE);
+        pen.setFont(new Font("arial", Font.PLAIN, 14));
+        pen.drawString("Length: " + snake.getLength(), 780, 50);
 
-        snake.paintSite(SnakeEnum.RightMouth, this, g, snakeXLength[0], snakeYLength[0]);
+        snake.paintRightMouth(this, pen);
 
-        for (int a = 0; a < snake.getLength(); a++) {
-            if (a == 0) {
-                if (snake.isRight()) {
-                    snake.paintSite(SnakeEnum.RightMouth, this, g, snakeXLength[a], snakeYLength[a]);
-                } else if (snake.isLeft()) {
-                    snake.paintSite(SnakeEnum.LeftMouth, this, g, snakeXLength[a], snakeYLength[a]);
-                } else if (snake.isUp()) {
-                    snake.paintSite(SnakeEnum.UpMouth, this, g, snakeXLength[a], snakeYLength[a]);
-                } else if (snake.isDown()) {
-                    snake.paintSite(SnakeEnum.DownMouth, this, g, snakeXLength[a], snakeYLength[a]);
-                }
-            }
+        snake.paintAll(this, pen);
 
-            // body
-            if (a != 0) {
-                snake.paintSite(SnakeEnum.Body, this, g, snakeXLength[a], snakeYLength[a]);
-            }
-        }
-
-        if (Enemy.enemyXPos[Enemy.xPos] == snakeXLength[0] && Enemy.enemyYPos[Enemy.yPos] == snakeYLength[0]) {
+        if (snake.eatEnemy()) {
             score++;
             snake.grow();
-            Enemy.generate();
+            enemy.generate();
         }
 
-        enemy.paint(this, g);
+        enemy.paint(this, pen);
 
 
-        for (int b = 1; b < snake.getLength(); b++) {
-            if (snakeXLength[b] == snakeXLength[0] && snakeYLength[b] == snakeYLength[0]) {
-                snake.over();
+        if (snake.eatSelf()) {
 
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("arial", Font.BOLD, 50));
-                g.drawString("Game Over", 300, 300);
+            pen.setColor(Color.WHITE);
+            pen.setFont(new Font("arial", Font.BOLD, 50));
+            pen.drawString("Game Over", 300, 300);
 
-                g.setFont(new Font("arial", Font.BOLD, 20));
-                g.drawString("Space to RESTART", 350, 340);
-            }
+            pen.setFont(new Font("arial", Font.BOLD, 20));
+            pen.drawString("Space to RESTART", 350, 340);
         }
 
-        g.dispose();
+        pen.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
-        if (snake.isRight()) {
-            for (int r = snake.getLength() - 1; r >= 0; r--) {
-                snakeYLength[r + 1] = snakeYLength[r];
-            }
-            for (int r = snake.getLength(); r >= 0; r--) {
-                if (r == 0) {
-                    snakeXLength[r] = snakeXLength[r] + 25;
-                } else {
-                    snakeXLength[r] = snakeXLength[r - 1];
-                }
-
-                if (snakeXLength[r] > 850) {
-                    snakeXLength[r] = 25;
-                }
-            }
-            repaint();
-        }
-        if (snake.isLeft()) {
-            for (int l = snake.getLength() - 1; l >= 0; l--) {
-                snakeYLength[l + 1] = snakeYLength[l];
-            }
-            for (int l = snake.getLength(); l >= 0; l--) {
-                if (l == 0) {
-                    snakeXLength[l] = snakeXLength[l] - 25;
-                } else {
-                    snakeXLength[l] = snakeXLength[l - 1];
-                }
-
-                if (snakeXLength[l] < 25) {
-                    snakeXLength[l] = 850;
-                }
-            }
-            repaint();
-        }
-        if (snake.isUp()) {
-
-            for (int l = snake.getLength() - 1; l >= 0; l--) {
-                snakeXLength[l + 1] = snakeXLength[l];
-            }
-            for (int l = snake.getLength(); l >= 0; l--) {
-                if (l == 0) {
-                    snakeYLength[l] = snakeYLength[l] - 25;
-                } else {
-                    snakeYLength[l] = snakeYLength[l - 1];
-                }
-
-                if (snakeYLength[l] < 75) {
-                    snakeYLength[l] = 625;
-                }
-            }
-            repaint();
-        }
-        if (snake.isDown()) {
-            for (int d = snake.getLength() - 1; d >= 0; d--) {
-                snakeXLength[d + 1] = snakeXLength[d];
-            }
-            for (int d = snake.getLength(); d >= 0; d--) {
-                if (d == 0) {
-                    snakeYLength[d] = snakeYLength[d] + 25;
-                } else {
-                    snakeYLength[d] = snakeYLength[d - 1];
-                }
-
-                if (snakeYLength[d] > 625) {
-                    snakeYLength[d] = 75;
-                }
-            }
+        if (snake.isMoving()) {
             repaint();
         }
     }

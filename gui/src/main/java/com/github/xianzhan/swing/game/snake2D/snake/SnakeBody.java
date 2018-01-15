@@ -3,7 +3,7 @@ package com.github.xianzhan.swing.game.snake2D.snake;
 import javax.swing.ImageIcon;
 import java.awt.*;
 
-public class SnakeBody {
+class SnakeBody {
 
     private ImageIcon snakeBodyImage;
 
