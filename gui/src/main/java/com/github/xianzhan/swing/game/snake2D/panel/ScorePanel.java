@@ -3,12 +3,12 @@ package com.github.xianzhan.swing.game.snake2D.panel;
 import javax.swing.*;
 import java.awt.*;
 
-public class ScorePanel {
+class ScorePanel {
 
     private ImageIcon titleImage;
     private int score;
 
-    public ScorePanel() {
+    ScorePanel() {
         titleImage = new ImageIcon(".\\gui\\src\\main\\resources\\swing\\game\\snake2D\\snakeTitle.jpg");
     }
 

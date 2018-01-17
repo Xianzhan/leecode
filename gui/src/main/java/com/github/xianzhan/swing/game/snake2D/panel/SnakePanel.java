@@ -41,12 +41,13 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         pen.setColor(Color.WHITE);
         pen.drawRect(24, 10, 851, 55);
 
-        // draw the title image
-        scorePanel.paint(this, pen);
 
         // draw border for snakePanel
         pen.setColor(Color.WHITE);
         pen.drawRect(24, 74, 851, 577);
+
+        // draw the title image
+        scorePanel.paint(this, pen);
 
         // draw background for the snakePanel
         pen.setColor(Color.BLACK);
