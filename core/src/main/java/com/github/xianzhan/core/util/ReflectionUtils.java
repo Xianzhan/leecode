@@ -1,5 +1,6 @@
 package com.github.xianzhan.core.util;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -25,7 +26,9 @@ public class ReflectionUtils {
         }
 
         try {
-            Object obj = clazz.newInstance();
+            // Class.newInstance() is @Deprecated(since="9")
+            Constructor<T> constructor = clazz.getConstructor();
+            Object obj = constructor.newInstance();
             Class<?> fieldType;
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
