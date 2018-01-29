@@ -11,8 +11,8 @@ public class NumberUtils {
     public static String toHex(byte[] src) {
         StringBuilder sb = new StringBuilder("");
         if (src != null && src.length > 0) {
-            for (int i = 0, length = src.length; i < length; i++) {
-                int v = src[i] & 0xFF;
+            for (byte aSrc : src) {
+                int v = aSrc & 0xFF;
                 String hv = Integer.toHexString(v);
                 if (hv.length() < 2) {
                     sb.append(0);
