@@ -24,7 +24,26 @@ public class Hanoi {
         }
     }
 
+    /*
+     * 移动次数
+     * hanoi(0) = 0
+     * hanoi(1) = 1
+     * hanoi(2) = 3
+     * hanoi(3) = 7
+     * hanoi(4) = 15
+     */
+    private static void moveCount(int n) {
+        int count = 0;
+        if (n > 0) {
+            count = (1 << n) - 1;
+        }
+        System.out.println(count);
+    }
+
     public static void main(String[] args) {
-        hanoi(6, 'x', 'y', 'z');
+        int n = 6;
+        hanoi(n, 'x', 'y', 'z');
+        System.out.println();
+        moveCount(n);
     }
 }
