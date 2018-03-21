@@ -32,18 +32,18 @@ public class SizeOfTest {
         System.out.println("fullSizeOf(new A()) = " + fullSizeOf(new A()));
 
         // 16 + 4 + padding =24      数据是一个 int
-        System.out.println("sizeOf(new Integer(1)) = " + sizeOf(new Integer(1)));
+        System.out.println("sizeOf(new Integer(1)) = " + sizeOf(1));
 
         // (16 + int hash:4 + int hash32:4 + refer char value[]:8 + padding) = 32
         // 静态属性（static）不计算空间，因为所有对象都是共享一块空间的
         // 不同版本JDK可能 String 内部 Field 可能不同，本次测试使用JDK1.7
-        System.out.println("sizeOf(new String()) = " + sizeOf(new String()));
+        System.out.println("sizeOf(new String()) = " + sizeOf(""));
         // (16 + 4 + 4 + 8 + padding) + (24 + 0 + padding) = 56
-        System.out.println("fullSizeOf(new String()) = " + fullSizeOf(new String()));
+        System.out.println("fullSizeOf(new String()) = " + fullSizeOf(""));
         // (16 + 4 + 4 + 8 + padding) = 32
-        System.out.println("sizeOf(new String('a')) = " + sizeOf(new String("a")));
+        System.out.println("sizeOf(new String('a')) = " + sizeOf("a"));
         // (16 + 4 + 4 + 8 +padding)  +  (24 + 2 + padding) = 64
-        System.out.println("fullSizeOf(new String('a')) = " + fullSizeOf(new String("a")));
+        System.out.println("fullSizeOf(new String('a')) = " + fullSizeOf("a"));
 
         System.out.println("-------------------原始类型数组对象---------------------------");
 

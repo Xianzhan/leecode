@@ -15,7 +15,7 @@ public class CryptoUtils {
     }
 
     public static void main(String[] args) {
-        String content = "21323A 我";
+        var content = "21323A 我";
 
         String s = encodeBase64(content.getBytes());
         System.out.println(s);

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class BubbleSort {
 
-    static int[] sort(int[] arr) {
+    private static int[] sort(int[] arr) {
         for (int i = 0, length = arr.length; i < length; i++) {
             for (int j = 1; j < length - i; j++) {
                 if (arr[j] < arr[j - 1]) {
