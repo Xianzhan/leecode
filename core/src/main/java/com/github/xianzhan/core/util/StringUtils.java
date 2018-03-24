@@ -94,11 +94,11 @@ public class StringUtils {
     /**
      * space
      */
-    public static final String HTML_NBSP = "&nbsp;";
+    public static final String HTML_NBSP  = "&nbsp;";
     /**
      * and &
      */
-    public static final String HTML_AMP = "&amp;";
+    public static final String HTML_AMP   = "&amp;";
     /**
      * quote "
      */
@@ -106,11 +106,11 @@ public class StringUtils {
     /**
      * less than sign <
      */
-    public static final String HTML_LT = "&lt;";
+    public static final String HTML_LT    = "&lt;";
     /**
      * greater than sign >
      */
-    public static final String HTML_GT = "&gt;";
+    public static final String HTML_GT    = "&gt;";
 
     public static final String IPv4 = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}" +
             "(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
@@ -183,21 +183,44 @@ public class StringUtils {
 
     /**
      * 判断是否是实数(整数和小数的集合)
-     *
-     * @param value
-     * @return
      */
     public static boolean isRealNumber(String value) {
-        String regex = "^\\d+(\\.\\d+)?$";
-        return !isEmpty(value) && value.matches(regex);
+        if (isEmpty(value)) {
+            return false;
+        }
+        var chs = value.toCharArray();
+        var length = chs.length;
+        var i = 0;
+        var pointCount = 0;
+        if (chs[i] == '+' || chs[i] == '-') {
+            i++;
+            if (i == length) {
+                return false;
+            }
+            if (chs[i] == '.') {
+                // 小数点左边不能是符号
+                return false;
+            }
+        }
+        while (i < length) {
+            var ch = chs[i];
+            if (ch < '0' || '9' < ch) {
+                if (ch == '.') {
+                    pointCount++;
+                } else {
+                    return false;
+                }
+            }
+            if (pointCount > 1) {
+                return false;
+            }
+            i++;
+        }
+        return true;
     }
 
     /**
      * 删除指定的字符集合
-     *
-     * @param inString
-     * @param charsToDelete
-     * @return
      */
     public static String deleteAny(String inString, String charsToDelete) {
         if (isEmpty(inString) || isEmpty(charsToDelete)) {
