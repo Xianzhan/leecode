@@ -2,6 +2,7 @@ package xianzhan.core.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 描述：字符串工具类
@@ -10,6 +11,10 @@ import java.io.InputStream;
  * @since 2017/6/10
  */
 public class StringUtils {
+
+    // --- 字符集 ---
+    public static final String UTF_8 = "UTF-8";
+    //
 
     /**
      * 空格
@@ -250,8 +255,15 @@ public class StringUtils {
         return value == null || EMPTY.equals(value);
     }
 
-    public static InputStream toInputStream(String content) {
-        return isEmpty(content) ? null : new ByteArrayInputStream(content.getBytes());
+    /**
+     * 将字符串转为输出流
+     *
+     * @param content 字符串
+     * @return InputStream
+     */
+    public static InputStream toInputStream(String content) throws UnsupportedEncodingException {
+        byte[] bytes = content.getBytes(UTF_8);
+        return isEmpty(content) ? null : new ByteArrayInputStream(bytes);
     }
 
     private StringUtils() {
