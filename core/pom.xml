@@ -46,12 +46,12 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>
-                                com.github.xianzhan.core.object.SizeOf
+                                xianzhan.core.object.SizeOf
                             </mainClass>
                         </manifest>
                         <manifestEntries>
                             <Premain-class>
-                                com.github.xianzhan.core.object.SizeOf
+                                xianzhan.core.object.SizeOf
                             </Premain-class>
                             <!--<Boot-Class-Path></Boot-Class-Path>-->
                             <Can-Redefine-Classes>false</Can-Redefine-Classes>
