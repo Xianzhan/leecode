@@ -9,10 +9,8 @@
     <artifactId>leecode</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>algorithm</module>
         <module>core</module>
         <module>gui</module>
-        <module>compiler</module>
     </modules>
     <packaging>pom</packaging>
 
