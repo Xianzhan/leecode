@@ -27,7 +27,7 @@ public class ManagerFactory {
     /**
      * 实现热加载类的全名称(包名 + 类名)
      */
-    public static final String                      MANAGER_CLASS = "com.github.xianzhan.core.loader.hotload.manager.impl.ManagerImpl";
+    public static final String                      MANAGER_CLASS = "xianzhan.core.loader.hotload.manager.impl.ManagerImpl";
 
     public static IManager getManager(String className) {
         File loadFile = new File(CLASS_PATH + className.replaceAll("\\.", "/") + ".class");

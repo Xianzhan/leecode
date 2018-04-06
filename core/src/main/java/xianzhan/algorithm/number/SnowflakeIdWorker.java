@@ -1,4 +1,4 @@
-package xianzhan.core.number;
+package xianzhan.algorithm.number;
 
 /**
  * 描述：Twitter_Snowflake<br>
@@ -37,7 +37,7 @@ public class SnowflakeIdWorker {
     /**
      * 开始时间戳 (2015-01-01)
      */
-    private final long twepoch = 1420041600000L;
+    private final long twEpoch = 1420041600000L;
 
     /**
      * 机器 ID 所占的位数
@@ -47,7 +47,7 @@ public class SnowflakeIdWorker {
     /**
      * 数据标识 ID 所占的位数
      */
-    private final long datacenterIdBits = 5L;
+    private final long dataCenterIdBits = 5L;
 
     /**
      * 支持的最大机器id，结果是31
@@ -58,7 +58,7 @@ public class SnowflakeIdWorker {
     /**
      * 支持的最大数据标识id，结果是31
      */
-    private final long maxDatacenterId = ~(-1L << datacenterIdBits);
+    private final long maxDataCenterId = ~(-1L << dataCenterIdBits);
 
     /**
      * 序列在id中占的位数
@@ -73,13 +73,13 @@ public class SnowflakeIdWorker {
     /**
      * 数据标识id向左移17位(12+5)
      */
-    private final long datacenterIdShift = sequenceBits + workerIdBits;
+    private final long dataCenterIdShift = sequenceBits + workerIdBits;
 
     /**
      * 时间截向左移22位(5+5+12)
      */
     private final long timestampLeftShift = sequenceBits + workerIdBits +
-            datacenterIdBits;
+            dataCenterIdBits;
 
     /**
      * 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
@@ -94,7 +94,7 @@ public class SnowflakeIdWorker {
     /**
      * 数据中心ID(0~31)
      */
-    private long datacenterId;
+    private long dataCenterId;
 
     /**
      * 毫秒内序列(0~4095)
@@ -113,17 +113,17 @@ public class SnowflakeIdWorker {
      * 构造函数
      *
      * @param workerId     工作ID (0~31)
-     * @param datacenterId 数据中心ID (0~31)
+     * @param dataCenterId 数据中心ID (0~31)
      */
-    public SnowflakeIdWorker(long workerId, long datacenterId) {
+    public SnowflakeIdWorker(long workerId, long dataCenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
         }
-        if (datacenterId > maxDatacenterId || datacenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        if (dataCenterId > maxDataCenterId || dataCenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDataCenterId));
         }
         this.workerId = workerId;
-        this.datacenterId = datacenterId;
+        this.dataCenterId = dataCenterId;
     }
 
 
@@ -161,8 +161,8 @@ public class SnowflakeIdWorker {
         lastTimestamp = timestamp;
 
         //移位并通过或运算拼到一起组成64位的ID
-        return ((timestamp - twepoch) << timestampLeftShift) //
-                | (datacenterId << datacenterIdShift) //
+        return ((timestamp - twEpoch) << timestampLeftShift) //
+                | (dataCenterId << dataCenterIdShift) //
                 | (workerId << workerIdShift) //
                 | sequence;
     }
