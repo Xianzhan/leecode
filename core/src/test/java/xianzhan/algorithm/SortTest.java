@@ -33,6 +33,13 @@ public class SortTest {
         printArr(arr);
     }
 
+    @Test
+    public void insertion() {
+        printArr(arr);
+        Sort.insertion(arr);
+        printArr(arr);
+    }
+
     /**
      * 打印数组
      */

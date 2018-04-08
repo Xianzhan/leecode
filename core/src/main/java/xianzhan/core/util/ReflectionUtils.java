@@ -1,6 +1,7 @@
 package xianzhan.core.util;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -68,12 +69,43 @@ public final class ReflectionUtils {
         return null;
     }
 
-    public static String[] getMethodNames(Class<?> clazz) {
-        Method[] methods = clazz.getMethods();
-        String[] names = new String[methods.length];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = methods[i].getName();
+    /**
+     * 创建实例
+     */
+    public static Object newInstance(Class<?> clazz) {
+        Object instance;
+        try {
+            instance = clazz.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return names;
+
+        return instance;
+    }
+
+    /**
+     * 调用方法
+     */
+    public static Object invokeMethod(Object obj, Method method, Object... args) {
+        Object result;
+        try {
+            method.setAccessible(true);
+            result = method.invoke(obj, args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    /**
+     * 设置成员变量的值
+     */
+    public static void setField(Object obj, Field field, Object value) {
+        try {
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
