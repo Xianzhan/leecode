@@ -140,6 +140,64 @@ public class Sort {
     }
 
     /**
+     * https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F
+     * <p>
+     * 归并排序
+     * <p>
+     * 归并操作（merge），也叫归并算法，指的是将两个已经排序的序列合并成一个序列的操作。 <br>
+     * 归并排序算法依赖归并操作。<br>
+     * <p>
+     * 递归法（Top-down） <br>
+     * 1. 申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列 <br>
+     * 2. 设定两个指针，最初位置分别为两个已经排序序列的起始位置 <br>
+     * 3. 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置 <br>
+     * 4. 重复步骤3直到某一指针到达序列尾 <br>
+     * 5. 将另一序列剩下的所有元素直接复制到合并序列尾 <br>
+     * <p>
+     * 迭代法（Bottom-up） <br>
+     * 1. 将序列每相邻两个数字进行归并操作，形成 {\displaystyle ceil(n/2)} {\displaystyle ceil(n/2)}个序列，排序后每个序列包含两/一个元素 <br>
+     * 2. 若此时序列数不是1个则将上述序列再次归并，形成 {\displaystyle ceil(n/4)} {\displaystyle ceil(n/4)}个序列，每个序列包含四/三个元素 <br>
+     * 3. 重复步骤2，直到所有元素排序完毕，即序列数为1 <br>
+     * <p>
+     * 分类: 排序算法 - 稳定 <br>
+     * 数据结构: 数组 <br>
+     * 最坏时间复杂度: θ(n log n) <br>
+     * 最优时间复杂度: θ(n) <br>
+     * 平均时间复杂度: θ(n log n) <br>
+     * 空间复杂度: θ(n) <br>
+     */
+    public static void merge(int[] arr) {
+        // 这里为迭代版
+        int len = arr.length;
+        int[] result = new int[len];
+        int block, start;
+
+        for (block = 1; block < len; block *= 2) {
+            for (start = 0; start < len; start += 2 * block) {
+                int low = start;
+                int mid = (start + block) < len ? (start + block) : len;
+                int high = (start + 2 * block) < len ? (start + 2 * block) : len;
+                //两个块的起始下标及结束下标
+                int start1 = low;
+                int start2 = mid;
+                //开始对两个block进行归并排序
+                while (start1 < mid && start2 < high) {
+                    result[low++] = arr[start1] < arr[start2] ? arr[start1++] : arr[start2++];
+                }
+                while (start1 < mid) {
+                    result[low++] = arr[start1++];
+                }
+                while (start2 < high) {
+                    result[low++] = arr[start2++];
+                }
+            }
+            int[] temp = arr;
+            arr = result;
+            result = temp;
+        }
+    }
+
+    /**
      * 交换
      *
      * @param arr 数组

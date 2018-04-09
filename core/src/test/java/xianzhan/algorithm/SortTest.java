@@ -16,7 +16,7 @@ public class SortTest {
 
     @Before
     public void before() {
-        arr = new Random().ints(10, 1, 100).toArray();
+        arr = new Random().ints(11, 1, 100).toArray();
     }
 
     @Test
@@ -37,6 +37,13 @@ public class SortTest {
     public void insertion() {
         printArr(arr);
         Sort.insertion(arr);
+        printArr(arr);
+    }
+
+    @Test
+    public void merge() {
+        printArr(arr);
+        Sort.merge(arr);
         printArr(arr);
     }
 
