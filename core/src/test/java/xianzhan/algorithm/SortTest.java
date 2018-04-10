@@ -1,5 +1,6 @@
 package xianzhan.algorithm;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,33 +18,11 @@ public class SortTest {
     @Before
     public void before() {
         arr = new Random().ints(11, 1, 100).toArray();
-    }
-
-    @Test
-    public void bubble() {
-        printArr(arr);
-        Sort.bubble(arr);
         printArr(arr);
     }
 
-    @Test
-    public void cocktail() {
-        printArr(arr);
-        Sort.cocktail(arr);
-        printArr(arr);
-    }
-
-    @Test
-    public void insertion() {
-        printArr(arr);
-        Sort.insertion(arr);
-        printArr(arr);
-    }
-
-    @Test
-    public void merge() {
-        printArr(arr);
-        Sort.merge(arr);
+    @After
+    public void after() {
         printArr(arr);
     }
 
@@ -52,5 +31,30 @@ public class SortTest {
      */
     private void printArr(int[] arr) {
         System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    public void bubble() {
+        Sort.bubble(arr);
+    }
+
+    @Test
+    public void cocktail() {
+        Sort.cocktail(arr);
+    }
+
+    @Test
+    public void insertion() {
+        Sort.insertion(arr);
+    }
+
+    @Test
+    public void merge() {
+        Sort.merge(arr);
+    }
+
+    @Test
+    public void selection() {
+        Sort.selection(arr);
     }
 }
