@@ -54,6 +54,11 @@ public class SortTest {
     }
 
     @Test
+    public void shell() {
+        Sort.shell(arr);
+    }
+
+    @Test
     public void selection() {
         Sort.selection(arr);
     }

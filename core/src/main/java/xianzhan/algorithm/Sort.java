@@ -233,6 +233,41 @@ public class Sort {
         }
     }
 
+    /**
+     * https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F
+     * <p>
+     * 希尔排序
+     * <p>
+     * 也称递减增量排序算法，是插入排序的一种更高效的改进版本。希尔排序是非稳定排序算法。
+     * <p>
+     * 希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+     * 1. 插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率
+     * 2. 但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位
+     * <p>
+     * 分类: 排序算法 - 不稳定
+     * 数据结构: 数组
+     * 最坏时间复杂度: 根据步长序列的不同而不同. O(n log^2 n)
+     * 最优时间复杂度: O(n)
+     * 平均时间复杂度: 根据步长学列的不同而不同
+     * 空间复杂度: O(n)
+     */
+    public static void shell(int[] arr) {
+        int gap = 1, i, j, len = arr.length;
+        int temp;
+        while (gap < len / 3) {
+            gap = gap * 3 + 1;
+        }
+        for (; gap > 0; gap /= 3) {
+            for (i = gap; i < len; i++) {
+                temp = arr[i];
+                for (j = i - gap; j >= 0 && arr[j] > temp; j -= gap) {
+                    arr[j + gap] = arr[j];
+                }
+                arr[j + gap] = temp;
+            }
+        }
+    }
+
     // ----------------------------  private ----------------------------------
 
     /**
