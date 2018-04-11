@@ -1,7 +1,9 @@
 package xianzhan.gui.swing.util;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -80,5 +82,18 @@ public class ImageUtils {
         at.translate(x, y);
         AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         return op.filter(bi, spinImage);
+    }
+
+    /**
+     * 获取字符串像素长度
+     *
+     * @param value 字符串
+     * @param pen   画图
+     * @return double
+     */
+    public static double getStringLength(String value, Graphics pen) {
+        FontMetrics fontMetrics = pen.getFontMetrics();
+        Rectangle2D stringBounds = fontMetrics.getStringBounds(value, pen);
+        return stringBounds.getWidth();
     }
 }
