@@ -62,4 +62,9 @@ public class SortTest {
     public void selection() {
         Sort.selection(arr);
     }
+
+    @Test
+    public void heap() {
+        Sort.heap(arr);
+    }
 }
