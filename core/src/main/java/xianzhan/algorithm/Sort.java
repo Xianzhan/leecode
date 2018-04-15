@@ -276,7 +276,7 @@ public class Sort {
      * 指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，
      * 并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。
      * <p>
-     * 分类: 排序算法
+     * 分类: 排序算法 - 不稳定
      * 数据结构: 数组
      * 最坏时间复杂度: O(n log n)
      * 最优时间复杂度: O(n log n)
@@ -310,6 +310,8 @@ public class Sort {
     }
 
     /*
+     * 堆排序
+     *
      * 调整索引为 index 处的数据, 使其符合堆的特性
      *
      * @param index 需要堆化处理的数据索引
@@ -328,6 +330,63 @@ public class Sort {
             swap(arr, cMax, index);         // 如果父节点被子节点调换
             maxHeapify(cMax, len, arr);     // 则需要继续判断换下后的父节点是否符合堆的特性
         }
+    }
+
+    /**
+     * https://zh.wikipedia.org/wiki/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F
+     * <p>
+     * 快速排序
+     * <p>
+     * 又称划分交换排序（partition-exchange sort），简称快排，一种排序算法，
+     * 最早由东尼·霍尔提出。在平均状况下，排序 {\displaystyle n} n个项目
+     * 要 {\displaystyle \Theta (n\log n)} {\displaystyle \Theta (n\log n)}（大O符号）次比较。
+     * 在最坏状况下则需要 {\displaystyle \Theta (n^{2})} {\displaystyle \Theta (n^{2})}次比较，
+     * 但这种状况并不常见。事实上，
+     * 快速排序 {\displaystyle \Theta (n\log n)} {\displaystyle \Theta (n\log n)}通常明显比其他算法更快，
+     * 因为它的内部循环（inner loop）可以在大部分的架构上很有效率地达成。
+     * <p>
+     * 分类: 排序算法 - 不稳定
+     * 数据结构: 不定
+     * 最坏时间复杂度: θ(n^2)
+     * 最优时间复杂度: θ(n log n)
+     * 平均时间复杂度: θ(n log n)
+     * 空间复杂度: 根据实现的方式不同而不同
+     */
+    public static void quick(int[] arr) {
+        int head = 0, tail = arr.length - 1;
+        quickSort(arr, head, tail);
+    }
+
+    /*
+     * 快速排序
+     *
+     * @param arr  数组
+     * @param head 头
+     * @param tail 尾
+     */
+    private static void quickSort(int[] arr, int head, int tail) {
+        if (arr == null || arr.length <= 1 || head >= tail) {
+            return;
+        }
+
+        int i = head, j = tail, pivot = arr[(head + tail) >> 1];
+        while (i <= j) {
+            while (arr[i] < pivot) {
+                i++;
+            }
+            while (arr[j] > pivot) {
+                j--;
+            }
+            if (i < j) {
+                swap(arr, i, j);
+                i++;
+                j--;
+            } else if (i == j) {
+                i++;
+            }
+        }
+        quickSort(arr, head, j);
+        quickSort(arr, i, tail);
     }
 
     /*

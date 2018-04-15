@@ -67,4 +67,9 @@ public class SortTest {
     public void heap() {
         Sort.heap(arr);
     }
+
+    @Test
+    public void quick() {
+        Sort.quick(arr);
+    }
 }
