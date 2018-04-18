@@ -19,7 +19,10 @@ module web {
     requires spring.context;
     // @RequestMapping, @ResponseBody
     requires spring.web;
+    // @JsonIgnore, @JsonFormat, @JsonInclude
+    requires jackson.annotations;
     // web
     exports xianzhan.controller;
+    exports xianzhan.pojo.vo;
     // ----------------------- spring-boot-starter-web ------------------------
 }
