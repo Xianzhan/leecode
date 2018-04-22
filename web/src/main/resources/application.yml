@@ -1,0 +1,13 @@
+spring:
+  # 关闭缓存, 即时刷新
+  thymeleaf:
+    cache: false
+
+#  freemarker:
+#    cache: false
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: web/src/main/java
+      exclude: WEB-INF/**

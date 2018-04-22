@@ -20,10 +20,31 @@
             <version>2.0.1.RELEASE</version>
         </dependency>
 
+        <!-- web 开发 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>2.0.1.RELEASE</version>
+        </dependency>
+
+        <!--
+            热部署
+            devtools 可以实现页面热部署(即页面修改后会立即生效)
+            设置 spring.thymeleaf.cache=false
+
+            实现类文件热部署
+            devtools 监听 classpath 下的文件变动, 并立即重启应用
+                1. base classloader: 加载不改变的 Class, 如, 第三方 jar 包
+                2. restart classloader: 加载正在开发的 Class.
+         -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>2.0.1.RELEASE</version>
+            <!--
+                依赖不传递
+             -->
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

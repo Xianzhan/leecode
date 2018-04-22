@@ -20,9 +20,9 @@ public class UserController {
     public VResult getUser() {
         User user = new User();
         user.setId(1);
-        user.setAge(10);
+        user.setAge(20);
         user.setName("lee");
-        user.setPassword("111");
+        user.setPassword("2");
         user.setBirthday(new Date());
 
         // user.desc 不会显示
