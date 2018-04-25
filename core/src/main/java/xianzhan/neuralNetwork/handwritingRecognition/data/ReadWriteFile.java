@@ -17,7 +17,7 @@ public class ReadWriteFile {
         for (int i = 0; i < 26; i++) {
             char letterValue = (char) (i + 65);
             String letter = String.valueOf(letterValue);
-            for (ArrayList<Integer> list : readFromFile("neuralNetwork/handwritingRecognition/" + letter + ".txt")) {
+            for (ArrayList<Integer> list : readFromFile("/neuralNetwork/handwritingRecognition/" + letter + ".txt")) {
                 trainingSets.add(new TrainingSet(list, GoodOutputs.getInstance().getGoodOutput(letter)));
             }
         }
@@ -25,15 +25,12 @@ public class ReadWriteFile {
         return trainingSets;
     }
 
-    // todo
     private static ArrayList<ArrayList<Integer>> readFromFile(String filename) {
         ArrayList<ArrayList<Integer>> inputs = new ArrayList<>();
 
         try {
             Class<ReadWriteFile> clazz = ReadWriteFile.class;
-            ClassLoader classLoader = clazz.getClassLoader();
-            URL resource = classLoader.getResource(filename);
-            System.out.println(resource);
+            URL resource = clazz.getResource(filename);
 
             if (resource != null) {
 
@@ -65,8 +62,9 @@ public class ReadWriteFile {
 
     public static void saveToFile(ArrayList<Integer> input, String filename) {
         try {
-            File file = new File("resources/" + filename + ".txt");
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
+            Class<ReadWriteFile> clazz = ReadWriteFile.class;
+            URL resource = clazz.getResource("/neuralNetwork/handwritingRecognition/" + filename + ".txt");
+            PrintWriter pw = new PrintWriter(new FileOutputStream(new File(resource.toURI()), true));
             for (Integer i : input) {
                 pw.write(Integer.toString(i));
             }
