@@ -21,8 +21,12 @@ module web {
     requires spring.web;
     // @JsonIgnore, @JsonFormat, @JsonInclude
     requires jackson.annotations;
+    // @Autowired
+    requires spring.beans;
+
     // web
-    exports xianzhan.controller;
     exports xianzhan.pojo.vo;
+    opens xianzhan.controller; // opens HelloController.resource
+    opens xianzhan.pojo; // @Configuration Resource
     // ----------------------- spring-boot-starter-web ------------------------
 }
