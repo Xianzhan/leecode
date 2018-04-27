@@ -1,13 +1,35 @@
 spring:
-  # 关闭缓存, 即时刷新
-  thymeleaf:
-    cache: false
-
-#  freemarker:
-#    cache: false
-
   devtools:
     restart:
       enabled: true
       additional-paths: web/src/main/java
       exclude: WEB-INF/**
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+
+
+###############################################################################
+#
+#  Server 服务端相关配置
+#
+###############################################################################
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 1800
+    context-path: /
+  address: 127.0.0.1
+  error:
+    path: /error
+  tomcat:
+    max-threads: 200
+    uri-encoding: UTF-8
