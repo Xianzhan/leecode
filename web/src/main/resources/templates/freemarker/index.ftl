@@ -9,7 +9,6 @@
 </head>
 <body>
 <h1>FreeMarker</h1>
-${resource.language}<br>
-${resource.github}
+${name}<br>
 </body>
 </html>
