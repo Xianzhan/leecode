@@ -5,8 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @auther xianzhan
- * @sinese 2018-04-27
+ * @author xianzhan
+ * @since 2018-04-27
  */
 @Controller
 @RequestMapping("/ftl")

@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * @auther xianzhan
- * @sinese 2018-04-26
+ * @author xianzhan
+ * @since 2018-04-26
  */
 @Configuration
 @ConfigurationProperties(prefix = "xianzhan")

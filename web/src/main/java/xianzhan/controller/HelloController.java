@@ -10,8 +10,8 @@ import xianzhan.pojo.Resource;
 import xianzhan.pojo.vo.VResult;
 
 /**
- * @auther xianzhan
- * @sinese 2018-04-16
+ * @author xianzhan
+ * @since 2018-04-16
  */
 @Controller
 @RequestMapping("/hello")

@@ -9,8 +9,8 @@ import xianzhan.pojo.vo.VResult;
 import java.util.Date;
 
 /**
- * @auther xianzhan
- * @sinese 2018-04-18
+ * @author xianzhan
+ * @since 2018-04-18
  */
 @RestController
 @RequestMapping("/user")

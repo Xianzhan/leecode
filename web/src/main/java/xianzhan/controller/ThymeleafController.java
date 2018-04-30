@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @auther xianzhan
- * @sinese 2018-04-29
+ * @author xianzhan
+ * @since 2018-04-29
  */
 @Controller
 @RequestMapping("/th")
