@@ -21,6 +21,8 @@ spring:
     encoding: UTF-8
     servlet:
       content-type: text/html
+    check-template: true
+    check-template-location: true
 
 
 ###############################################################################
