@@ -35,8 +35,8 @@ server:
   servlet:
     context-path: /
   address: 127.0.0.1
-  error:
-    path: /error
+#  error:
+#    path: /error
   tomcat:
     max-threads: 200
     uri-encoding: UTF-8

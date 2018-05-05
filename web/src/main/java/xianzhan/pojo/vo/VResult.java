@@ -9,17 +9,9 @@ public class VResult {
     private String message;
     private Object data;
 
-    {
+    private VResult() {
         state = 200;
         message = "";
-    }
-
-    private VResult() {
-
-    }
-
-    private VResult(Object data) {
-        this.data = data;
     }
 
     public int getState() {
@@ -34,16 +26,19 @@ public class VResult {
         return message;
     }
 
-    public void setMessage(String message) {
+    public VResult setMessage(String message) {
+        this.state = 500;
         this.message = message;
+        return this;
     }
 
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public VResult setData(Object data) {
         this.data = data;
+        return this;
     }
 
     public static VResult ok() {
@@ -51,6 +46,10 @@ public class VResult {
     }
 
     public static VResult ok(Object data) {
-        return new VResult(data);
+        return new VResult().setData(data);
+    }
+
+    public static VResult err(String message) {
+        return new VResult().setMessage(message);
     }
 }
