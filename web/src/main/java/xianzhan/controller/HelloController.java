@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import xianzhan.pojo.Resource;
-import xianzhan.pojo.vo.VResult;
+import xianzhan.pojo.vo.ResultVO;
 
 /**
  * @author xianzhan
@@ -28,11 +28,11 @@ public class HelloController {
 
     @ResponseBody
     @GetMapping("/resource")
-    public VResult getResource() {
+    public ResultVO getResource() {
 
         Resource bean = new Resource();
         BeanUtils.copyProperties(resource, bean);
 
-        return VResult.ok(bean);
+        return ResultVO.ok(bean);
     }
 }

@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 public class Form extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Welcome");
 
         // 创建表格

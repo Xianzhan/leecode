@@ -3,7 +3,7 @@ package xianzhan.handler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-import xianzhan.pojo.vo.VResult;
+import xianzhan.pojo.vo.ResultVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class WebExceptionHandler {
 
         if (isAjax(req)) {
             // json 异常处理
-            return VResult.err(e.getMessage());
+            return ResultVO.err(e.getMessage());
         } else {
             ModelAndView mav = new ModelAndView();
             mav.addObject("exception", e);

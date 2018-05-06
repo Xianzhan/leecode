@@ -24,6 +24,8 @@ module web {
     requires tomcat.embed.core;
     // ModelAndView
     requires spring.webmvc;
+    // @MapperScan
+    requires mybatis.spring;
 
     // web
     exports xianzhan.pojo.vo;

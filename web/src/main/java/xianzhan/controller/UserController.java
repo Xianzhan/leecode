@@ -3,8 +3,8 @@ package xianzhan.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xianzhan.pojo.vo.User;
-import xianzhan.pojo.vo.VResult;
+import xianzhan.pojo.vo.UserVO;
+import xianzhan.pojo.vo.ResultVO;
 
 import java.util.Date;
 
@@ -17,8 +17,8 @@ import java.util.Date;
 public class UserController {
 
     @GetMapping("/get")
-    public VResult getUser() {
-        User user = new User();
+    public ResultVO getUser() {
+        UserVO user = new UserVO();
         user.setId(1);
         user.setAge(20);
         user.setName("lee");
@@ -26,6 +26,6 @@ public class UserController {
         user.setBirthday(new Date());
 
         // user.desc 不会显示
-        return VResult.ok(user);
+        return ResultVO.ok(user);
     }
 }

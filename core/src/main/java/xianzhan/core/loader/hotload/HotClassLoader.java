@@ -19,7 +19,7 @@ public class HotClassLoader extends ClassLoader {
     }
 
     @Override
-    public Class<?> findClass(String name) throws ClassNotFoundException {
+    public Class<?> findClass(String name) {
         byte[] data = this.loadClassData(name);
         if (data == null) {
             return null;

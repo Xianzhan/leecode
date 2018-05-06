@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class HelloWorld extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
 

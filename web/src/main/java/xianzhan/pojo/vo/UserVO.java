@@ -12,7 +12,7 @@ import java.util.Date;
  * @author xianzhan
  * @since 2018-04-17
  */
-public class User {
+public class UserVO {
     private int     id;
     private String  name;
     private Integer age;

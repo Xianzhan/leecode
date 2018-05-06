@@ -4,12 +4,12 @@ package xianzhan.pojo.vo;
  * @author xianzhan
  * @since 2018-04-18
  */
-public class VResult {
+public class ResultVO {
     private int    state;
     private String message;
     private Object data;
 
-    private VResult() {
+    private ResultVO() {
         state = 200;
         message = "";
     }
@@ -26,7 +26,7 @@ public class VResult {
         return message;
     }
 
-    public VResult setMessage(String message) {
+    public ResultVO setMessage(String message) {
         this.state = 500;
         this.message = message;
         return this;
@@ -36,20 +36,20 @@ public class VResult {
         return data;
     }
 
-    public VResult setData(Object data) {
+    public ResultVO setData(Object data) {
         this.data = data;
         return this;
     }
 
-    public static VResult ok() {
-        return new VResult();
+    public static ResultVO ok() {
+        return new ResultVO();
     }
 
-    public static VResult ok(Object data) {
-        return new VResult().setData(data);
+    public static ResultVO ok(Object data) {
+        return new ResultVO().setData(data);
     }
 
-    public static VResult err(String message) {
-        return new VResult().setMessage(message);
+    public static ResultVO err(String message) {
+        return new ResultVO().setMessage(message);
     }
 }
