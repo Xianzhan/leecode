@@ -34,17 +34,23 @@ spring:
     password: password
 
     druid:
-      initial-size: 1
       min-idle: 1
-      max-active: 20
+      max-active: 10
+      initial-size: 1
       test-on-borrow: true
       test-on-return: false
       test-while-idle: false
-      time-between-eviction-runs-millis: 1000
-      min-evictable-idle-time-millis: 1800000
-      pool-prepared-statements: false
-      max-pool-prepared-statement-per-connection-size: 1000
+      # 打开 PSCache
+      pool-prepared-statements: true
+      # 指定每个连接上PSCache的大小
+      max-pool-prepared-statement-per-connection-size: 20
+      # 合并多个 DruidDataSource 的监控数据
       use-global-data-source-stat: true
+      # 连接超时等待时间
+#      max-wait: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 180000
+      time-between-eviction-runs-millis: 1000
 
 
 mybatis:
