@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
-@SpringBootTest//(classes = {Application.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest // (classes = {Application.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserServiceTest {
     @Autowired
     private IUserService userService;
@@ -31,5 +31,18 @@ public class UserServiceTest {
         user.setCreateTime(new Date());
         int save = userService.save(user);
         System.out.println(save);
+    }
+
+    @Test
+    public void testGetById() {
+        System.out.println(userService.getById(1));
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setId(1);
+        user.setNickname("super man");
+        System.out.println(userService.update(user));
     }
 }

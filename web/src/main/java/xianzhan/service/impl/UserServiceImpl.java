@@ -33,6 +33,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public int update(User user) {
-        return userDao.updateByPrimaryKey(user);
+        return userDao.updateByPrimaryKeySelective(user);
     }
 }

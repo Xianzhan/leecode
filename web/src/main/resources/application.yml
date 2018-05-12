@@ -70,6 +70,10 @@ mybatis:
   mapper-locations: xianzhan/dao/*.xml
 
 
+logging:
+  level:
+    # 打印 SQL 语句
+    xianzhan.dao: DEBUG
 ###############################################################################
 #
 #  Server 服务端相关配置
