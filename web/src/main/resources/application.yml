@@ -29,7 +29,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3308/web?useSSL=false
+    url: jdbc:mysql://localhost:3308/web
     username: root
     password: password
 
@@ -50,7 +50,18 @@ spring:
 #      max-wait: 60000
       # 配置一个连接在池中最小生存的时间，单位是毫秒
       min-evictable-idle-time-millis: 180000
-      time-between-eviction-runs-millis: 1000
+      time-between-eviction-runs-millis: 10000
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 1
 
 
 mybatis:

@@ -26,6 +26,10 @@ module web {
     requires spring.webmvc;
     // @MapperScan
     requires mybatis.spring;
+    // @Transactional
+    requires spring.tx;
+    // StringRedisTemplate
+    requires spring.data.redis;
 
     // web
     exports xianzhan.pojo.vo;
