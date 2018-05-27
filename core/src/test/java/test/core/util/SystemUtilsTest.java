@@ -1,4 +1,6 @@
-package xianzhan.core.util;
+package test.core.util;
+
+import xianzhan.core.util.SystemUtils;
 
 public class SystemUtilsTest {
 

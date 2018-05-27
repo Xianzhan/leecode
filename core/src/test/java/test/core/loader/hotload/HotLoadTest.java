@@ -1,4 +1,6 @@
-package xianzhan.core.loader.hotload;
+package test.core.loader.hotload;
+
+import xianzhan.core.loader.hotload.HotLoaderHandler;
 
 public class HotLoadTest {
     public static void main(String[] args) {

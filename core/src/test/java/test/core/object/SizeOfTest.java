@@ -1,5 +1,7 @@
-package xianzhan.core.object;
+package test.core.object;
 
+
+import xianzhan.core.object.SizeOf;
 
 /**
  * 以下结果在 64-bit JVM 下测试

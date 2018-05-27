@@ -1,4 +1,6 @@
-package xianzhan.core.misc.sensitive_word;
+package test.core.misc.sensitive_word;
+
+import xianzhan.core.misc.sensitive_word.SensitiveWordEngine;
 
 import java.util.Arrays;
 

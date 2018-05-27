@@ -1,4 +1,4 @@
-package xianzhan.core.vm;
+package test.core.vm;
 
 import sun.misc.Unsafe;
 

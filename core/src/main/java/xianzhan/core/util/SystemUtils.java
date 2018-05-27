@@ -9,6 +9,11 @@ package xianzhan.core.util;
 public final class SystemUtils {
 
     /**
+     * 系统行结束符
+     */
+    public static String EOL = System.getProperty("line.separator");
+
+    /**
      * 打印当前工作目录
      *
      * @return 当前工作目录的绝对路径

@@ -1,4 +1,6 @@
-package xianzhan.core.util;
+package test.core.util;
+
+import xianzhan.core.util.StringUtils;
 
 public class StringUtilsTest {
     public static void main(String[] args) {

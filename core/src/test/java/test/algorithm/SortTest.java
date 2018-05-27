@@ -1,8 +1,9 @@
-package xianzhan.algorithm;
+package test.algorithm;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import xianzhan.algorithm.Sort;
 
 import java.util.Arrays;
 import java.util.Random;

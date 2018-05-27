@@ -27,7 +27,7 @@ public class ManagerFactory {
     /**
      * 实现热加载类的全名称(包名 + 类名)
      */
-    public static final String                      MANAGER_CLASS = "xianzhan.core.loader.hotload.manager.impl.ManagerImpl";
+    public static final  String                     MANAGER_CLASS = "xianzhan.core.loader.hotload.manager.impl.ManagerImpl";
 
     public static IManager getManager(String className) {
         File loadFile = new File(CLASS_PATH + className.replaceAll("\\.", "/") + ".class");
@@ -44,16 +44,12 @@ public class ManagerFactory {
     private static void load(String className, long lastModified) {
         HotClassLoader hotClassLoader = new HotClassLoader(CLASS_PATH);
         Class<?> loadClass;
-        try {
-            loadClass = hotClassLoader.findClass(className);
-            if (loadClass != null) {
-                IManager manager = newInstance(loadClass);
-                HotLoaderInfo loadInfo = new HotLoaderInfo(hotClassLoader, lastModified);
-                loadInfo.setManager(manager);
-                LOAD_INFO_MAP.put(className, loadInfo);
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        loadClass = hotClassLoader.findClass(className);
+        if (loadClass != null) {
+            IManager manager = newInstance(loadClass);
+            HotLoaderInfo loadInfo = new HotLoaderInfo(hotClassLoader, lastModified);
+            loadInfo.setManager(manager);
+            LOAD_INFO_MAP.put(className, loadInfo);
         }
     }
 
