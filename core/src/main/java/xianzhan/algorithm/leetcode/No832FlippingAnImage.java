@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  * No.832 翻转图像
  *
  * @author xianzhan
- * @apiNote https://leetcode-cn.com/problems/flipping-an-image/description/
+ * @implNote https://leetcode-cn.com/problems/flipping-an-image/description/
  * @since 2018-06-18
  */
 public class No832FlippingAnImage {
