@@ -1,4 +1,4 @@
-package xianzhan.core.misc.sensitive_word;
+package xianzhan.core.misc.sensitiveword;
 
 import java.util.HashMap;
 import java.util.Map;

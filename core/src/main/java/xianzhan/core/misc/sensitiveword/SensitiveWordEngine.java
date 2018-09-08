@@ -1,10 +1,10 @@
-package xianzhan.core.misc.sensitive_word;
+package xianzhan.core.misc.sensitiveword;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * 敏感字引擎
@@ -75,7 +75,8 @@ public class SensitiveWordEngine {
     }
 
     private SensitiveWordEngine() {
-        rootNode = new SensitiveWordNode(); // 防止为调用 createStateMachine() NPE
+        // 防止为调用 createStateMachine() NPE
+        rootNode = new SensitiveWordNode();
     }
 
     /**
@@ -90,7 +91,7 @@ public class SensitiveWordEngine {
         }
 
         char[] chars = text.toCharArray();
-        findSensitiveWord(chars, idx -> Arrays.fill(chars, idx[0], idx[1], '*'));
+        findSensitiveWord(chars, (start, end) -> Arrays.fill(chars, start, end, '*'));
         return new String(chars);
     }
 
@@ -107,12 +108,11 @@ public class SensitiveWordEngine {
         }
 
         char[] chars = text.toCharArray();
-        findSensitiveWord(chars, idx -> list.add(new String(Arrays.copyOfRange(chars, idx[0], idx[1]))));
+        findSensitiveWord(chars, (start, end) -> list.add(new String(Arrays.copyOfRange(chars, start, end))));
         return list;
     }
 
-    // core !!!
-    private void findSensitiveWord(char[] chars, Consumer<int[]> consumer) {
+    private void findSensitiveWord(char[] chars, BiConsumer<Integer, Integer> consumer) {
         // 找到敏感词位置
 
         SensitiveWordNode tempNode = rootNode;
@@ -128,11 +128,12 @@ public class SensitiveWordEngine {
                 rollback = 0;
                 tempNode = rootNode;
             } else if (tempNode.isEnd()) {
-                int[] idx = new int[2];
-                idx[0] = position - rollback; // 起始位
-                idx[1] = position + 1; // 结束位
+                // 起始位
+                final int start = position - rollback;
+                // 结束位
+                final int end = position + 1;
 
-                consumer.accept(idx);
+                consumer.accept(start, end);
 
                 rollback = 0;
                 tempNode = rootNode;
