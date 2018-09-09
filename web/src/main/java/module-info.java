@@ -8,6 +8,10 @@ module web {
     requires java.sql;
     // 使用反射需要 opens
     opens xianzhan;
+
+    opens xianzhan.service.impl;
+    exports xianzhan.handler;
+    exports xianzhan.scheduling;
     // ------------------------- spring-boot-starter --------------------------
 
 
@@ -33,6 +37,7 @@ module web {
 
     // web
     exports xianzhan.pojo.vo;
+    opens xianzhan.cache;
     opens xianzhan.controller; // opens HelloController.resource
     opens xianzhan.pojo; // @Configuration Resource
     // ----------------------- spring-boot-starter-web ------------------------
