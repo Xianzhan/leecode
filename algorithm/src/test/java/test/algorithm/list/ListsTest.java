@@ -2,7 +2,7 @@ package test.algorithm.list;
 
 import org.junit.Before;
 import org.junit.Test;
-import xianzhan.algorithm.list.List;
+import xianzhan.algorithm.list.Lists;
 
 import java.util.function.IntFunction;
 
@@ -10,16 +10,16 @@ import java.util.function.IntFunction;
  * @author xianzhan
  * @since 2018-09-12
  */
-public class ListTest {
+public class ListsTest {
 
-    private List list;
-    private List.ListNode node;
+    private Lists          lists;
+    private Lists.ListNode node;
 
     @Before
     public void before() {
-        list = new List();
+        lists = new Lists();
 
-        IntFunction<List.ListNode> nodeNew = List.ListNode::new;
+        IntFunction<Lists.ListNode> nodeNew = Lists.ListNode::new;
         node = nodeNew.apply(1);
         var two = nodeNew.apply(2);
         node.setNext(two);
@@ -34,6 +34,6 @@ public class ListTest {
 
     @Test
     public void testHasCycle() {
-        System.out.println(list.hasCycle(node));
+        System.out.println(lists.hasCycle(node));
     }
 }

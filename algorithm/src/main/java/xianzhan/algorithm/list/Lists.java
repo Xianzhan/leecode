@@ -6,7 +6,7 @@ package xianzhan.algorithm.list;
  * @author xianzhan
  * @since 2018-09-12
  */
-public class List {
+public class Lists {
 
     /**
      * 判断链表是否存在环
