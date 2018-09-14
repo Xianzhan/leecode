@@ -3,6 +3,7 @@ package xianzhan.core.util;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 描述：字符串工具类
@@ -262,7 +263,7 @@ public class StringUtils {
      * @return InputStream
      */
     public static InputStream toInputStream(String content) throws UnsupportedEncodingException {
-        byte[] bytes = content.getBytes(UTF_8);
+        byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
         return isEmpty(content) ? null : new ByteArrayInputStream(bytes);
     }
 

@@ -41,8 +41,7 @@ public abstract class AspectProxy implements Proxy {
 
 	}
 
-	public boolean intercept(Class<?> cls, Method method, Object[] params)
-			throws Throwable {
+	public boolean intercept(Class<?> cls, Method method, Object[] params) {
 		return true;
 	}
 

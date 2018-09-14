@@ -1,5 +1,6 @@
 package xianzhan.core.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
@@ -25,7 +26,7 @@ public final class CryptoUtils {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
             // Applies sha256 to our content
-            byte[] hash = digest.digest(content.getBytes("UTF-8"));
+            byte[] hash = digest.digest(content.getBytes(StandardCharsets.UTF_8));
 
             return encodeHexString(hash);
         } catch (Exception e) {

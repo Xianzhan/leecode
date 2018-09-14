@@ -39,7 +39,8 @@ public class DispatcherServlet extends HttpServlet {
 	public DispatcherServlet() {
 	}
 
-	public void init(ServletConfig config) throws ServletException {
+	@Override
+	public void init(ServletConfig config) {
 		// 初始化相关 Helper 类
 		HelperLoader.init();
 		// 获取 ServletContext 对象（用于注册 Servlet）
@@ -57,8 +58,9 @@ public class DispatcherServlet extends HttpServlet {
 		UploadHelper.init(servletContext);
 	}
 
+	@Override
 	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+						   HttpServletResponse response) throws ServletException, IOException {
 		ServletHelper.init(request, response);
 		try {
 
@@ -86,36 +88,6 @@ public class DispatcherServlet extends HttpServlet {
 					param = RequestHelper.createParam(request);
 				}
 
-				// 创建请求参数对象
-				// Map<String, Object> paramMap = new
-				// HashedMap<>();
-				// Enumeration<String> paramNames =
-				// request.getParameterNames();
-				// while (paramNames.hasMoreElements()) {
-				// String paramName = paramNames.nextElement();
-				// String paramValue =
-				// request.getParameter(paramName);
-				// paramMap.put(paramName, paramValue);
-				// String body = CodecUtil.decodeURL(
-				// StreamUtil.getString(request.getInputStream()));
-				// if (StringUtil.isNotEmpty(body)) {
-				// String[] params = StringUtil.splitString(body,
-				// "&");
-				// if (ArrayUtil.isNotEmpty(params)) {
-				// for (String param : params) {
-				// String[] array = StringUtil.splitString(param,
-				// "=");
-				// if (ArrayUtil.isNotEmpty(array)
-				// && array.length == 2) {
-				// paramName = array[0];
-				// paramValue = array[1];
-				// paramMap.put(paramName, paramValue);
-				// }
-				// }
-				// }
-				// }
-				// Param param = new Param(paramMap);
-
 				// 调用 Action 方法
 				Object result;
 				Method actionMethod = handler.getActionMethod();
@@ -131,41 +103,8 @@ public class DispatcherServlet extends HttpServlet {
 
 				// 处理 Action 方法返回值
 				if (result instanceof View) {
-					// 返回 JSP 页面
-					// View view = (View) result;
-					// String path = view.getPath();
-					// if (StringUtil.isNotEmpty(path)) {
-					// if (path.startsWith("/")) {
-					// response.sendRedirect(
-					// request.getContextPath() + path);
-					// } else {
-					// Map<String, Object> model =
-					// view.getModel();
-					// for (Map.Entry<String, Object> entity :
-					// model
-					// .entrySet()) {
-					// request.setAttribute(entity.getKey(),
-					// entity.getValue());
-					// }
-					// request.getRequestDispatcher(
-					// ConfigHelper.getAppJspPath() + path)
-					// .forward(request, response);
-					// }
-					// }
 					handleViewResult((View) result, request, response);
 				} else if (result instanceof Data) {
-					// 返回 JSON 数据
-					// Data data = (Data) result;
-					// Object model = data.getModel();
-					// if (null != model) {
-					// response.setContentType("application/json");
-					// response.setCharacterEncoding("UTF-8");
-					// PrintWriter out = response.getWriter();
-					// String json = JsonUtil.toJson(model);
-					// out.write(json);
-					// out.flush();
-					// out.close();
-					// }
 					handleDataResult((Data) result, response);
 				}
 			}
