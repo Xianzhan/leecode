@@ -18,8 +18,8 @@ public class IOUtils {
     static {
         final int mask = 0xFF;
         final int shift = 8;
-        // (16 * 2 + 8) / 8
-        final int length = ((Short.SIZE << 1) + Byte.SIZE) >> 3;
+        // 5 bytes
+        final int length = (Short.BYTES << 1) + Byte.BYTES;
         NULL_BYTES = new byte[length];
         NULL_BYTES[0] = (byte) ((ObjectStreamConstants.STREAM_MAGIC >>> shift) & mask);
         NULL_BYTES[1] = (byte) (ObjectStreamConstants.STREAM_MAGIC & mask);

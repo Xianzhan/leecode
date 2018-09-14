@@ -1,4 +1,4 @@
-package test.core.misc.sensitive_word;
+package test.core.misc.sensitiveword;
 
 import xianzhan.core.misc.sensitiveword.SensitiveWordEngine;
 
