@@ -15,6 +15,7 @@
         <module>web</module>
         <module>architecture</module>
         <module>algorithm</module>
+        <module>spring-cloud-1-eureka-server</module>
     </modules>
 
     <properties>
