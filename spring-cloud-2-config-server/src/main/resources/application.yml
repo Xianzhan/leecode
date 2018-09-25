@@ -3,7 +3,7 @@
 #    defaultZone: http://localhost:8761/eureka/
 
 server:
-  port: 8088
+  port: 8688
 
 spring:
   cloud:

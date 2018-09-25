@@ -3,4 +3,9 @@ spring:
     name: config-client
 
 server:
-  port: 8089
+  port: 8689
+
+# 解决 Full authentication is required to access this resource 错误
+management:
+  security:
+    enabled: false

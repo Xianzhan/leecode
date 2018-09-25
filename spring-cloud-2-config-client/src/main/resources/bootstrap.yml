@@ -4,4 +4,4 @@ spring:
       name: xianzhan
       profile: dev
       label: master
-      uri: http://localhost:8088
+      uri: http://localhost:8688
