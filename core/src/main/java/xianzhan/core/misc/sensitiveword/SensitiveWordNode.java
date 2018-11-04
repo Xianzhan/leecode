@@ -16,19 +16,19 @@ class SensitiveWordNode {
      */
     private boolean end;
 
-    public void setSubNode(char key, SensitiveWordNode node) {
+    void setSubNode(char key, SensitiveWordNode node) {
         subNodes.put(key, node);
     }
 
-    public SensitiveWordNode getSubNode(char key) {
+    SensitiveWordNode getSubNode(char key) {
         return subNodes.get(key);
     }
 
-    public boolean isEnd() {
+    boolean isEnd() {
         return end;
     }
 
-    public void setEnd(boolean end) {
+    void setEnd(boolean end) {
         this.end = end;
     }
 }

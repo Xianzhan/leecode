@@ -14,5 +14,6 @@ public class SensitiveWordEngineTest {
         String text = "0123456789 123456 -+*/abc 你好, hello 世界杯";
 
         System.out.println(engine.replaceSensitiveWord(text));
+        System.out.println(engine.listSensitiveWord(text));
     }
 }

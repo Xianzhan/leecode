@@ -1,9 +1,6 @@
 package xianzhan.core.misc.sensitiveword;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -83,7 +80,7 @@ public class SensitiveWordEngine {
      * 替换字符串中的敏感字符为 *
      *
      * @param text 文本
-     * @return String
+     * @return String 如果参数为 null 或者为空白符, 返回空字符串
      */
     public String replaceSensitiveWord(String text) {
         if (isEmpty(text)) {
@@ -102,11 +99,11 @@ public class SensitiveWordEngine {
      * @return list(string)
      */
     public List<String> listSensitiveWord(String text) {
-        List<String> list = new LinkedList<>();
         if (isEmpty(text)) {
-            return list;
+            return Collections.emptyList();
         }
 
+        List<String> list = new LinkedList<>();
         char[] chars = text.toCharArray();
         findSensitiveWord(chars, (start, end) -> list.add(new String(Arrays.copyOfRange(chars, start, end))));
         return list;
@@ -145,6 +142,6 @@ public class SensitiveWordEngine {
     }
 
     private boolean isEmpty(String text) {
-        return text == null || text.trim().length() == 0;
+        return text == null || text.trim().isEmpty();
     }
 }
