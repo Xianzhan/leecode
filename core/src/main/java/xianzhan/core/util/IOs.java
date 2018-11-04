@@ -4,11 +4,13 @@ import java.io.*;
 import java.util.Arrays;
 
 /**
+ * java IO 工具类
+ *
  * @author xianzhan
  * @since 2018-06-04
  */
 @SuppressWarnings({"unused"})
-public class IOUtils {
+public class IOs {
 
     /**
      * null 序列化字节数组
@@ -38,15 +40,15 @@ public class IOUtils {
         if (obj == null) {
             return NULL_BYTES;
         }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+        ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            ObjectOutputStream oos = new ObjectOutputStream(os);
             oos.writeObject(obj);
             oos.flush();
         } catch (IOException ex) {
             throw new IllegalArgumentException("Failed to serialize object of type: " + obj.getClass(), ex);
         }
-        return baos.toByteArray();
+        return os.toByteArray();
     }
 
     /**
