@@ -20,7 +20,7 @@ public class Strings {
         final int len = chars.length;
 
         // 小数点计数
-        int commaCount = 0;
+        int pointCount = 0;
         for (int i = 0; i < len; i++) {
             final char c = chars[i];
             if (charInRange('0', c, '9')) {
@@ -32,10 +32,10 @@ public class Strings {
                     return false;
                 }
             } else if (c == '.') {
-                if (commaCount > 1) {
+                if (pointCount > 1) {
                     return false;
                 }
-                commaCount++;
+                pointCount++;
             } else {
                 return false;
             }
