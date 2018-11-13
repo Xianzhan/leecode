@@ -1,4 +1,4 @@
-package xianzhan.core.object;
+package xianzhan.javaagent;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Array;
@@ -16,13 +16,15 @@ import java.util.Stack;
  * 在 32-bit JVM 上占用 64bit，
  * 在 64-bit JVM 上占用 128bit 即 8+8=16 bytes（开启指针压缩后占用 4+8=12 bytes）
  * 更具体的对象头介绍请参考：http://blog.csdn.net/wenniuwuren/article/details/50939410
- *
+ * <p>
  * 测试类：
- * see xianzhan.core.object.SizeOfTest
+ * see test.javaagent.SizeOfTest
+ *
+ * @author xianzhan
  */
 public class SizeOf {
 
-    static Instrumentation instrumentation;
+    private static Instrumentation instrumentation;
 
     /**
      * @param args -javaagent 传入
@@ -41,8 +43,8 @@ public class SizeOf {
     public static long sizeOf(Object o) {
         if (instrumentation == null) {
             String message = "\nCan not access instrumentation environment.\n" +
-                    "Please check if jar file containing SizeOf.class is\n" +
-                    "specified in the java's \"-javaagent\" command line argument.";
+                             "Please check if jar file containing SizeOf.class is\n" +
+                             "specified in the java's \"-javaagent\" command line argument.";
             throw new IllegalStateException(message);
         }
         return instrumentation.getObjectSize(o);
@@ -80,7 +82,8 @@ public class SizeOf {
         Class<?> clazz = obj.getClass();
         if (clazz.isArray()) {
             // [I, [F 基本类型名字长度是 2
-            if (clazz.getName().length() != 2) { // skip primitive type array
+            // skip primitive type array
+            if (clazz.getName().length() != 2) {
                 int length = Array.getLength(obj);
                 for (int i = 0; i < length; i++) {
                     stack.add(Array.get(obj, i));
@@ -91,18 +94,16 @@ public class SizeOf {
         // 处理对象的所有字段
         while (clazz != null) {
             Field[] fields = clazz.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
+            for (Field field : fields) {
                 // 不重复计算静态类型字段
-                if (!Modifier.isStatic(fields[i].getModifiers())) {
+                if (!Modifier.isStatic(field.getModifiers())) {
                     // 不重复计算原始类型字段
-                    if (fields[i].getType().isPrimitive()) {
-                        continue;
-                    } else {
+                    if (!field.getType().isPrimitive()) {
                         // 使 private 属性可访问
-                        fields[i].setAccessible(true);
+                        field.setAccessible(true);
                         try {
                             // objects to be estimated are put to stack
-                            Object objectToAdd = fields[i].get(obj);
+                            Object objectToAdd = field.get(obj);
                             if (objectToAdd != null) {
                                 stack.add(objectToAdd);
                             }
@@ -122,7 +123,7 @@ public class SizeOf {
      * 这个算法使每个对象仅计算一次， 避免循环引用， 即死循环计算
      *
      * @param obj     计算对象
-     * @param visited
+     * @param visited visited
      * @return boolean
      */
     private static boolean skipObject(Object obj, Map<Object, Object> visited) {

@@ -1,18 +1,19 @@
-package test.core.object;
+package test.javaagent;
 
 
-import xianzhan.core.object.SizeOf;
+import xianzhan.javaagent.SizeOf;
 
 /**
  * 以下结果在 64-bit JVM 下测试
- * 启动参数1（不压缩指针长度）：-javaagent:{Your project directory}/target/SizeOf.jar -XX:-UseCompressedOops
+ * 启动参数1（不压缩指针长度）：
+ * -javaagent:{Your project directory}/target/SizeOf.jar -XX:-UseCompressedOops
  *
  * @see SizeOf
  * 使用上面的类必须将代码打包成 jar 包，并且 MANIFEST.MF 文件设置参数
- * Main-Class: com.github.xianzhan.core.object.SizeOf
+ * Main-Class: xianzhan.javaagent.SizeOf
  * Boot-Class-Path:
  * Can-Redefine-Classes: false
- * Premain-class: com.github.xianzhan.core.object.SizeOf
+ * Premain-class: xianzhan.javaagent.SizeOf
  * <p>
  * 打包之后运行：
  * IDE 运行时需要设置 JVM 参数： -javaagent:target/SizeOfAgent.jar -XX:-UseCompressedOops；

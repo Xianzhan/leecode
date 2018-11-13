@@ -32,36 +32,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <!--
-                     com.github.xianzhan.core.object.SizeOf jar 包
-                -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                    <finalName>SizeOf</finalName>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>
-                                xianzhan.core.object.SizeOf
-                            </mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Premain-class>
-                                xianzhan.core.object.SizeOf
-                            </Premain-class>
-                            <!--<Boot-Class-Path></Boot-Class-Path>-->
-                            <Can-Redefine-Classes>false</Can-Redefine-Classes>
-                        </manifestEntries>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
-
 </project>
