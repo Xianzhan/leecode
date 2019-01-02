@@ -12,50 +12,12 @@
 
     <modules>
         <module>core</module>
-        <module>web</module>
         <module>architecture</module>
-        <module>spring-cloud-1-eureka-server</module>
-        <module>spring-cloud-1-eureka-client</module>
-        <module>spring-cloud-2-config-server</module>
-        <module>spring-cloud-2-config-client</module>
-        <module>javaagent</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>10</java.version>
-
-        <!-- test -->
-        <junit.version>4.12</junit.version>
-
-        <!-- proxy -->
-        <cglib.version>3.2.8</cglib.version>
-
-        <!-- common -->
-        <commons-lang3.version>3.8</commons-lang3.version>
-        <commons-collections4.version>4.2</commons-collections4.version>
-        <commons-dbcp2.version>2.0.1</commons-dbcp2.version>
-        <commons-filupload.version>1.3.3</commons-filupload.version>
-
-        <!-- log -->
-        <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
-
-        <!-- web -->
-        <servlet.version>3.1.0</servlet.version>
-        <jsp.version>2.2</jsp.version>
-        <jstl.version>1.2</jstl.version>
-        <tomcat-embed-core.version>8.5.34</tomcat-embed-core.version>
-
-        <!-- spring -->
-        <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
-        <druid-spring-boot.version>1.1.10</druid-spring-boot.version>
-        <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
-
-        <!-- database -->
-        <mysql-connector.version>5.1.47</mysql-connector.version>
-
-        <!-- json -->
-        <jackson-databind.version>2.9.5</jackson-databind.version>
+        <java.version>11</java.version>
     </properties>
 </project>
