@@ -1,4 +1,4 @@
-package xianzhan.core.util.i18n;
+package xianzhan.misc.i18n;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

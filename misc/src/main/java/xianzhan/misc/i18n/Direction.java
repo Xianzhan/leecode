@@ -1,4 +1,4 @@
-package xianzhan.core.util.i18n;
+package xianzhan.misc.i18n;
 
 /**
  * 描述：国际化, 方向

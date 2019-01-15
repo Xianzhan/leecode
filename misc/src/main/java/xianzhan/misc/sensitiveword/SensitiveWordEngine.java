@@ -1,4 +1,4 @@
-package xianzhan.core.misc.sensitiveword;
+package xianzhan.misc.sensitiveword;
 
 import java.util.*;
 import java.util.function.BiConsumer;
