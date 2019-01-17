@@ -1,7 +1,6 @@
 package xianzhan.core;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 /**
  * Unsafe
@@ -9,6 +8,7 @@ import java.util.Arrays;
  * @author xianzhan
  * @since 2019-01-13
  */
+@SuppressWarnings("unused")
 public final class Unsafe {
 
     /**
@@ -27,18 +27,50 @@ public final class Unsafe {
         unsafe = (sun.misc.Unsafe) theUnsafe.get(null);
     }
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        init();
-
-        int arrayBaseOffset = unsafe.arrayBaseOffset(byte[].class);
-        System.out.println(arrayBaseOffset);
-        var data = new byte[10];
-        System.out.println(Arrays.toString(data));
-
-        byte b = 6;
-        unsafe.putByte(data, arrayBaseOffset, b);
-        unsafe.putByte(data, arrayBaseOffset + 1, b);
-        System.out.println(Arrays.toString(data));
-
+    static {
+        try {
+            init();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new Error("无法初始化 Unsafe");
+        }
     }
+
+    // ------ 线程 ------
+
+    /**
+     * 线程挂起进入 TIMED_WAITING, 线程将一直阻塞直到超时或者中断等条件出现
+     *
+     * <pre>
+     *     long start = System.currentTimeMillis();
+     *     park(true, start + 3000L);
+     *     long end = System.currentTimeMillis();
+     *     // or
+     *     long start = System.currentTimeMillis();
+     *     park(false, 3000000000L);
+     *     long end = System.currentTimeMillis();
+     *
+     *     System.out.println(end - start);
+     * </pre>
+     *
+     * @param isAbsolute true 时 time 的单位为毫秒秒, false 时 time 的单位为纳秒
+     * @param time       时间
+     * @see java.util.concurrent.locks.LockSupport
+     */
+    public static void park(boolean isAbsolute, long time) {
+        unsafe.park(isAbsolute, time);
+    }
+
+    /**
+     * 最好不要在调用 park 前对当前线程调用 unpark<br>
+     * 多次调用 unpark 的效果和调用一次 unpark 的效果一样
+     *
+     * @param thread 线程
+     * @see #park(boolean, long)
+     */
+    public static void unpark(Object thread) {
+        unsafe.unpark(thread);
+    }
+
+    // ------ 内存 ------
+
 }
