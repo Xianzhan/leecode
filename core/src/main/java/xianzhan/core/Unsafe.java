@@ -35,6 +35,130 @@ public final class Unsafe {
         }
     }
 
+    // ------ 内存 ------
+
+    /**
+     * 分配 bytes 字节大小的 "堆外内存", 返回起始地址的偏移量
+     *
+     * @param bytes 字节
+     * @return 偏移量
+     * @see #reallocateMemory(long, long)
+     * @see #freeMemory(long)
+     */
+    public static long allocateMemory(long bytes) {
+        return unsafe.allocateMemory(bytes);
+    }
+
+    /**
+     * 重新给 address 起始地址的内存分配长度为 bytes 字节大小的内存, 返回新的内存地址偏移量
+     *
+     * @param address 起始地址
+     * @param bytes   内存大小
+     * @return 新的内存起始地址偏移量
+     * @see #allocateMemory(long)
+     * @see #freeMemory(long)
+     */
+    public static long reallocateMemory(long address, long bytes) {
+        return unsafe.reallocateMemory(address, bytes);
+    }
+
+    /**
+     * 释放起始地址为 address 的内存
+     *
+     * @param address 起始地址
+     * @see #allocateMemory(long)
+     * @see #reallocateMemory(long, long)
+     */
+    public static void freeMemory(long address) {
+        unsafe.freeMemory(address);
+    }
+
+    /**
+     * 在 address 起始地址上保存 b 数据
+     *
+     * @param address 起始地址
+     * @param b       数据
+     * @see #getByte(long)
+     */
+    public static void putByte(long address, byte b) {
+        unsafe.putByte(address, b);
+    }
+
+    /**
+     * 在 address 地址上获取一个字节内容
+     *
+     * @param address 起始地址
+     * @return 字节内容
+     * @see #putByte(long, byte)
+     */
+    public static byte getByte(long address) {
+        return unsafe.getByte(address);
+    }
+
+    public static void putShort(long address, short s) {
+        unsafe.putShort(address, s);
+    }
+
+    public static short getShort(long address) {
+        return unsafe.getShort(address);
+    }
+
+    public static void putChar(long address, char c) {
+        unsafe.putChar(address, c);
+    }
+
+    public static char getChar(long address) {
+        return unsafe.getChar(address);
+    }
+
+    public static void putInt(long address, int i) {
+        unsafe.putInt(address, i);
+    }
+
+    public static int getInt(long address) {
+        return unsafe.getInt(address);
+    }
+
+    public static void putLong(long address, long l) {
+        unsafe.putLong(address, l);
+    }
+
+    public static long getLong(long address) {
+        return unsafe.getLong(address);
+    }
+
+    public static void putFloat(long address, float f) {
+        unsafe.putFloat(address, f);
+    }
+
+    public static float getFloat(long address) {
+        return unsafe.getFloat(address);
+    }
+
+    public static void putDouble(long address, double d) {
+        unsafe.putDouble(address, d);
+    }
+
+    /**
+     * 从起始地址上获取本地的内存地址
+     *
+     * @param address 起始地址
+     * @return 本地的内存地址
+     */
+    public static long getAddress(long address) {
+        return unsafe.getAddress(address);
+    }
+
+    /**
+     * 将本机指针存储到给定的内存地址中。
+     *
+     * @param address 指定的内存地址
+     * @param x       本机指针
+     */
+    public static void putAddress(long address, long x) {
+        unsafe.putAddress(address, x);
+    }
+
     // ------ 线程 ------
 
     /**
@@ -70,7 +194,4 @@ public final class Unsafe {
     public static void unpark(Object thread) {
         unsafe.unpark(thread);
     }
-
-    // ------ 内存 ------
-
 }
