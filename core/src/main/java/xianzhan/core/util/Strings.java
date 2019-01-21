@@ -43,6 +43,16 @@ public class Strings {
         return true;
     }
 
+    /**
+     * 判断字符串是否为 null 或者为空
+     *
+     * @param s 字符串
+     * @return true 为 null 或者为 ""
+     */
+    public static boolean isEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
+
     private static boolean charInRange(char left, char target, char right) {
         return left <= target && target <= right;
     }
