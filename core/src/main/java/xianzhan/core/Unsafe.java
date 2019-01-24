@@ -194,4 +194,27 @@ public final class Unsafe {
     public static void unpark(Object thread) {
         unsafe.unpark(thread);
     }
+
+    /**
+     * 比较 o 的 offset 处内存位置的值和期望的值, 如果相同则更新. <br>
+     * 此更新是不可中断的.<br>
+     * CAS 操作有 3 个操作数，内存值 M，预期值 E，新值 U，如果 M == E，则将内存值修改为 B，否则啥都不做。
+     *
+     * @param o        需要更新的对象
+     * @param offset   o 中整型 field 的偏移量
+     * @param expected 希望 field 中存在的值
+     * @param x        如果期待值 expect 与 field 的当前值相同, 设置 field 的值为这个新值
+     * @return 如果 field 的值被更改返回 true
+     */
+    public static boolean compareAndSwapInt(Object o, long offset, int expected, int x) {
+        return unsafe.compareAndSwapInt(o, offset, expected, x);
+    }
+
+    public static boolean compareAndSwapLong(Object o, long offset, long expected, long x) {
+        return unsafe.compareAndSwapLong(o, offset, expected, x);
+    }
+
+    public static boolean compareAndSwapObject(Object o, long offset, Object expected, Object x) {
+        return unsafe.compareAndSwapObject(o, offset, expected, x);
+    }
 }
