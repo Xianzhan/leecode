@@ -159,6 +159,101 @@ public final class Unsafe {
         unsafe.putAddress(address, x);
     }
 
+    // ------ 对象 ------
+
+    /**
+     * 从给定的 Java 变量中获取一个引用值。
+     *
+     * @param o      从该对象获取
+     * @param offset 偏移地址
+     * @return o 对象的偏移地址上的对象
+     */
+    public static Object getObject(Object o, long offset) {
+        return unsafe.getObject(o, offset);
+    }
+
+    public static void putObject(Object o, long offset, Object x) {
+        unsafe.putObject(o, offset, x);
+    }
+
+    public static boolean getBoolean(Object o, long offset) {
+        return unsafe.getBoolean(o, offset);
+    }
+
+    public static void putBoolean(Object o, long offset, boolean x) {
+        unsafe.putBoolean(o, offset, x);
+    }
+
+    public static byte getByte(Object o, long offset) {
+        return unsafe.getByte(o, offset);
+    }
+
+    public static void putByte(Object o, long offset, byte x) {
+        unsafe.putByte(o, offset, x);
+    }
+
+    public static short getShort(Object o, long offset) {
+        return unsafe.getShort(o, offset);
+    }
+
+    public static void putShort(Object o, long offset, short x) {
+        unsafe.putShort(o, offset, x);
+    }
+
+    public static char getChar(Object o, long offset) {
+        return unsafe.getChar(o, offset);
+    }
+
+    public static void putChar(Object o, long offset, char x) {
+        unsafe.putChar(o, offset, x);
+    }
+
+    public static int getInt(Object o, long offset) {
+        return unsafe.getInt(o, offset);
+    }
+
+    public static void putInt(Object o, long offset, int x) {
+        unsafe.putInt(o, offset, x);
+    }
+
+    public static long getLong(Object o, long offset) {
+        return unsafe.getLong(o, offset);
+    }
+
+    public static void putLong(Object o, long offset, long x) {
+        unsafe.putLong(o, offset, x);
+    }
+
+    public static float getFloat(Object o, long offset) {
+        return unsafe.getFloat(o, offset);
+    }
+
+    public static void putFloat(Object o, long offset, float x) {
+        unsafe.putFloat(o, offset, x);
+    }
+
+    public static double getDouble(Object o, long offset) {
+        return unsafe.getDouble(o, offset);
+    }
+
+    /**
+     * 返回指定静态 field 的内存地址偏移量,在这个类的其他方法中这个值只是被用作一个访问<br>
+     * 特定field的一个方式。这个值对于 给定的field是唯一的，并且后续对该方法的调用都应该<br>
+     * 返回相同的值。
+     *
+     * @param f 需要返回偏移量的 field
+     * @return 指定field的偏移量
+     * @see #getObject(Object, long)
+     * @see #getInt(long)
+     */
+    public static long staticFieldOffset(Field f) {
+        return unsafe.staticFieldOffset(f);
+    }
+
+    public static long objectFieldOffset(Field f) {
+        return unsafe.objectFieldOffset(f);
+    }
+
     // ------ 线程 ------
 
     /**
