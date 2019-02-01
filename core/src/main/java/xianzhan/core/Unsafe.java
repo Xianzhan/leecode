@@ -38,6 +38,15 @@ public final class Unsafe {
     // ------ 内存 ------
 
     /**
+     * 报告本机内存页的字节大小。这个值总是2的幂。
+     *
+     * @return 本机内存页的字节大小
+     */
+    public static int pageSize() {
+        return unsafe.pageSize();
+    }
+
+    /**
      * 分配 bytes 字节大小的 "堆外内存", 返回起始地址的偏移量
      *
      * @param bytes 字节

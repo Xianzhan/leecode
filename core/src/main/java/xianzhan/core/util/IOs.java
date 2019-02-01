@@ -1,5 +1,7 @@
 package xianzhan.core.util;
 
+import xianzhan.core.Unsafe;
+
 import java.io.*;
 import java.util.Arrays;
 
@@ -11,6 +13,10 @@ import java.util.Arrays;
  */
 @SuppressWarnings({"unused"})
 public class IOs {
+
+    private static final int BUF_SIZE = Unsafe.pageSize();
+
+    private static final int OUTSIDE = -1;
 
     /**
      * null 序列化字节数组
@@ -69,5 +75,24 @@ public class IOs {
         } catch (ClassNotFoundException ex) {
             throw new IllegalStateException("Failed to deserialize object type", ex);
         }
+    }
+
+    /**
+     * 复制输入流的数据到输出流
+     *
+     * @param input  输入流
+     * @param output 输出流
+     * @return 复制的字节数
+     * @throws IOException 如果由于文件末尾以外的任何原因无法读取第一个字节，如果输入流已经关闭，或者发生了其他I/O错误。
+     */
+    public static long copy(InputStream input, OutputStream output) throws IOException {
+        long copySize = 0;
+        byte[] buf = new byte[BUF_SIZE];
+        int read;
+        while ((read = input.read(buf)) != OUTSIDE) {
+            output.write(buf);
+            copySize += read;
+        }
+        return copySize;
     }
 }
