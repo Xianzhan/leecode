@@ -38,6 +38,18 @@ public final class Unsafe {
     // ------ 内存 ------
 
     /**
+     * 报告通过 putAddress 存储的本机指针的字节大小。
+     * 这个值不是 4 就是 8。
+     * 请注意，其他基本类型(存储在本机内存块中)的大小完全由它们的信息内容决定。
+     *
+     * @return 本机指针的字节大小
+     * @see #putAddress(long, long)
+     */
+    public static int addressSize() {
+        return unsafe.addressSize();
+    }
+
+    /**
      * 报告本机内存页的字节大小。这个值总是2的幂。
      *
      * @return 本机内存页的字节大小
