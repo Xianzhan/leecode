@@ -4,7 +4,7 @@ package xianzhan.core.util;
  * 描述：数学相关工具类
  *
  * @author Lee
- * @since 2018/11/7
+ * @since 2018-11-7
  */
 public class Maths {
 

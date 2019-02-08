@@ -8,6 +8,8 @@ package xianzhan.core.util;
  */
 public class Strings {
 
+    private static final String EMPTY = "";
+
     /**
      * 判断该字符串是否能被 Double 所解析
      *
@@ -51,6 +53,28 @@ public class Strings {
      */
     public static boolean isEmpty(String s) {
         return s == null || s.isEmpty();
+    }
+
+    /**
+     * 将字节数组转为十六进制字符串
+     *
+     * @param bytes 字节数组
+     * @return 十六进制字符串
+     */
+    public static String toHexString(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return EMPTY;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (byte b : bytes) {
+            String s = Integer.toHexString(b);
+            if (s.length() == 1) {
+                builder.append('0');
+            }
+            builder.append(s);
+        }
+        return builder.toString();
     }
 
     private static boolean charInRange(char left, char target, char right) {
