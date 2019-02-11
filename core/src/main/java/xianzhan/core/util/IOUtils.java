@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @since 2018-06-04
  */
 @SuppressWarnings({"unused"})
-public class IOs {
+public class IOUtils {
 
     private static final int BUF_SIZE = Unsafe.pageSize();
 

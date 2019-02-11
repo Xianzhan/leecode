@@ -1,6 +1,6 @@
 package test.core.util;
 
-import xianzhan.core.util.Maths;
+import xianzhan.core.util.NumberUtils;
 
 /**
  * 描述：
@@ -12,7 +12,7 @@ public class MathsTest {
 
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
-            System.out.println(i + "\t is power of two: " + Maths.isPowerOfTwo(i));
+            System.out.println(i + "\t is power of two: " + NumberUtils.isPowerOfTwo(i));
         }
     }
 

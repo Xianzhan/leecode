@@ -1,7 +1,7 @@
 package test.core.util;
 
 import org.junit.Test;
-import xianzhan.core.util.Strings;
+import xianzhan.core.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,28 +17,28 @@ public class StringsTest {
     @Test
     public void testDouble() {
         System.out.println(Double.valueOf("+1"));
-        System.out.println(Strings.isDouble("+1"));
+        System.out.println(StringUtils.isDouble("+1"));
 
         System.out.println(Double.valueOf("+1."));
-        System.out.println(Strings.isDouble("+1."));
+        System.out.println(StringUtils.isDouble("+1."));
 
         System.out.println(Double.valueOf("+.1"));
-        System.out.println(Strings.isDouble("+.1"));
+        System.out.println(StringUtils.isDouble("+.1"));
 
         System.out.println(Double.valueOf(".1"));
-        System.out.println(Strings.isDouble(".1"));
+        System.out.println(StringUtils.isDouble(".1"));
 
         System.out.println(Double.valueOf("-.1"));
-        System.out.println(Strings.isDouble("-.1"));
+        System.out.println(StringUtils.isDouble("-.1"));
 
         System.out.println(Double.valueOf("1"));
-        System.out.println(Strings.isDouble("1"));
+        System.out.println(StringUtils.isDouble("1"));
 
         System.out.println(Double.valueOf("111111111111111"));
-        System.out.println(Strings.isDouble("111111111111111"));
+        System.out.println(StringUtils.isDouble("111111111111111"));
 
-        System.out.println(Strings.isDouble("++"));
-        System.out.println(Strings.isDouble("ad"));
+        System.out.println(StringUtils.isDouble("++"));
+        System.out.println(StringUtils.isDouble("ad"));
     }
 
     public static void main(String[] args) {

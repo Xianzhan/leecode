@@ -6,7 +6,7 @@ package xianzhan.core.util;
  * @author Lee
  * @since 2018-11-7
  */
-public class Maths {
+public class NumberUtils {
 
     /**
      * 判断一个数是否为 2 的幂

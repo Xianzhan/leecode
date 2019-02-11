@@ -10,9 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2017-10-07
  */
 @SuppressWarnings("unused")
-public final class Threads {
+public final class ThreadUtils {
 
-    private Threads() {
+    private ThreadUtils() {
         throw new AssertionError("Thread 工具类不可实例化");
     }
 

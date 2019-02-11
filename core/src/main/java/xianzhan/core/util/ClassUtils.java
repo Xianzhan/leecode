@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
  * @author xianzhan
  * @since 2019-02-09
  */
-public class Classes {
+public class ClassUtils {
 
     /**
      * @return 当前线程加载类
@@ -86,7 +86,7 @@ public class Classes {
         }
 
         File[] files = dir.listFiles(file -> file.isFile() && file.getName().endsWith(".class"));
-        if (Arrays.isEmpty(files)) {
+        if (ArrayUtils.isEmpty(files)) {
             return;
         }
 
@@ -98,13 +98,13 @@ public class Classes {
             String fileName = file.getName();
             int lastIndexOf = fileName.lastIndexOf('.');
             String className = fileName.substring(0, lastIndexOf);
-            if (Strings.isEmpty(className)) {
+            if (StringUtils.isEmpty(className)) {
                 String subPackagePath = fileName;
-                if (!Strings.isEmpty(packageName)) {
+                if (!StringUtils.isEmpty(packageName)) {
                     subPackagePath = packagePath + '/' + subPackagePath;
                 }
                 String subPackageName = fileName;
-                if (!Strings.isEmpty(packageName)) {
+                if (!StringUtils.isEmpty(packageName)) {
                     subPackageName = packageName + '.' + subPackageName;
                 }
                 addClass(classSet, subPackagePath, subPackageName);

@@ -6,7 +6,7 @@ package xianzhan.core.util;
  * @author xianzhan
  * @since 2019-02-09
  */
-public class Arrays {
+public class ArrayUtils {
 
     /**
      * 判断数组是否为空
