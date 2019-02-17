@@ -1,6 +1,5 @@
 package test.core.util;
 
-import org.junit.Test;
 import xianzhan.core.util.StringUtils;
 
 import java.util.Arrays;
@@ -14,7 +13,6 @@ import java.util.stream.Stream;
  */
 public class StringsTest {
 
-    @Test
     public void testDouble() {
         System.out.println(Double.valueOf("+1"));
         System.out.println(StringUtils.isDouble("+1"));

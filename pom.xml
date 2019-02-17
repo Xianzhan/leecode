@@ -12,7 +12,6 @@
 
     <modules>
         <module>core</module>
-        <module>architecture</module>
         <module>misc</module>
     </modules>
 
