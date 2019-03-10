@@ -1,5 +1,6 @@
 package xianzhan.core;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 
 /**
@@ -231,6 +232,17 @@ public final class Unsafe {
     }
 
     // ------ 对象 ------
+
+    /**
+     * 该方法在 Java 11 移除
+     *
+     * @param bytes 序列化字节
+     * @return Class
+     * @throws IllegalAccessException 非法访问异常
+     */
+    public static Class<?> defineClass(byte[] bytes) throws IllegalAccessException {
+        return MethodHandles.lookup().defineClass(bytes);
+    }
 
     /**
      * 绕过构造方法、初始化代码来创建对象
