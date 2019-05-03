@@ -13,6 +13,7 @@
     <modules>
         <module>core</module>
         <module>misc</module>
+        <module>tank-online</module>
     </modules>
 
     <properties>
