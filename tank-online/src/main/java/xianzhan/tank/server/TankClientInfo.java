@@ -29,4 +29,13 @@ public class TankClientInfo {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "ip='" + ip + '\'' +
+                ", udpPort=" + udpPort +
+                ", id=" + id +
+                '}';
+    }
 }

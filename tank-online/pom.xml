@@ -12,4 +12,11 @@
     <artifactId>tank-online</artifactId>
     <version>${module.version}</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>xianzhan</groupId>
+            <artifactId>core</artifactId>
+            <version>${module.version}</version>
+        </dependency>
+    </dependencies>
 </project>

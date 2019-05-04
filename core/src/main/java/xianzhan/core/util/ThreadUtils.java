@@ -1,15 +1,21 @@
 package xianzhan.core.util;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 描述：线程工具类
+ * <p>
+ * 该工具类用于一定时间内完成的任务
  *
- * @author Lee
+ * @author xianzhan
  * @since 2017-10-07
  */
-@SuppressWarnings("unused")
 public final class ThreadUtils {
 
     private ThreadUtils() {
@@ -18,11 +24,11 @@ public final class ThreadUtils {
 
     private static final int                     NUMBER_OF_WORKERS = Runtime.getRuntime().availableProcessors() << 1;
     private static       int                     maximumPoolSize   = NUMBER_OF_WORKERS << 1;
-    private static       long                    keepAliveTime     = 0L;
+    private static       long                    keepAliveTime     = 120L;
     private static       BlockingQueue<Runnable> workQueue         = new LinkedBlockingQueue<>(1024);
 
     private static ExecutorService THREAD_POOL = new ThreadPoolExecutor(
-            // 一般为 CPU 的两倍
+            // 默认为 CPU 的两倍
             NUMBER_OF_WORKERS,
             // 该线程池的最大数量
             maximumPoolSize,
@@ -50,7 +56,7 @@ public final class ThreadUtils {
     /**
      * 关闭线程
      */
-    public static void close() {
+    public static void shutdown() {
         THREAD_POOL.shutdown();
     }
 

@@ -1,5 +1,7 @@
 package xianzhan.tank.server;
 
+import xianzhan.core.util.ThreadUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,8 +25,8 @@ import java.util.List;
  */
 public class TankServer {
 
-    private static final int TCP_PORT = 9527;
-    private static final int UDP_PORT = 9528;
+    private static final int TCP_PORT  = 9527;
+    private static final int UDP_PORT  = 9528;
     private static final int DEAD_PORT = 9529;
 
     /**
@@ -34,7 +36,13 @@ public class TankServer {
 
     private List<TankClientInfo> clients = new ArrayList<>();
 
+    /**
+     * 启动一线程监听
+     */
     public void start() {
+        ThreadUtils.execute(this::forward);
+        ThreadUtils.execute(this::dead);
+
         try (ServerSocket serverSocket = new ServerSocket(TCP_PORT)) {
 
             for (; ; ) {
@@ -60,9 +68,9 @@ public class TankServer {
     }
 
     /**
-     * 转发客户端发送的信息逻辑
+     * 启动一线程转发客户端发送的信息逻辑
      */
-    public void forward() {
+    private void forward() {
         byte[] buf = new byte[300];
 
         try (DatagramSocket ds = new DatagramSocket(UDP_PORT)) {
@@ -86,9 +94,9 @@ public class TankServer {
     }
 
     /**
-     * 监听客户端死亡的逻辑
+     * 启动一线程监听客户端死亡的逻辑
      */
-    public void dead() {
+    private void dead() {
         byte[] buf = new byte[300];
 
         try (DatagramSocket ds = new DatagramSocket(DEAD_PORT)) {
@@ -104,8 +112,7 @@ public class TankServer {
                     bais = new ByteArrayInputStream(buf, 0, packet.getLength());
                     dis = new DataInputStream(bais);
                     int deadTankUdpPort = dis.readInt();
-                    for (int i = 0; i < clients.size(); i++) {
-                        TankClientInfo tankClientInfo = clients.get(i);
+                    for (TankClientInfo tankClientInfo : clients) {
                         if (tankClientInfo.getUdpPort() == deadTankUdpPort) {
                             clients.remove(tankClientInfo);
                         }
@@ -118,5 +125,9 @@ public class TankServer {
         } catch (SocketException e) {
             System.err.println("Failed to create UDP for dead");
         }
+    }
+
+    public List<TankClientInfo> getTankClientInfoList() {
+        return clients;
     }
 }
