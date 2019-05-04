@@ -13,10 +13,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * 图形启动器
  *
- * @auther xianzhan
+ * @author xianzhan
  * @since 2019-05-04
  */
 public class GraphicLauncher extends Frame {
+
+    private static final long serialVersionUID = -372584177067020800L;
 
     private static final int WIDTH  = 300;
     private static final int HEIGHT = 500;
