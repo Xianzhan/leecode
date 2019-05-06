@@ -20,12 +20,12 @@ import java.util.List;
  * <p>
  * 保存客户端信息，转发客户端信息
  *
- * @auther xianzhan
+ * @author xianzhan
  * @since 2019-05-02
  */
 public class TankServer {
 
-    private static final int TCP_PORT  = 9527;
+    public static final  int TCP_PORT  = 9527;
     private static final int UDP_PORT  = 9528;
     private static final int DEAD_PORT = 9529;
 
