@@ -1,6 +1,7 @@
 package xianzhan.tank.client.protocol.impl;
 
 import xianzhan.tank.client.TankClient;
+import xianzhan.tank.client.bean.Dir;
 import xianzhan.tank.client.bean.Tank;
 import xianzhan.tank.client.protocol.IMessage;
 
@@ -52,6 +53,30 @@ public class TankAlreadyExistMsg implements IMessage {
 
     @Override
     public void parse(DataInputStream dis) {
-
+        try {
+            int id = dis.readInt();
+            if (id == tc.getMyTank().getId()) {
+                return;
+            }
+            boolean exist = false;
+            for (Tank t : tc.getTanks()) {
+                if (id == t.getId()) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                int x = dis.readInt();
+                int y = dis.readInt();
+                Dir dir = Dir.values()[dis.readInt()];
+                boolean good = dis.readBoolean();
+                Tank existTank = new Tank(x, y, good, dir, tc);
+                existTank.setId(id);
+                tc.getTanks().add(existTank);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }

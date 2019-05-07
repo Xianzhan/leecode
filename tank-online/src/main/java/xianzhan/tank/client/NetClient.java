@@ -30,7 +30,7 @@ import java.net.Socket;
 public class NetClient {
     private TankClient     tc;
     /**
-     * 客户端的UDP端口号
+     * 客户端的 UDP 端口号
      */
     private int            udpPort;
     /**
@@ -38,15 +38,15 @@ public class NetClient {
      */
     private String         serverIP;
     /**
-     * 服务器转发客户但UDP包的UDP端口
+     * 服务器转发客户端 UDP 包的 UDP 端口
      */
     private int            serverUDPPort;
     /**
-     * 服务器监听坦克死亡的UDP端口
+     * 服务器监听坦克死亡的 UDP 端口
      */
     private int            tankDeadUdpPort;
     /**
-     * 客户端的UDP套接字
+     * 客户端的 UDP 套接字
      */
     private DatagramSocket ds = null;
 
@@ -61,7 +61,7 @@ public class NetClient {
         } catch (Exception e) {
             // 弹窗提示
             tc.getUdpPortWrongDialog().setVisible(true);
-            // 如果选择到了重复的UDP端口号就退出客户端重新选择.
+            // 如果选择到了重复的 UDP 端口号就退出客户端重新选择.
             System.exit(0);
         }
     }
@@ -84,18 +84,18 @@ public class NetClient {
                 tc.getServerNotStartDialog().setVisible(true);
             }
             DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-            // 向服务器发送自己的UDP端口号
+            // 向服务器发送自己的 UDP 端口号
             dos.writeInt(udpPort);
             DataInputStream dis = new DataInputStream(s.getInputStream());
-            // 获得自己的id号
+            // 获得自己的 id 号
             int id = dis.readInt();
-            // 获得服务器转发客户端消息的UDP端口号
+            // 获得服务器转发客户端消息的 UDP 端口号
             this.serverUDPPort = dis.readInt();
             // 获得服务器监听坦克死亡的 UDP 端口
             this.tankDeadUdpPort = dis.readInt();
-            // 设置坦克的id号
+            // 设置坦克的 id 号
             tc.getMyTank().setId(id);
-            // 根据坦克的id号分配阵营
+            // 根据坦克的 id 号分配阵营
             tc.getMyTank().setGood((id & 1) == 0);
             System.out.println("connect to server successfully...");
         } catch (IOException e) {
@@ -110,7 +110,7 @@ public class NetClient {
             }
         }
 
-        // 开启客户端UDP线程, 向服务器发送或接收游戏数据
+        // 开启客户端 UDP 线程, 向服务器发送或接收游戏数据
         ThreadUtils.execute(new UDPThread());
 
         // 创建坦克出生的消息
@@ -119,7 +119,7 @@ public class NetClient {
     }
 
     /**
-     * 客户端随机获取UDP端口号
+     * 客户端随机获取 UDP 端口号
      *
      * @return
      */
@@ -151,7 +151,7 @@ public class NetClient {
         private void parse(DatagramPacket dp) {
 
             try (ByteArrayInputStream bais = new ByteArrayInputStream(buf, 0, dp.getLength());
-                 DataInputStream dis = new DataInputStream(bais);) {
+                 DataInputStream dis = new DataInputStream(bais)) {
                 // 获得消息类型
                 int msgType = dis.readInt();
                 IMessage msg;
@@ -197,7 +197,7 @@ public class NetClient {
     public void sendClientDisconnectMsg() {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream(88);
              DataOutputStream dos = new DataOutputStream(baos)) {
-            // 发送客户端的UDP端口号, 从服务器Client集合中注销
+            // 发送客户端的 UDP 端口号, 从服务器 Client 集合中注销
             dos.writeInt(udpPort);
             byte[] buf = baos.toByteArray();
 

@@ -16,14 +16,12 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 坦克
@@ -58,15 +56,15 @@ public class TankClient extends Frame {
     /**
      * 存储游戏中的子弹集合
      */
-    private List<Missile> missiles = new ArrayList<>();
+    private List<Missile> missiles = new CopyOnWriteArrayList<>();
     /**
      * 爆炸集合
      */
-    private List<Explode> explodes = new ArrayList<>();
+    private List<Explode> explodes = new CopyOnWriteArrayList<>();
     /**
      * 坦克集合
      */
-    private List<Tank>    tanks    = new ArrayList<>();
+    private List<Tank>    tanks    = new CopyOnWriteArrayList<>();
 
     @Override
     public void paint(Graphics g) {
@@ -111,7 +109,8 @@ public class TankClient extends Frame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                nc.sendClientDisconnectMsg();//关闭窗口前要向服务器发出注销消息.
+                // 关闭窗口前要向服务器发出注销消息.
+                nc.sendClientDisconnectMsg();
                 System.exit(0);
             }
         });
@@ -144,6 +143,7 @@ public class TankClient extends Frame {
             }
         }
     }
+
     class KeyMonitor extends KeyAdapter {
 
         @Override
@@ -157,6 +157,7 @@ public class TankClient extends Frame {
         }
 
     }
+
     /**
      * 游戏开始前连接到服务器的对话框
      */
@@ -167,6 +168,7 @@ public class TankClient extends Frame {
          */
         TextField tfIP = new TextField("127.0.0.1", 15);
         Button    b    = new Button("connect to server");
+
         public ConDialog() {
             super(TankClient.this, true);
             this.setLayout(new FlowLayout());
@@ -190,12 +192,14 @@ public class TankClient extends Frame {
         }
 
     }
+
     /**
      * 坦克死亡后退出的对话框
      */
     class GameOverDialog extends Dialog {
 
         Button b = new Button("exit");
+
         public GameOverDialog() {
             super(TankClient.this, true);
             this.setLayout(new FlowLayout());
@@ -209,21 +213,18 @@ public class TankClient extends Frame {
                     System.exit(0);
                 }
             });
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-                }
-            });
+            b.addActionListener(e -> System.exit(0));
         }
 
     }
+
     /**
      * UDP端口分配失败后的对话框
      */
     class UDPPortWrongDialog extends Dialog {
 
         Button b = new Button("ok");
+
         UDPPortWrongDialog() {
             super(TankClient.this, true);
             this.setLayout(new FlowLayout());
@@ -237,21 +238,18 @@ public class TankClient extends Frame {
                     System.exit(0);
                 }
             });
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-                }
-            });
+            b.addActionListener(e -> System.exit(0));
         }
 
     }
+
     /**
      * 连接服务器失败后的对话框
      */
     class ServerNotStartDialog extends Dialog {
 
         Button b = new Button("ok");
+
         ServerNotStartDialog() {
             super(TankClient.this, true);
             this.setLayout(new FlowLayout());
@@ -265,15 +263,11 @@ public class TankClient extends Frame {
                     System.exit(0);
                 }
             });
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-                }
-            });
+            b.addActionListener(e -> System.exit(0));
         }
 
     }
+
     public void gameOver() {
         this.gameOverDialog.setVisible(true);
     }

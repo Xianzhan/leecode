@@ -65,7 +65,8 @@ public class TankReduceBloodMsg implements IMessage {
             this.tc.getExplodes().add(new Explode(bX, bY, this.tc));
             for (Tank t : tc.getTanks()) {
                 if (t.getId() == id) {
-                    t.setBlood(t.getBlood() - 20);//找到扣血的坦克, 减少20滴血
+                    // 找到扣血的坦克, 减少20滴血
+                    t.setBlood(t.getBlood() - 20);
                 }
             }
         } catch (IOException e) {

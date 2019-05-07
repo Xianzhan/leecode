@@ -19,7 +19,19 @@ public interface IMessage {
     int TANK_ALREADY_EXIST_MSG = 6;
     int TANK_REDUCE_BLOOD_MSG  = 7;
 
+    /**
+     * 发送
+     *
+     * @param ds      UDP
+     * @param ip      IP
+     * @param udpPort 端口
+     */
     void send(DatagramSocket ds, String ip, int udpPort);
 
+    /**
+     * 接收解析
+     *
+     * @param dis 接收的数据
+     */
     void parse(DataInputStream dis);
 }

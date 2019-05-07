@@ -41,6 +41,7 @@ public class MissileNewMsg implements IMessage {
             dos.writeInt(m.getX());
             dos.writeInt(m.getY());
             dos.writeInt(m.getDir().ordinal());
+            dos.writeBoolean(m.isGood());
             byte[] buf = baos.toByteArray();
 
             DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(ip, udpPort));
