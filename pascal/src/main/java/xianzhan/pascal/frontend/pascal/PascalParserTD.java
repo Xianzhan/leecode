@@ -4,6 +4,7 @@ import xianzhan.pascal.frontend.EofToken;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
+import xianzhan.pascal.frontend.TokenType;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
@@ -18,6 +19,9 @@ import xianzhan.pascal.message.MessageType;
  * @author Ronald Mak
  */
 public class PascalParserTD extends Parser {
+
+    protected static PascalErrorHandler errorHandler = new PascalErrorHandler();
+
     /**
      * Constructor.
      *
@@ -36,19 +40,45 @@ public class PascalParserTD extends Parser {
         Token token;
         long startTime = System.currentTimeMillis();
 
-        while (!((token = nextToken()) instanceof EofToken)) {}
+        try {
+            // Loop over each token until the end of file.
+            while (!((token = nextToken()) instanceof EofToken)) {
+                TokenType tokenType = token.getType();
 
-        // Send the parser summary message.
-        float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
-        Message message = new Message(
-                MessageType.PARSER_SUMMARY,
-                new Number[]{
-                        token.getLineNumber(),
-                        getErrorCount(),
-                        elapsedTime
+                if (tokenType != PascalTokenType.ERROR) {
+
+                    // Format each token.
+                    Message message = new Message(
+                            MessageType.TOKEN,
+                            new Object[]{
+                                    token.getLineNumber(),
+                                    token.getPosition(),
+                                    tokenType,
+                                    token.getText(),
+                                    token.getValue()
+                            }
+                    );
+                    sendMessage(message);
+                } else {
+                    errorHandler.flag(token, (PascalErrorCode) token.getValue(),
+                                      this);
                 }
-        );
-        sendMessage(message);
+            }
+
+            // Send the parser summary message.
+            float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
+            Message message = new Message(
+                    MessageType.PARSER_SUMMARY,
+                    new Number[]{
+                            token.getLineNumber(),
+                            getErrorCount(),
+                            elapsedTime
+                    }
+            );
+            sendMessage(message);
+        } catch (java.io.IOException ex) {
+            errorHandler.abortTranslation(PascalErrorCode.IO_ERROR, this);
+        }
     }
 
     /**
@@ -58,6 +88,6 @@ public class PascalParserTD extends Parser {
      */
     @Override
     public int getErrorCount() {
-        return 0;
+        return errorHandler.getErrorCount();
     }
 }
