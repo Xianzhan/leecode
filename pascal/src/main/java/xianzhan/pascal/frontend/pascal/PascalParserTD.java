@@ -9,12 +9,12 @@ import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
 /**
- * <h1>PascalParserTD</h1>
- *
- * <p>The top-down Pascal parser.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
+ * A parser must be able to handle syntax errors in the source program.
+ * Error handling is a three-step process:
+ * 1. Detection. Detect the presence of a syntax error.
+ * 2. Flagging. Flag the error by pointing it out or highlighting it, and
+ * display a descriptive error message.
+ * 3. Recovery. Move past the error and resume parsing.
  *
  * @author Ronald Mak
  */
@@ -60,8 +60,11 @@ public class PascalParserTD extends Parser {
                     );
                     sendMessage(message);
                 } else {
-                    errorHandler.flag(token, (PascalErrorCode) token.getValue(),
-                                      this);
+                    errorHandler.flag(
+                            token,
+                            (PascalErrorCode) token.getValue(),
+                            this
+                    );
                 }
             }
 

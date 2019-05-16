@@ -11,12 +11,16 @@ import xianzhan.pascal.frontend.pascal.tokens.PascalStringToken;
 import xianzhan.pascal.frontend.pascal.tokens.PascalWordToken;
 
 /**
- * <h1>PascalScanner</h1>
- *
- * <p>The Pascal scanner.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
+ * Extract Pascal word, number, string, and special symbol tokens from the
+ * source program.
+ * <p>
+ * Determine whether a word token is an identifier or a Pascal reserved word.
+ * <p>
+ * Calculate the value of a number token and determine whether its type is
+ * integer or real.
+ * <p>
+ * Perform syntax error handing.
+ * <p>
  *
  * @author Ronald Mak
  */
@@ -90,10 +94,8 @@ public class PascalScanner extends Scanner {
                     // consume the '}'
                     currentChar = nextChar();
                 }
-            }
-
-            // Not a comment.
-            else {
+            } else {
+                // Not a comment.
                 // consume whitespace character
                 currentChar = nextChar();
             }

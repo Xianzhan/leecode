@@ -216,9 +216,7 @@ public class Pascal {
                     StringBuilder flagBuffer = new StringBuilder();
 
                     // Spaces up to the error position.
-                    for (int i = 1; i < spaceCount; ++i) {
-                        flagBuffer.append(' ');
-                    }
+                    flagBuffer.append(" ".repeat(Math.max(0, spaceCount - 1)));
 
                     // A pointer to the error followed by the error message.
                     flagBuffer.append("^\n*** ").append(errorMessage);
