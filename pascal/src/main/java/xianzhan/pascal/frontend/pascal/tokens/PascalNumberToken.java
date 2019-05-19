@@ -6,12 +6,16 @@ import xianzhan.pascal.frontend.pascal.PascalToken;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 
 /**
- * <h1>PascalNumberToken</h1>
- *
- * <p>Pascal number tokens (integer and real).</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
+ * An unsigned integer is a sequence of digits. A Pascal integer number token
+ * is an unsigned integer. A Pascal real number token begins with an unsigned
+ * integer (the whole part), which is followed by either.
+ * <p>
+ * - A decimal point followed by an unsigned integer (the fraction part), or
+ * <br>
+ * - An E or e, optionally followed by + or -, followed by an unsigned
+ * integer (the exponent part), or
+ * <br>
+ * - A fraction part followed by an exponent part.
  *
  * @author Ronald Mak
  */
