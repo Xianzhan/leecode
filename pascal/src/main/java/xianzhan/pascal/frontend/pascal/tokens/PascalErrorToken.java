@@ -24,7 +24,9 @@ public class PascalErrorToken extends PascalToken {
      * @param tokenText the text of the erroneous token.
      * @throws Exception if an error occurred.
      */
-    public PascalErrorToken(Source source, PascalErrorCode errorCode, String tokenText) throws Exception {
+    public PascalErrorToken(Source source,
+                            PascalErrorCode errorCode,
+                            String tokenText) throws Exception {
         super(source);
 
         this.text = tokenText;

@@ -21,8 +21,7 @@ public class BackendFactory {
      * @return a compiler or an interpreter back end component.
      * @throws Exception if an error occurred.
      */
-    public static Backend createBackend(String operation)
-            throws Exception {
+    public static Backend createBackend(String operation) throws Exception {
         if (operation.equalsIgnoreCase("compile")) {
             return new CodeGenerator();
         } else if (operation.equalsIgnoreCase("execute")) {

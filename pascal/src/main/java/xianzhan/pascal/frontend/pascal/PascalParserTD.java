@@ -5,6 +5,7 @@ import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
 import xianzhan.pascal.frontend.TokenType;
+import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
@@ -45,21 +46,30 @@ public class PascalParserTD extends Parser {
             while (!((token = nextToken()) instanceof EofToken)) {
                 TokenType tokenType = token.getType();
 
-                if (tokenType != PascalTokenType.ERROR) {
+                // Cross reference only the identifiers
+                if (tokenType == PascalTokenType.IDENTIFIER) {
+                    String name = token.getText().toLowerCase();
+                    SymTabEntry entry = symTabStack.lookup(name);
+                    if (entry == null) {
+                        entry = symTabStack.enterLocal(name);
+                    }
+
+                    // Append the current line number to the entry.
+                    entry.appendLineNumber(token.getLineNumber());
 
                     // Format each token.
-                    Message message = new Message(
-                            MessageType.TOKEN,
-                            new Object[]{
-                                    token.getLineNumber(),
-                                    token.getPosition(),
-                                    tokenType,
-                                    token.getText(),
-                                    token.getValue()
-                            }
-                    );
-                    sendMessage(message);
-                } else {
+//                    Message message = new Message(
+//                            MessageType.TOKEN,
+//                            new Object[]{
+//                                    token.getLineNumber(),
+//                                    token.getPosition(),
+//                                    tokenType,
+//                                    token.getText(),
+//                                    token.getValue()
+//                            }
+//                    );
+//                    sendMessage(message);
+                } else if (tokenType == PascalTokenType.ERROR) {
                     errorHandler.flag(
                             token,
                             (PascalErrorCode) token.getValue(),
@@ -69,7 +79,8 @@ public class PascalParserTD extends Parser {
             }
 
             // Send the parser summary message.
-            float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
+            float elapsedTime =
+                    (System.currentTimeMillis() - startTime) / 1000F;
             Message message = new Message(
                     MessageType.PARSER_SUMMARY,
                     new Number[]{

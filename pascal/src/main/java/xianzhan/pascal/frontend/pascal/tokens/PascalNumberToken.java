@@ -238,7 +238,7 @@ public class PascalNumberToken extends PascalToken {
         if (Math.abs(exponentValue + wholeDigits.length()) > MAX_EXPONENT) {
             type = PascalTokenType.ERROR;
             value = PascalErrorCode.RANGE_REAL;
-            return 0.0f;
+            return 0.0F;
         }
 
         // Loop over the digits to compute the float value.
