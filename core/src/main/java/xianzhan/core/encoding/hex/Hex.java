@@ -1,4 +1,4 @@
-package xianzhan.golang.encoding.hex;
+package xianzhan.core.encoding.hex;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
