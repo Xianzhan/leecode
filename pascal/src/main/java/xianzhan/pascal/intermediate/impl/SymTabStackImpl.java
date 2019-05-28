@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * An implementation of the symbol table stack.
+ * <p>
+ * Implement the symbol table stack as an array list.
  *
  * @author xianzhan
  * @since 2019-05-20
@@ -21,6 +23,8 @@ public class SymTabStackImpl extends ArrayList<SymTab> implements SymTabStack {
     private int currentNestingLevel;
 
     public SymTabStackImpl() {
+        // The constructor creates and adds the first symbol table
+        // to the stack (the global table).
         this.currentNestingLevel = 0;
         add(SymTabFactory.createSymTab(currentNestingLevel));
     }

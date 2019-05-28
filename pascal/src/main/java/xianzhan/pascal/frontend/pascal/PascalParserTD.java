@@ -48,7 +48,11 @@ public class PascalParserTD extends Parser {
 
                 // Cross reference only the identifiers
                 if (tokenType == PascalTokenType.IDENTIFIER) {
+                    // Note that Pascal is not case-sensitive.
                     String name = token.getText().toLowerCase();
+
+                    // If it's not already in the symbol table,
+                    // create and enter a new entry for the identifier.
                     SymTabEntry entry = symTabStack.lookup(name);
                     if (entry == null) {
                         entry = symTabStack.enterLocal(name);
