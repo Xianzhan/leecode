@@ -11,6 +11,7 @@ import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageListener;
 import xianzhan.pascal.message.MessageType;
 import xianzhan.pascal.util.CrossReferencer;
+import xianzhan.pascal.util.ParseTreePrinter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -72,15 +73,23 @@ public class Pascal {
             parser.parse();
             source.close();
 
-            iCode = parser.getICode();
-            symTabStack = parser.getSymTabStack();
+            if (parser.getErrorCount() == 0) {
+                iCode = parser.getICode();
+                symTabStack = parser.getSymTabStack();
 
-            if (xref) {
-                CrossReferencer crossReferencer = new CrossReferencer();
-                crossReferencer.print(symTabStack);
+                if (xref) {
+                    CrossReferencer crossReferencer = new CrossReferencer();
+                    crossReferencer.print(symTabStack);
+                }
+
+                if (intermediate) {
+                    ParseTreePrinter treePrinter =
+                            new ParseTreePrinter(System.out);
+                    treePrinter.print(iCode);
+                }
+
+                backend.process(iCode, symTabStack);
             }
-
-            backend.process(iCode, symTabStack);
         } catch (Exception ex) {
             System.out.println("***** Internal translator error. *****");
             ex.printStackTrace();
@@ -172,7 +181,7 @@ public class Pascal {
             "\n%,20d syntax errors." +
             "\n%,20.2f seconds total parsing time.\n";
 
-//    private static final int PREFIX_WIDTH = 5;
+    private static final int PREFIX_WIDTH = 5;
 
     /**
      * Listener for parser messages.
@@ -251,6 +260,32 @@ public class Pascal {
                             syntaxErrors,
                             elapsedTime
                     );
+                    break;
+                }
+
+                case SYNTAX_ERROR: {
+                    Object body[] = (Object[]) message.getBody();
+                    int lineNumber = (Integer) body[0];
+                    int position = (Integer) body[1];
+                    String tokenText = (String) body[2];
+                    String errorMessage = (String) body[3];
+
+                    int spaceCount = PREFIX_WIDTH + position;
+                    StringBuilder flagBuffer = new StringBuilder();
+
+                    // Spaces up to the error position.
+                    flagBuffer.append(" ".repeat(Math.max(0, spaceCount - 1)));
+
+                    // A pointer to the error followed by the error message.
+                    flagBuffer.append("^\n*** ").append(errorMessage);
+
+                    // Text, if any, of the bad token.
+                    if (tokenText != null) {
+                        flagBuffer.append(" [at \"").append(tokenText)
+                                .append("\"]");
+                    }
+
+                    System.out.println(flagBuffer.toString());
                     break;
                 }
                 default:

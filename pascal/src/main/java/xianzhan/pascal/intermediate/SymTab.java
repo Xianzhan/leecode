@@ -15,6 +15,8 @@ import java.util.ArrayList;
 public interface SymTab {
 
     /**
+     * Return the scope nesting level of this entry.
+     *
      * @return the scope nesting level of this entry.
      */
     int getNestingLevel();
