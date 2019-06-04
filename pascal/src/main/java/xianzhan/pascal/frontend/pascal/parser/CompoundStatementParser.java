@@ -10,6 +10,8 @@ import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
 
 /**
  * Parse a Pascal compound statement.
+ * <p>
+ * -> BEGIN -> statement list -> END ->
  *
  * @author xianzhan
  * @since 2019-06-03

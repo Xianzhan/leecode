@@ -16,6 +16,13 @@
  *  SymTabKey
  * </pre>
  *
+ * <pre>
+ *     ICode
+ *       |        ICodeNodeType
+ *   ICodeNode <
+ *                ICodeKey
+ * </pre>
+ *
  * @author xianzhan
  * @since 2019-05-23
  */

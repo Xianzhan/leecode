@@ -52,7 +52,10 @@ public class StatementParser extends PascalParserTD {
 
                 // An assignment statement begins with a variable's identifier.
                 case IDENTIFIER: {
-
+                    AssignmentStatementParser assignmentStatementParser =
+                            new AssignmentStatementParser(this);
+                    statementNode = assignmentStatementParser.parse(token);
+                    break;
                 }
 
                 default: {

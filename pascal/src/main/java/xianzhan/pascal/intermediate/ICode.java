@@ -17,12 +17,12 @@ public interface ICode {
      * @param node the node to set as root.
      * @return the root node.
      */
-    public ICodeNode setRoot(ICodeNode node);
+    ICodeNode setRoot(ICodeNode node);
 
     /**
      * Get the root node.
      *
      * @return the root node.
      */
-    public ICodeNode getRoot();
+    ICodeNode getRoot();
 }

@@ -135,7 +135,8 @@ public class ParseTreePrinter {
         // If the value is a symbol table entry, use the identifier's name.
         // Else just use the value string.
         boolean isSymTabEntry = value instanceof SymTabEntry;
-        String valueString = isSymTabEntry ? ((SymTabEntry) value).getName()
+        String valueString = isSymTabEntry
+                ? ((SymTabEntry) value).getName()
                 : value.toString();
 
         String text = keyString.toLowerCase() + "=\"" + valueString + "\"";

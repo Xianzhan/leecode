@@ -1,11 +1,11 @@
 package xianzhan.pascal.frontend.pascal;
 
-import xianzhan.pascal.frontend.EofToken;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
-import xianzhan.pascal.frontend.TokenType;
-import xianzhan.pascal.intermediate.SymTabEntry;
+import xianzhan.pascal.frontend.pascal.parser.StatementParser;
+import xianzhan.pascal.intermediate.ICodeFactory;
+import xianzhan.pascal.intermediate.ICodeNode;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
@@ -42,54 +42,89 @@ public class PascalParserTD extends Parser {
     }
 
     /**
+     * Return the error handler.
+     *
+     * @return the error handler.
+     */
+    public PascalErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
+
+    /**
      * Parse a Pascal source program and generate the symbol table
      * and the intermediate code.
+     *
+     * @throws Exception if an error occurred.
      */
     @Override
     public void parse() throws Exception {
-        Token token;
+
         long startTime = System.currentTimeMillis();
+        iCode = ICodeFactory.createICode();
 
         try {
-            // Loop over each token until the end of file.
-            while (!((token = nextToken()) instanceof EofToken)) {
-                TokenType tokenType = token.getType();
+            Token token = nextToken();
+            ICodeNode rootNode = null;
 
-                // Cross reference only the identifiers
-                if (tokenType == PascalTokenType.IDENTIFIER) {
-                    // Note that Pascal is not case-sensitive.
-                    String name = token.getText().toLowerCase();
-
-                    // If it's not already in the symbol table,
-                    // create and enter a new entry for the identifier.
-                    SymTabEntry entry = symTabStack.lookup(name);
-                    if (entry == null) {
-                        entry = symTabStack.enterLocal(name);
-                    }
-
-                    // Append the current line number to the entry.
-                    entry.appendLineNumber(token.getLineNumber());
-
-                    // Format each token.
-//                    Message message = new Message(
-//                            MessageType.TOKEN,
-//                            new Object[]{
-//                                    token.getLineNumber(),
-//                                    token.getPosition(),
-//                                    tokenType,
-//                                    token.getText(),
-//                                    token.getValue()
-//                            }
-//                    );
-//                    sendMessage(message);
-                } else if (tokenType == PascalTokenType.ERROR) {
-                    errorHandler.flag(
-                            token,
-                            (PascalErrorCode) token.getValue(),
-                            this
-                    );
-                }
+            // Look for the BEGIN token to parse a compound statement.
+            if (token.getType() == PascalTokenType.BEGIN) {
+                StatementParser statementParser = new StatementParser(this);
+                rootNode = statementParser.parse(token);
+                token = currentToken();
+            } else {
+                errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
             }
+
+            // Look for the final period.
+            if (token.getType() != PascalTokenType.DOT) {
+                errorHandler.flag(token, PascalErrorCode.MISSING_PERIOD, this);
+            }
+            token = currentToken();
+
+            // Set the parse tree root node.
+            if (rootNode != null) {
+                iCode.setRoot(rootNode);
+            }
+
+//            // Loop over each token until the end of file.
+///            while (!((token = nextToken()) instanceof EofToken)) {
+///                TokenType tokenType = token.getType();
+//
+//                // Cross reference only the identifiers
+///                if (tokenType == PascalTokenType.IDENTIFIER) {
+//                    // Note that Pascal is not case-sensitive.
+///                    String name = token.getText().toLowerCase();
+//
+//                    // If it's not already in the symbol table,
+//                    // create and enter a new entry for the identifier.
+///                    SymTabEntry entry = symTabStack.lookup(name);
+///                    if (entry == null) {
+///                        entry = symTabStack.enterLocal(name);
+///                    }
+//
+//                    // Append the current line number to the entry.
+///                    entry.appendLineNumber(token.getLineNumber());
+//
+//                    // Format each token.
+////                    Message message = new Message(
+////                            MessageType.TOKEN,
+////                            new Object[]{
+////                                    token.getLineNumber(),
+////                                    token.getPosition(),
+////                                    tokenType,
+////                                    token.getText(),
+////                                    token.getValue()
+////                            }
+////                    );
+////                    sendMessage(message);
+///                } else if (tokenType == PascalTokenType.ERROR) {
+///                    errorHandler.flag(
+///                            token,
+///                            (PascalErrorCode) token.getValue(),
+///                            this
+///                    );
+///                }
+///            }
 
             // Send the parser summary message.
             float elapsedTime =
