@@ -43,18 +43,13 @@ public class ExpressionExecutor extends StatementExecutor {
                 SymTabEntry entry = (SymTabEntry) node.getAttribute(ICodeKeyEnumImpl.ID);
                 return entry.getAttribute(SymTabKeyImpl.DATA_VALUE);
             }
-            case INTEGER_CONSTANT: {
+            case INTEGER_CONSTANT:
                 // Return the integer value.
-                return node.getAttribute(ICodeKeyEnumImpl.VALUE);
-            }
-            case REAL_CONSTANT: {
+            case REAL_CONSTANT:
                 // Return the float value.
-                return node.getAttribute(ICodeKeyEnumImpl.VALUE);
-            }
-            case STRING_CONSTANT: {
+            case STRING_CONSTANT:
                 // Return the string value.
                 return node.getAttribute(ICodeKeyEnumImpl.VALUE);
-            }
             case NEGATE: {
                 // Get the NEGATE node's expression node child.
                 ArrayList<ICodeNode> children = node.getChildren();
