@@ -1,5 +1,6 @@
 package xianzhan.pascal.frontend.pascal;
 
+import xianzhan.pascal.frontend.EofToken;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
@@ -8,6 +9,8 @@ import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
+
+import java.util.EnumSet;
 
 /**
  * A parser must be able to handle syntax errors in the source program.
@@ -151,5 +154,32 @@ public class PascalParserTD extends Parser {
     @Override
     public int getErrorCount() {
         return errorHandler.getErrorCount();
+    }
+
+    /**
+     * Synchronize the parser.
+     *
+     * @param syncSet the set of token types for synchronizing the parser.
+     * @return the token where the parser has synchronized.
+     * @throws Exception if an error occurred.
+     */
+    public Token synchronize(EnumSet syncSet) throws Exception {
+        Token token = currentToken();
+
+        // If the current token is not in the synchronization set,
+        // then it is unexpected and the parser must recover.
+        if (!syncSet.contains(token.getType())) {
+
+            // Flag the unexpected token.
+            errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
+
+            // Recover by skipping tokens that are not
+            // in the synchronization set.
+            do {
+                token = nextToken();
+            } while (!(token instanceof EofToken) && !syncSet.contains(token.getType()));
+        }
+
+        return token;
     }
 }

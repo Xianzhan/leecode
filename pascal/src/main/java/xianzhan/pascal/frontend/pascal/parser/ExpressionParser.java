@@ -33,6 +33,21 @@ public class ExpressionParser extends StatementParser {
     }
 
     /**
+     * Synchronization set for starting an expression.
+     */
+    static final EnumSet<PascalTokenType> EXPR_START_SET =
+            EnumSet.of(
+                    PascalTokenType.PLUS,
+                    PascalTokenType.MINUS,
+                    PascalTokenType.IDENTIFIER,
+                    PascalTokenType.INTEGER,
+                    PascalTokenType.REAL,
+                    PascalTokenType.STRING,
+                    PascalTokenType.NOT,
+                    PascalTokenType.LEFT_PAREN
+            );
+
+    /**
      * Parse an expression.
      *
      * @param token the initial token.
@@ -174,7 +189,8 @@ public class ExpressionParser extends StatementParser {
             ICodeNode opNode = ICodeFactory.createICodeNode(nodeType);
             opNode.addChild(rootNode);
 
-            token = nextToken();  // consume the operator
+            // consume the operator
+            token = nextToken();
 
             // Parse another term.  The operator node adopts
             // the term's tree as its second child.

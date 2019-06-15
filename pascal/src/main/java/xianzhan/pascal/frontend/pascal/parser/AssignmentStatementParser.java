@@ -10,6 +10,8 @@ import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
 
+import java.util.EnumSet;
+
 /**
  * Parse a Pascal assignment statement.
  * <p>
@@ -27,6 +29,14 @@ public class AssignmentStatementParser extends StatementParser {
      */
     public AssignmentStatementParser(PascalParserTD parent) {
         super(parent);
+    }
+
+    private static final EnumSet<PascalTokenType> COLON_EQUALS_SET =
+            ExpressionParser.EXPR_START_SET.clone();
+
+    static {
+        COLON_EQUALS_SET.add(PascalTokenType.COLON_EQUALS);
+        COLON_EQUALS_SET.addAll(StatementParser.STMT_FOLLOW_SET);
     }
 
     @Override
@@ -55,7 +65,8 @@ public class AssignmentStatementParser extends StatementParser {
         // The ASSIGN node adopts the variable node as it's first child.
         assignNode.addChild(variableNode);
 
-        // Look for the := token.
+        // Synchronize on the := token.
+        token = synchronize(COLON_EQUALS_SET);
         if (token.getType() == PascalTokenType.COLON_EQUALS) {
             token = nextToken();
         } else {
