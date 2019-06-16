@@ -157,6 +157,30 @@ public class PascalParserTD extends Parser {
     }
 
     /**
+     * <h1>Error Recovery</h1>
+     * <p>
+     * What are a parser’s options for error recovery?
+     *
+     * <ol>
+     * <li>
+     * It can simply terminate after encountering a syntax error. In the worst cases, it can hang by getting stuck on a token that’s
+     * never consumed or even crash. In other words, there is no error recovery at all. This option is easy for the compiler writer but
+     * extremely annoying for programmers attempting to use the compiler.
+     * </li>
+     * <li>
+     * It can become hopelessly lost but still attempt to parse the rest of the source program while spitting out sequences of irrelevant
+     * error messages. There’s no error recovery here, either, but the compiler writer doesn’t want to admit it.
+     * </li>
+     * <li>
+     * It can skip tokens after the erroneous one until it finds a token it recognizes and safely resume syntax checking the rest of the
+     * source program.
+     * </li>
+     * </ol>
+     * <p>
+     * Clearly, the first two options are undesirable. To implement the third option, the parser must “synchronize” itself frequently at
+     * tokens that it expects. Whenever there is a syntax error, the parser must find the next token in the source program where it can reliably
+     * resume syntax checking. Ideally, it can find such a token as soon after the error as possible.
+     * <p>
      * Synchronize the parser.
      *
      * @param syncSet the set of token types for synchronizing the parser.
