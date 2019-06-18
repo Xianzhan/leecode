@@ -56,6 +56,50 @@ public class CaseStatementParser extends StatementParser {
 
     /**
      * Parse a CASE statement.
+     * <p>
+     * The  CASE statement is the most challenging of the Pascal control statements to parse. The statement parser subclass
+     * CompoundStatementParser parses the  CASE statement and generates its parse tree. For the statement
+     *
+     * <pre>
+     * CASE i+1 OF
+     *     1:       j := i;
+     *     4:       j := 4*i;
+     *     5, 2, 3: j := 523*i;
+     * END
+     * </pre>
+     *
+     * <pre>
+     *               SELECT
+     *      /            |
+     *     ADD           ├ - - - - - - - - - > SELECT
+     *    /   \          |                     BRANCH
+     * VAR:i CONSTANT:1  |        /                 |
+     *                   |    SELECT              ASSIGN
+     *                   |  CONSTANTS             /     \
+     *                   |      |               VAR:j  VAR:i
+     *                   |   CONSTANT:1
+     *                   ├ - - - - - - - - - > SELECT
+     *                   |                     BRANCH
+     *                   |        /                 |
+     *                   |    SELECT              ASSIGN
+     *                   |  CONSTANTS             /     \
+     *                   |      |               VAR:j MULTIPLY
+     *                   |   CONSTANT:4               /       \
+     *                   |                       CONSTANT:4  VAR:i
+     *                   └ - - - - - - - - - > SELECT
+     *                                         BRANCH
+     *                                 /                 \
+     *                            SELECT               ASSIGN
+     *                          CONSTANTS             /      \
+     *                 /        |       \           VAR:j MULTIPLY
+     *          CONSTANT:5 CONSTANT:2 CONSTANT:3          /      \
+     *                                             CONSTANT:523 VAR:i
+     * </pre>
+     * <p>
+     * The synchronization set  CONSTANT_START_SET contains the token types that can start a constant. Method  parse() creates a  SELECT
+     * node, and after parsing the  CASE expression, it uses the synchronization set  OF_SET to synchronize itself at the  OF token. The  while loop
+     * calls  parseBranch() to parse each  CASE branch and then looks for a semicolon. The loop exits with the  END token. The method returns
+     * the  SELECT node.
      *
      * @param token the initial token.
      * @return the root node of the generated parse tree.
@@ -119,6 +163,11 @@ public class CaseStatementParser extends StatementParser {
 
     /**
      * Parse a CASE branch.
+     * <p>
+     * Method  parseBranch() creates a  SELECT_BRANCH node and a  SELECT_CONSTANTS node before calling  parseConstantList() to parse
+     * the list of constants. It then looks for a colon. The  SELECT_CONSTANTS node adopts the constant nodes and the  SELECT_BRANCH node
+     * adopts the  SELECT_CONSTANTS node. A call to  statementParser.parse() parses the branch statement, and the  SELECT_BRANCH node
+     * adopts the root of the branch statement’s parse tree as its second child.
      *
      * @param token       the current token.
      * @param constantSet the set of CASE branch constants.
@@ -172,6 +221,10 @@ public class CaseStatementParser extends StatementParser {
 
     /**
      * Parse a list of CASE branch constants.
+     * <p>
+     * Method  parseConstantList() parses a list of constants separated by commas. It calls  parseConstant() to parse each constant. In
+     * this chapter,  parseConstant() can parse integer constants (optionally preceded by a  + or  – sign) by calling  parseIntegerConstant()
+     * and character constants by calling  parseCharacterConstant().
      *
      * @param token         the current token.
      * @param constantsNode the parent SELECT_CONSTANTS node.
@@ -202,6 +255,19 @@ public class CaseStatementParser extends StatementParser {
 
     /**
      * Parse CASE branch constant.
+     * <p>
+     * The syntax diagram for the  CASE statement in Figure 7-1 does not reflect two syntax rules regarding a branch constant:
+     * <ul>
+     * <li>
+     * A branch constant can be an integer or a single character.
+     * </li>
+     * <li>
+     * A branch constant cannot be used more than once in a  CASE statement.
+     * </li>
+     * </ul>
+     * To address the first rule, method  parseConstant() checks that any STRING token has a value of length 1. For the second rule,
+     * method  parse() creates the set  constantSet , which is passed down to method  parseConstant() . When it is done parsing the constant,
+     * method  parseConstant() checks the set to ensure that the constant has not already been used.
      *
      * @param token       the current token.
      * @param constantSet the set of CASE branch constants.
@@ -238,8 +304,8 @@ public class CaseStatementParser extends StatementParser {
 
             case STRING: {
                 constantNode = parseCharacterConstant(token,
-                                                      (String) token.getValue(),
-                                                      sign);
+                        (String) token.getValue(),
+                        sign);
                 break;
             }
 
@@ -255,8 +321,8 @@ public class CaseStatementParser extends StatementParser {
 
             if (constantSet.contains(value)) {
                 errorHandler.flag(token,
-                                  PascalErrorCode.CASE_CONSTANT_REUSED,
-                                  this);
+                        PascalErrorCode.CASE_CONSTANT_REUSED,
+                        this);
             } else {
                 constantSet.add(value);
             }

@@ -55,6 +55,30 @@ public class ForStatementParser extends StatementParser {
     /**
      * Parse the FOR statement.
      *
+     * <pre>
+     * FOR k := j TO 5 DO n := k
+     * </pre>
+     *
+     * <pre>
+     *                    COMPOUND
+     *              /                    \
+     *          ASSIGN                  LOOP
+     *       /      \        /          |           \
+     *   VAR:k    VAR:j    TEST        ASSIGN       ASSIGN
+     *                       |       /      \       /     \
+     *                      GT     VAR:n   VAR:k  VAR:k   ADD
+     *                   /    \                          /   \
+     *              VAR:k  CONSTANT:5                 VAR:k CONSTANT:1
+     * </pre>
+     * <p>
+     * The root of the parse tree is a  COMPOUND node. The  COMPOUND node’s first child is the subtree of the embedded assignment which
+     * initializes the control variable. The second child is a  LOOP node.
+     * <p>
+     * The first child of the  LOOP node is a  TEST node. The  TEST node’s child is either a  GT or the  LT relational expression subtree,
+     * depending on whether the  FOR statement is  TO or  DOWNTO , which tests the control variable’s value against the final value. The second
+     * child of the  LOOP node is the subtree of the nested statement. The third child is either an  ADD or a  SUBTRACT arithmetic expression
+     * subtree, again depending on  TO or  DOWNTO , which increments or decrements the control variable’s value by 1.
+     *
      * @param token the initial token.
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.
@@ -102,8 +126,8 @@ public class ForStatementParser extends StatementParser {
         // Create a relational operator node: GT for TO, or LT for DOWNTO.
         ICodeNode relOpNode =
                 ICodeFactory.createICodeNode(direction == PascalTokenType.TO
-                                                     ? ICodeNodeTypeEnumImpl.GT
-                                                     : ICodeNodeTypeEnumImpl.LT);
+                        ? ICodeNodeTypeEnumImpl.GT
+                        : ICodeNodeTypeEnumImpl.LT);
 
         // Copy the control VARIABLE node. The relational operator
         // node adopts the copied VARIABLE node as it's first child.
@@ -142,7 +166,7 @@ public class ForStatementParser extends StatementParser {
 
         // Create the arithmetic operator node:
         // ADD for TO, or SUBTRACT for DOWNTO.
-        ICodeNode arithOpNode = ICodeFactory.createICodeNode(
+        ICodeNode arithmeticOpNode = ICodeFactory.createICodeNode(
                 direction == PascalTokenType.TO
                         ? ICodeNodeTypeEnumImpl.ADD
                         : ICodeNodeTypeEnumImpl.SUBTRACT
@@ -150,16 +174,16 @@ public class ForStatementParser extends StatementParser {
 
         // The operator node adopts a copy of the loop variable as its
         // first child and the value 1 as its second child.
-        arithOpNode.addChild(controlVarNode.copy());
+        arithmeticOpNode.addChild(controlVarNode.copy());
         ICodeNode oneNode =
                 ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.INTEGER_CONSTANT);
         oneNode.setAttribute(ICodeKeyEnumImpl.VALUE, 1);
-        arithOpNode.addChild(oneNode);
+        arithmeticOpNode.addChild(oneNode);
 
         // The next ASSIGN node adopts the arithmetic operator node as its
         // second child. The loop node adopts the next ASSIGN node as its
         // third child.
-        nextAssignNode.addChild(arithOpNode);
+        nextAssignNode.addChild(arithmeticOpNode);
         loopNode.addChild(nextAssignNode);
 
         // Set the current line number attribute.

@@ -40,6 +40,26 @@ public class WhileStatementParser extends StatementParser {
     /**
      * Parse a WHILE statement.
      *
+     * <pre>
+     * WHILE i > j DO k := i
+     * </pre>
+     *
+     * <pre>
+     *            LOOP
+     *        /          \
+     *     TEST        ASSIGN
+     *       |          /   \
+     *      NOT      VAR:k VAR:i
+     *       |
+     *      GT
+     *     /  \
+     *  VAR:i VAR:j
+     * </pre>
+     * <p>
+     * For a Pascal  WHILE statement, the  LOOP node’s first child is the  TEST node and the second child is the subtree of the nested
+     * statement. Therefore, at runtime, the exit test occurs at the start of the loop. But because a  WHILE loop exits when the test expression is
+     * false, the parent of the relational expression subtree is a generated  NOT node.
+     *
      * @param token the initial token.
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.

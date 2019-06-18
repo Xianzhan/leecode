@@ -22,4 +22,7 @@ java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute
 
 # Chapter 6: Simple Interpreter I
 java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute "*/leecode/pascal/target/classes/assignments.txt"
+
+# Chapter 7: Parsing the  REPEAT Statement
+java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal compile -i "*/leecode/pascal/target/classes/repeat.txt"
 ```

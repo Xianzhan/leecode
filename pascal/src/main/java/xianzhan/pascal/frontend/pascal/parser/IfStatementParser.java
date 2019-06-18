@@ -40,6 +40,25 @@ public class IfStatementParser extends StatementParser {
     /**
      * Parse an IF statement.
      *
+     * <pre>
+     * IF (i = j) THEN t := 200
+     *            ELSE f := -200;
+     * </pre>
+     *
+     * <pre>
+     *                     IF
+     *         /           |                 \
+     *        EQ         ASSIGN             ASSIGN
+     *     /    \        /     \           /     \
+     *   VAR:i VAR:j  VAR:t CONSTANT:200 VAR:f  NEGATE
+     *                                            |
+     *                                        CONSTANT:200
+     * </pre>
+     * <p>
+     * The  IF node has either two or three children. The first child is the relational expression subtree and the second child is the subtree
+     * of the  THEN nested statement. If there is an  ELSE part, the third child is the subtree of the  ELSE nested statement. Otherwise, the  IF node
+     * has only two children.
+     *
      * @param token the initial token.
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.

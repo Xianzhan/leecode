@@ -27,6 +27,28 @@ public class RepeatStatementParser extends StatementParser {
     /**
      * Parse a REPEAT statement.
      *
+     * <pre>
+     * REPEAT
+     *     j := i;
+     *     k := i
+     * UNTIL i <= j
+     * </pre>
+     *
+     * <pre>
+     *                 LOOP
+     *          /        |       \
+     *       ASSIGN    ASSIGN    TEST
+     *     /   \       /   \       |
+     * VAR:j  VAR:i  VAR:k VAR:i  LE
+     *                            / \
+     *                         VAR:i VAR:j
+     * </pre>
+     * <p>
+     * The  LOOP node can have any number of children that are statement subtrees. At least one child should be a  TEST node whose only
+     * child is a relational expression subtree. At runtime, the loop exits if the expression evaluates to true. A  TEST node can be any one of
+     * the  LOOP node’s children, so the exit test can occur at the start of the loop, at the end of the loop, or somewhere in between. For a
+     * Pascal  REPEAT statement, the  TEST node is the  LOOP node’s last child and therefore, the exit test is at the end of the loop.
+     *
      * @param token the initial token.
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.
@@ -45,9 +67,9 @@ public class RepeatStatementParser extends StatementParser {
         // The LOOP node is the parent of the statement subtrees.
         StatementParser statementParser = new StatementParser(this);
         statementParser.parseList(token,
-                                  loopNode,
-                                  PascalTokenType.UNTIL,
-                                  PascalErrorCode.MISSING_UNTIL);
+                loopNode,
+                PascalTokenType.UNTIL,
+                PascalErrorCode.MISSING_UNTIL);
         token = currentToken();
 
         // Parse the expression.
