@@ -25,4 +25,7 @@ java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute
 
 # Chapter 7: Parsing the  REPEAT Statement
 java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal compile -i "*/leecode/pascal/target/classes/repeat.txt"
+
+# Chapter 8: Interpreting Control Statements
+java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute "*/leecode/pascal/target/classes/repeat.txt"
 ```

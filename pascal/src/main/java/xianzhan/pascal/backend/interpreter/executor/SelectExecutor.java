@@ -33,6 +33,15 @@ public class SelectExecutor extends StatementExecutor {
 
     /**
      * Execute SELECT statement.
+     * <p>
+     * Method  execute() executes the  SELECT node’s first child, which is the expression that evaluates to the selection value that
+     * searchBranches() uses to search the node’s  SELECT_BRANCH children. If  searchBranches() returns a reference to a branch, then method
+     * execute() executes that branch’s statement.
+     * <p>
+     * This version of class  SelectExecutor is not very efficient. Method  searchBranches() performs a linear search of the
+     * SELECT_BRANCH subtrees, and  searchConstants() performs a linear search of each branch’s constants. Performance becomes slower if
+     * the source statement has more branches and constants. It takes longer to find a matching branch that appears later in the statement
+     * than one that appears earlier.
      *
      * @param node the root node of the statement.
      * @return null.

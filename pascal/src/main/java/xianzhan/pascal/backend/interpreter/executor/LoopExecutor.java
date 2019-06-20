@@ -24,6 +24,10 @@ public class LoopExecutor extends StatementExecutor {
 
     /**
      * Execute a loop statement.
+     * <p>
+     * The  execute() method’s  while loop repeatedly interprets the children of the  LOOP node. The inner  for loop executes each child that
+     * is a statement subtree. One of the children can be a  TEST node whose child is a relative expression subtree. The method executes the
+     * expression and exits the loop if the expression evaluates to true.
      *
      * @param node the root node of the statement.
      * @return null.

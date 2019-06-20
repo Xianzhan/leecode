@@ -24,6 +24,10 @@ public class IfExecutor extends StatementExecutor {
 
     /**
      * Execute an IF statement.
+     * <p>
+     * The  execute() method executes the  IF node’s first child, which is a relative expression subtree. If the expression evaluates to true,
+     * then the method executes the second child, the  THEN statement subtree. If the expression evaluates to false and there is a third child,
+     * the method executes instead the third child, the  ELSE statement subtree.
      *
      * @param node the root node of the statement.
      * @return null.
@@ -40,8 +44,8 @@ public class IfExecutor extends StatementExecutor {
         StatementExecutor statementExecutor = new StatementExecutor(this);
 
         // Evaluate the expression to determine which statement to execute.
-        boolean b = (boolean) expressionExecutor.execute(exprNode);
-        if (b) {
+        boolean expressionIsTrue = (boolean) expressionExecutor.execute(exprNode);
+        if (expressionIsTrue) {
             statementExecutor.execute(thenStmtNode);
         } else if (elseStmtNode != null) {
             statementExecutor.execute(elseStmtNode);
