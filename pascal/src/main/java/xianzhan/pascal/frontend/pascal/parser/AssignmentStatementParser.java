@@ -39,11 +39,17 @@ public class AssignmentStatementParser extends StatementParser {
         COLON_EQUALS_SET.addAll(StatementParser.STMT_FOLLOW_SET);
     }
 
+    /**
+     * Parse an assignment statement.
+     *
+     * @param token the initial token.
+     * @return the root node of the generated parse tree.
+     * @throws Exception if an error occurred.
+     */
     @Override
     public ICodeNode parse(Token token) throws Exception {
         // Create the ASSIGN node.
-        ICodeNode assignNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
+        ICodeNode assignNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
 
         // Look up the target identifier in the symbol table stack.
         // Enter the identifier into the table if it's not found.
@@ -58,8 +64,7 @@ public class AssignmentStatementParser extends StatementParser {
         token = nextToken();
 
         // Create the variable node and set it's name attribute.
-        ICodeNode variableNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.VARIABLE);
+        ICodeNode variableNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.VARIABLE);
         variableNode.setAttribute(ICodeKeyEnumImpl.ID, targetId);
 
         // The ASSIGN node adopts the variable node as it's first child.
@@ -68,6 +73,7 @@ public class AssignmentStatementParser extends StatementParser {
         // Synchronize on the := token.
         token = synchronize(COLON_EQUALS_SET);
         if (token.getType() == PascalTokenType.COLON_EQUALS) {
+            // consume the :=
             token = nextToken();
         } else {
             errorHandler.flag(token, PascalErrorCode.MISSING_COLON_EQUALS, this);

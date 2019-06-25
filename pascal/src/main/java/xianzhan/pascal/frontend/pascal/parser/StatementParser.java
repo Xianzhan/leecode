@@ -157,6 +157,10 @@ public class StatementParser extends PascalParserTD {
                              ICodeNode parentNode,
                              PascalTokenType terminator,
                              PascalErrorCode errorCode) throws Exception {
+        // Synchronization set for the terminator.
+        EnumSet<PascalTokenType> terminatorSet = STMT_START_SET.clone();
+        terminatorSet.add(terminator);
+
         // Loop to parse each statement until the END token
         // or the end of the source file.
         while (!(token instanceof EofToken) && (token.getType() != terminator)) {
@@ -175,15 +179,13 @@ public class StatementParser extends PascalParserTD {
 
             // If at the start of the next assignment statement
             // then missing a semicolon.
-            else if (tokenType == PascalTokenType.IDENTIFIER) {
+            else if (STMT_START_SET.contains(tokenType)) {
                 errorHandler.flag(token, PascalErrorCode.MISSING_SEMICOLON, this);
             }
 
-            // Unexpected token.
-            else if (tokenType != terminator) {
-                errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
-                token = nextToken();
-            }
+            // Synchronize at the start of the next statement
+            // or at the terminator.
+            token = synchronize(terminatorSet);
         }
 
         // Look for the terminator token.

@@ -20,7 +20,11 @@ public class SymTabStackImpl extends ArrayList<SymTab> implements SymTabStack {
     /**
      * current scope nesting level.
      */
-    private int currentNestingLevel;
+    private int         currentNestingLevel;
+    /**
+     * entry for the main program id.
+     */
+    private SymTabEntry programId;
 
     public SymTabStackImpl() {
         // The constructor creates and adds the first symbol table
@@ -49,8 +53,51 @@ public class SymTabStackImpl extends ArrayList<SymTab> implements SymTabStack {
         return get(currentNestingLevel).lookup(name);
     }
 
+    /**
+     * Look up an existing symbol table entry throughout the stack.
+     *
+     * @param name the name of the entry.
+     * @return the entry, or null if it does not exist.
+     */
     @Override
     public SymTabEntry lookup(String name) {
-        return lookupLocal(name);
+        SymTabEntry foundEntry = null;
+
+        // Search the current and enclosing scopes.
+        for (int i = currentNestingLevel; i >= 0 && foundEntry == null; --i) {
+            foundEntry = get(i).lookup(name);
+        }
+        return foundEntry;
+    }
+
+    @Override
+    public void setProgramId(SymTabEntry id) {
+        this.programId = id;
+    }
+
+    @Override
+    public SymTabEntry getProgramId() {
+        return programId;
+    }
+
+    @Override
+    public SymTab push() {
+        SymTab symTab = SymTabFactory.createSymTab(++currentNestingLevel);
+        add(symTab);
+        return symTab;
+    }
+
+    @Override
+    public SymTab push(SymTab symTab) {
+        ++currentNestingLevel;
+        add(symTab);
+        return symTab;
+    }
+
+    @Override
+    public SymTab pop() {
+        SymTab symTab = get(currentNestingLevel);
+        remove(currentNestingLevel--);
+        return symTab;
     }
 }

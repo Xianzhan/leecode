@@ -320,9 +320,11 @@ public class CaseStatementParser extends StatementParser {
             Object value = constantNode.getAttribute(ICodeKeyEnumImpl.VALUE);
 
             if (constantSet.contains(value)) {
-                errorHandler.flag(token,
+                errorHandler.flag(
+                        token,
                         PascalErrorCode.CASE_CONSTANT_REUSED,
-                        this);
+                        this
+                );
             } else {
                 constantSet.add(value);
             }
@@ -378,6 +380,8 @@ public class CaseStatementParser extends StatementParser {
                 constantNode =
                         ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.STRING_CONSTANT);
                 constantNode.setAttribute(ICodeKeyEnumImpl.VALUE, value);
+            } else {
+                errorHandler.flag(token, PascalErrorCode.INVALID_CONSTANT, this);
             }
         }
         return constantNode;

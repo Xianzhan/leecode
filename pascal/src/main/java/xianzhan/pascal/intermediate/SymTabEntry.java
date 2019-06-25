@@ -11,11 +11,15 @@ import java.util.ArrayList;
 public interface SymTabEntry {
 
     /**
+     * Return the name of the entry.
+     *
      * @return the name of the entry.
      */
     String getName();
 
     /**
+     * Return the symbol table that contains this entry.
+     *
      * @return the symbol table that contains this entry.
      */
     SymTab getSymTab();
@@ -28,6 +32,8 @@ public interface SymTabEntry {
     void appendLineNumber(int lineNumber);
 
     /**
+     * Return the list of source line numbers.
+     *
      * @return the list of source line numbers.
      */
     ArrayList<Integer> getLineNumbers();
@@ -47,4 +53,32 @@ public interface SymTabEntry {
      * @return the attribute value.
      */
     Object getAttribute(SymTabKey key);
+
+    /**
+     * Setter.
+     *
+     * @param definition the definition to set.
+     */
+    void setDefinition(Definition definition);
+
+    /**
+     * Getter.
+     *
+     * @return the definition.
+     */
+    Definition getDefinition();
+
+    /**
+     * Setter.
+     *
+     * @param typeSpec the type specification to set.
+     */
+    void setTypeSpec(TypeSpec typeSpec);
+
+    /**
+     * Getter.
+     *
+     * @return the type specification.
+     */
+    TypeSpec getTypeSpec();
 }

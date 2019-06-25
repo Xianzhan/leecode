@@ -6,7 +6,9 @@ import xianzhan.pascal.frontend.FrontendFactory;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Source;
 import xianzhan.pascal.intermediate.ICode;
+import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabStack;
+import xianzhan.pascal.intermediate.impl.SymTabKeyImpl;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageListener;
 import xianzhan.pascal.message.MessageType;
@@ -36,10 +38,6 @@ public class Pascal {
      * generated intermediate code
      */
     private ICode       iCode;
-//    /**
-//     * generated symbol table
-//     */
-///    private SymTab  symTab;
     /**
      * symbol table stack
      */
@@ -74,8 +72,10 @@ public class Pascal {
             source.close();
 
             if (parser.getErrorCount() == 0) {
-                iCode = parser.getICode();
                 symTabStack = parser.getSymTabStack();
+
+                SymTabEntry programId = symTabStack.getProgramId();
+                iCode = (ICode) programId.getAttribute(SymTabKeyImpl.ROUTINE_ICODE);
 
                 if (xref) {
                     CrossReferencer crossReferencer = new CrossReferencer();
@@ -83,9 +83,8 @@ public class Pascal {
                 }
 
                 if (intermediate) {
-                    ParseTreePrinter treePrinter =
-                            new ParseTreePrinter(System.out);
-                    treePrinter.print(iCode);
+                    ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
+                    treePrinter.print(symTabStack);
                 }
 
                 backend.process(iCode, symTabStack);
@@ -115,7 +114,7 @@ public class Pascal {
 
             // Operation.
             if (!(operation.equalsIgnoreCase("compile")
-                  || operation.equalsIgnoreCase("execute"))) {
+                    || operation.equalsIgnoreCase("execute"))) {
                 throw new Exception();
             }
 
@@ -171,15 +170,9 @@ public class Pascal {
         }
     }
 
-//    private static final String TOKEN_FORMAT =
-//            ">>> %-15s line=%03d, pos=%2d, text=\"%s\"";
-//    private static final String VALUE_FORMAT =
-//            ">>>                 value=%s";
-
-    private static final String PARSER_SUMMARY_FORMAT =
-            "\n%,20d source lines." +
-            "\n%,20d syntax errors." +
-            "\n%,20.2f seconds total parsing time.\n";
+    private static final String PARSER_SUMMARY_FORMAT = "\n%,20d source lines."
+            + "\n%,20d syntax errors."
+            + "\n%,20.2f seconds total parsing time.\n";
 
     private static final int PREFIX_WIDTH = 5;
 
@@ -198,56 +191,6 @@ public class Pascal {
 
             switch (type) {
 
-///                case TOKEN: {
-//                    Object[] body = (Object[]) message.getBody();
-//                    int line = (Integer) body[0];
-//                    int position = (Integer) body[1];
-//                    TokenType tokenType = (TokenType) body[2];
-//                    String tokenText = (String) body[3];
-//                    Object tokenValue = body[4];
-//
-//                    System.out.println(
-//                            String.format(TOKEN_FORMAT, tokenType, line, position, tokenText)
-//                    );
-//                    if (tokenValue != null) {
-//                        if (tokenType == PascalTokenType.STRING) {
-//                            tokenValue = "\"" + tokenValue + "\"";
-//                        }
-//
-//                        System.out.println(
-//                                String.format(VALUE_FORMAT, tokenValue)
-//                        );
-//                    }
-//
-//                    break;
-//                }
-//
-//                case SYNTAX_ERROR: {
-//                    Object[] body = (Object[]) message.getBody();
-//                    int lineNumber = (Integer) body[0];
-//                    int position = (Integer) body[1];
-//                    String tokenText = (String) body[2];
-//                    String errorMessage = (String) body[3];
-//
-//                    int spaceCount = PREFIX_WIDTH + position;
-//                    StringBuilder flagBuffer = new StringBuilder();
-//
-//                    // Spaces up to the error position.
-//                    flagBuffer.append(" ".repeat(Math.max(0, spaceCount - 1)));
-//
-//                    // A pointer to the error followed by the error message.
-//                    flagBuffer.append("^\n*** ").append(errorMessage);
-//
-//                    // Text, if any, of the bad token.
-//                    if (tokenText != null) {
-//                        flagBuffer.append(" [at \"").append(tokenText)
-//                                .append("\"]");
-//                    }
-//
-//                    System.out.println(flagBuffer.toString());
-//                    break;
-//                }
-
                 case PARSER_SUMMARY: {
                     Number[] body = (Number[]) message.getBody();
                     int statementCount = (Integer) body[0];
@@ -264,7 +207,7 @@ public class Pascal {
                 }
 
                 case SYNTAX_ERROR: {
-                    Object body[] = (Object[]) message.getBody();
+                    Object[] body = (Object[]) message.getBody();
                     int lineNumber = (Integer) body[0];
                     int position = (Integer) body[1];
                     String tokenText = (String) body[2];
@@ -281,7 +224,8 @@ public class Pascal {
 
                     // Text, if any, of the bad token.
                     if (tokenText != null) {
-                        flagBuffer.append(" [at \"").append(tokenText)
+                        flagBuffer.append(" [at \"")
+                                .append(tokenText)
                                 .append("\"]");
                     }
 
@@ -293,20 +237,16 @@ public class Pascal {
         }
     }
 
-    private static final String INTERPRETER_SUMMARY_FORMAT =
-            "\n%,20d statements executed." +
+    private static final String INTERPRETER_SUMMARY_FORMAT = "\n%,20d statements executed." +
             "\n%,20d runtime errors." +
             "\n%,20.2f seconds total execution time.\n";
 
-    private static final String COMPILER_SUMMARY_FORMAT =
-            "\n%,20d instructions generated." +
+    private static final String COMPILER_SUMMARY_FORMAT = "\n%,20d instructions generated." +
             "\n%,20.2f seconds total code generation time.\n";
 
-    private static final String LINE_FORMAT =
-            ">>> AT LINE %03d\n";
+    private static final String LINE_FORMAT = ">>> AT LINE %03d\n";
 
-    private static final String ASSIGN_FORMAT =
-            ">>> LINE %03d: %s = %s\n";
+    private static final String ASSIGN_FORMAT = ">>> LINE %03d: %s = %s\n";
 
     /**
      * Listener for back end messages.
@@ -353,7 +293,7 @@ public class Pascal {
                     System.out.print("*** RUNTIME ERROR");
                     if (lineNumber != null) {
                         System.out.print(" AT LINE " +
-                                         String.format("%03d", lineNumber));
+                                String.format("%03d", lineNumber));
                     }
                     System.out.println(": " + errorMessage);
                     break;

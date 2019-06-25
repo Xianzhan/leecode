@@ -4,9 +4,14 @@ import xianzhan.pascal.frontend.EofToken;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
-import xianzhan.pascal.frontend.pascal.parser.StatementParser;
+import xianzhan.pascal.frontend.pascal.parser.BlockParser;
+import xianzhan.pascal.intermediate.ICode;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.SymTabEntry;
+import xianzhan.pascal.intermediate.impl.DefinitionEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.SymTabKeyImpl;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
@@ -20,11 +25,17 @@ import java.util.EnumSet;
  * display a descriptive error message.
  * 3. Recovery. Move past the error and resume parsing.
  *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public class PascalParserTD extends Parser {
 
     protected static PascalErrorHandler errorHandler = new PascalErrorHandler();
+
+    /**
+     * name of the routine being parsed.
+     */
+    private SymTabEntry routineId;
 
     /**
      * Constructor.
@@ -63,75 +74,38 @@ public class PascalParserTD extends Parser {
     public void parse() throws Exception {
 
         long startTime = System.currentTimeMillis();
-        iCode = ICodeFactory.createICode();
+
+        ICode iCode = ICodeFactory.createICode();
+        Predefined.initialize(symTabStack);
+
+        routineId = symTabStack.enterLocal("DummyProgramName".toLowerCase());
+        routineId.setDefinition(DefinitionEnumImpl.PROGRAM);
+        symTabStack.setProgramId(routineId);
+
+        // Push a new symbol table onto the symbol table stack and set
+        // the routine's symbol table and intermediate code.
+        routineId.setAttribute(SymTabKeyImpl.ROUTINE_SYMTAB, symTabStack.push());
+        routineId.setAttribute(SymTabKeyImpl.ROUTINE_ICODE, iCode);
+
+        BlockParser blockParser = new BlockParser(this);
 
         try {
             Token token = nextToken();
-            ICodeNode rootNode = null;
 
-            // Look for the BEGIN token to parse a compound statement.
-            if (token.getType() == PascalTokenType.BEGIN) {
-                StatementParser statementParser = new StatementParser(this);
-                rootNode = statementParser.parse(token);
-                token = currentToken();
-            } else {
-                errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
-            }
+            // Parse a block.
+            ICodeNode rootNode = blockParser.parse(token, routineId);
+            iCode.setRoot(rootNode);
+            symTabStack.pop();
 
             // Look for the final period.
+            token = currentToken();
             if (token.getType() != PascalTokenType.DOT) {
                 errorHandler.flag(token, PascalErrorCode.MISSING_PERIOD, this);
             }
             token = currentToken();
 
-            // Set the parse tree root node.
-            if (rootNode != null) {
-                iCode.setRoot(rootNode);
-            }
-
-//            // Loop over each token until the end of file.
-///            while (!((token = nextToken()) instanceof EofToken)) {
-///                TokenType tokenType = token.getType();
-//
-//                // Cross reference only the identifiers
-///                if (tokenType == PascalTokenType.IDENTIFIER) {
-//                    // Note that Pascal is not case-sensitive.
-///                    String name = token.getText().toLowerCase();
-//
-//                    // If it's not already in the symbol table,
-//                    // create and enter a new entry for the identifier.
-///                    SymTabEntry entry = symTabStack.lookup(name);
-///                    if (entry == null) {
-///                        entry = symTabStack.enterLocal(name);
-///                    }
-//
-//                    // Append the current line number to the entry.
-///                    entry.appendLineNumber(token.getLineNumber());
-//
-//                    // Format each token.
-////                    Message message = new Message(
-////                            MessageType.TOKEN,
-////                            new Object[]{
-////                                    token.getLineNumber(),
-////                                    token.getPosition(),
-////                                    tokenType,
-////                                    token.getText(),
-////                                    token.getValue()
-////                            }
-////                    );
-////                    sendMessage(message);
-///                } else if (tokenType == PascalTokenType.ERROR) {
-///                    errorHandler.flag(
-///                            token,
-///                            (PascalErrorCode) token.getValue(),
-///                            this
-///                    );
-///                }
-///            }
-
             // Send the parser summary message.
-            float elapsedTime =
-                    (System.currentTimeMillis() - startTime) / 1000F;
+            float elapsedTime = (System.currentTimeMillis() - startTime) / 1000F;
             Message message = new Message(
                     MessageType.PARSER_SUMMARY,
                     new Number[]{
@@ -205,5 +179,9 @@ public class PascalParserTD extends Parser {
         }
 
         return token;
+    }
+
+    public SymTabEntry getRoutineId() {
+        return routineId;
     }
 }

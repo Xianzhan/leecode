@@ -23,6 +23,12 @@
  *                ICodeKey
  * </pre>
  *
+ * <pre>
+ *                 TypeForm
+ *      TypeSpec <
+ *                 TypeKey
+ * </pre>
+ *
  * @author xianzhan
  * @since 2019-05-23
  */

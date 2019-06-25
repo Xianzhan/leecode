@@ -1,8 +1,10 @@
 package xianzhan.pascal.intermediate.impl;
 
+import xianzhan.pascal.intermediate.Definition;
 import xianzhan.pascal.intermediate.SymTab;
 import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabKey;
+import xianzhan.pascal.intermediate.TypeSpec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,14 @@ public class SymTabEntryImpl extends HashMap<SymTabKey, Object> implements SymTa
      * source line numbers.
      */
     private ArrayList<Integer> lineNumbers;
+    /**
+     * how the identifier is defined
+     */
+    private Definition         definition;
+    /**
+     * type specification.
+     */
+    private TypeSpec           typeSpec;
 
     /**
      * @param name   the name of the entry.
@@ -64,5 +74,25 @@ public class SymTabEntryImpl extends HashMap<SymTabKey, Object> implements SymTa
     @Override
     public Object getAttribute(SymTabKey key) {
         return get(key);
+    }
+
+    @Override
+    public void setDefinition(Definition definition) {
+        this.definition = definition;
+    }
+
+    @Override
+    public Definition getDefinition() {
+        return definition;
+    }
+
+    @Override
+    public void setTypeSpec(TypeSpec typeSpec) {
+        this.typeSpec = typeSpec;
+    }
+
+    @Override
+    public TypeSpec getTypeSpec() {
+        return typeSpec;
     }
 }
