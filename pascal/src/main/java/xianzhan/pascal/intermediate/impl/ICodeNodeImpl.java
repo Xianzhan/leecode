@@ -4,6 +4,7 @@ import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeKey;
 import xianzhan.pascal.intermediate.ICodeNode;
 import xianzhan.pascal.intermediate.ICodeNodeType;
+import xianzhan.pascal.intermediate.TypeSpec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,10 @@ public class ICodeNodeImpl extends HashMap<ICodeKey, Object> implements ICodeNod
      * children array list.
      */
     private ArrayList<ICodeNode> children;
+    /**
+     * data type specification
+     */
+    private TypeSpec             typeSpec;
 
     /**
      * Constructor.
@@ -87,6 +92,16 @@ public class ICodeNodeImpl extends HashMap<ICodeKey, Object> implements ICodeNod
             copy.put(attribute.getKey(), attribute.getValue());
         }
         return copy;
+    }
+
+    @Override
+    public void setTypeSpec(TypeSpec typeSpec) {
+        this.typeSpec = typeSpec;
+    }
+
+    @Override
+    public TypeSpec getTypeSpec() {
+        return typeSpec;
     }
 
     @Override

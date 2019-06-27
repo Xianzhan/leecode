@@ -6,7 +6,10 @@ import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.TypeChecker;
 
 import java.util.EnumSet;
 
@@ -74,7 +77,16 @@ public class IfStatementParser extends StatementParser {
         // Parse the expression.
         // The IF node adopts the expression subtree as its first child.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        ifNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        ifNode.addChild(exprNode);
+
+        // Type check: The expression type must be boolean.
+        TypeSpec exprType = exprNode != null
+                ? exprNode.getTypeSpec()
+                : Predefined.undefinedType;
+        if (!TypeChecker.isBoolean(exprType)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
 
         // Synchronize at the THEN.
         token = synchronize(THEN_SET);

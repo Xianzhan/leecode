@@ -31,4 +31,7 @@ java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute
 
 # Chapter 9: Parsing Declarations
 java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute -x "*/leecode/pascal/target/classes/declarations.txt"
+
+# Chapter 10: Pascal Syntax Checker III
+java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal compile -i "*/leecode/pascal/target/classes/block.txt"
 ```

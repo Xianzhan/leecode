@@ -6,7 +6,10 @@ import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.TypeChecker;
 
 import java.util.EnumSet;
 
@@ -70,10 +73,8 @@ public class WhileStatementParser extends StatementParser {
         token = nextToken();
 
         // Create LOOP, TEST, and NOT nodes.
-        ICodeNode loopNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.LOOP);
-        ICodeNode breakNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
+        ICodeNode loopNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.LOOP);
+        ICodeNode breakNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
         ICodeNode notNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.NOT);
 
         // The LOOP node adopts the TEST node as its first child.
@@ -84,7 +85,16 @@ public class WhileStatementParser extends StatementParser {
         // Parse the expression.
         // The NOT node adopts the expression subtree as its only child.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        notNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        notNode.addChild(exprNode);
+
+        // Type check: The test expression must be boolean.
+        TypeSpec exprType = exprNode != null
+                ? exprNode.getTypeSpec()
+                : Predefined.undefinedType;
+        if (!TypeChecker.isBoolean(exprType)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
 
         // Synchronize at the DO.
         token = synchronize(DO_SET);

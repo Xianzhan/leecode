@@ -6,6 +6,7 @@ import xianzhan.pascal.intermediate.ICodeKey;
 import xianzhan.pascal.intermediate.ICodeNode;
 import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabStack;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeNodeImpl;
 import xianzhan.pascal.intermediate.impl.SymTabKeyImpl;
 
@@ -200,6 +201,29 @@ public class ParseTreePrinter {
      * @param node the parse tree node.
      */
     private void printTypeSpec(ICodeNodeImpl node) {
+        TypeSpec typeSpec = node.getTypeSpec();
+
+        if (typeSpec != null) {
+            String saveMargin = indentation;
+            indentation += indent;
+
+            String typeName;
+            SymTabEntry typeId = typeSpec.getIdentifier();
+
+            // Named type: Print the type identifier's name.
+            if (typeId != null) {
+                typeName = typeId.getName();
+            }
+
+            // Unnamed type: Print an artificial type identifier name.
+            else {
+                int code = typeSpec.hashCode() + typeSpec.getForm().hashCode();
+                typeName = "$anon_" + Integer.toHexString(code);
+            }
+
+            printAttribute("TYPE_ID", typeName);
+            indentation = saveMargin;
+        }
     }
 
     /**

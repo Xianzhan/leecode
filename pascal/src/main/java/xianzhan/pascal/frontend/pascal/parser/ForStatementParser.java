@@ -7,8 +7,12 @@ import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.TypeChecker;
+import xianzhan.pascal.intermediate.impl.TypeFormEnumImpl;
 
 import java.util.EnumSet;
 
@@ -90,20 +94,25 @@ public class ForStatementParser extends StatementParser {
         Token targetToken = token;
 
         // Create the loop COMPOUND, LOOP, and TEST nodes.
-        ICodeNode compoundNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.COMPOUND);
-        ICodeNode loopNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.LOOP);
-        ICodeNode testNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
+        ICodeNode compoundNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.COMPOUND);
+        ICodeNode loopNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.LOOP);
+        ICodeNode testNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
 
         // Parse the embedded initial assignment.
-        AssignmentStatementParser assignmentParser =
-                new AssignmentStatementParser(this);
+        AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
         ICodeNode initAssignNode = assignmentParser.parse(token);
+        TypeSpec controlType = initAssignNode != null
+                ? initAssignNode.getTypeSpec()
+                : Predefined.undefinedType;
 
         // Set the current line number attribute.
         setLineNumber(initAssignNode, targetToken);
+
+        // Type check: The control variable's type must be integer
+        //             or enumeration.
+        if (!TypeChecker.isInteger(controlType) && (controlType.getForm() != TypeFormEnumImpl.ENUMERATION)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
 
         // The COMPOUND node adopts the initial ASSIGN and the LOOP nodes
         // as it's first and second children.
@@ -124,10 +133,10 @@ public class ForStatementParser extends StatementParser {
         }
 
         // Create a relational operator node: GT for TO, or LT for DOWNTO.
-        ICodeNode relOpNode =
-                ICodeFactory.createICodeNode(direction == PascalTokenType.TO
-                        ? ICodeNodeTypeEnumImpl.GT
-                        : ICodeNodeTypeEnumImpl.LT);
+        ICodeNode relOpNode = ICodeFactory.createICodeNode(direction == PascalTokenType.TO
+                ? ICodeNodeTypeEnumImpl.GT
+                : ICodeNodeTypeEnumImpl.LT);
+        relOpNode.setTypeSpec(Predefined.booleanType);
 
         // Copy the control VARIABLE node. The relational operator
         // node adopts the copied VARIABLE node as it's first child.
@@ -137,7 +146,16 @@ public class ForStatementParser extends StatementParser {
         // Parse the termination expression. The relational operator node
         // adopts the expression as it's second child.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        relOpNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        relOpNode.addChild(exprNode);
+
+        // Type check: The termination expression type must be assignment
+        //             compatible with the control variable's type.
+        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
+                : Predefined.undefinedType;
+        if (!TypeChecker.areAssignmentCompatible(controlType, exprType)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
 
         // The TEST node adopts the relational operator node as it's only child.
         // The LOOP node adopts the TEST node as it's first child.
@@ -160,8 +178,7 @@ public class ForStatementParser extends StatementParser {
 
         // Create an assignment with a copy of the control variable
         // to advance the value of the variable.
-        ICodeNode nextAssignNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
+        ICodeNode nextAssignNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
         nextAssignNode.addChild(controlVarNode.copy());
 
         // Create the arithmetic operator node:
@@ -171,13 +188,14 @@ public class ForStatementParser extends StatementParser {
                         ? ICodeNodeTypeEnumImpl.ADD
                         : ICodeNodeTypeEnumImpl.SUBTRACT
         );
+        arithmeticOpNode.setTypeSpec(Predefined.integerType);
 
         // The operator node adopts a copy of the loop variable as its
         // first child and the value 1 as its second child.
         arithmeticOpNode.addChild(controlVarNode.copy());
-        ICodeNode oneNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.INTEGER_CONSTANT);
+        ICodeNode oneNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.INTEGER_CONSTANT);
         oneNode.setAttribute(ICodeKeyEnumImpl.VALUE, 1);
+        oneNode.setTypeSpec(Predefined.integerType);
         arithmeticOpNode.addChild(oneNode);
 
         // The next ASSIGN node adopts the arithmetic operator node as its

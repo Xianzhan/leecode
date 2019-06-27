@@ -6,7 +6,10 @@ import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.TypeChecker;
 
 /**
  * Parse a Pascal REPEAT statement.
@@ -60,8 +63,7 @@ public class RepeatStatementParser extends StatementParser {
 
         // Create the LOOP and TEST nodes.
         ICodeNode loopNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.LOOP);
-        ICodeNode testNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
+        ICodeNode testNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.TEST);
 
         // Parse the statement list terminated by the UNTIL token.
         // The LOOP node is the parent of the statement subtrees.
@@ -76,8 +78,17 @@ public class RepeatStatementParser extends StatementParser {
         // The TEST node adopts the expression subtree as its only child.
         // The LOOP node adopts the TEST node.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        testNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        testNode.addChild(exprNode);
         loopNode.addChild(testNode);
+
+        // Type check: The test expression must be boolean.
+        TypeSpec exprType = exprNode != null
+                ? exprNode.getTypeSpec()
+                : Predefined.undefinedType;
+        if (!TypeChecker.isBoolean(exprType)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
 
         return loopNode;
     }

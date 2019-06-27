@@ -6,9 +6,10 @@ import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
-import xianzhan.pascal.intermediate.SymTabEntry;
-import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
+import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
+import xianzhan.pascal.intermediate.impl.Predefined;
+import xianzhan.pascal.intermediate.impl.TypeChecker;
 
 import java.util.EnumSet;
 
@@ -51,26 +52,17 @@ public class AssignmentStatementParser extends StatementParser {
         // Create the ASSIGN node.
         ICodeNode assignNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
 
-        // Look up the target identifier in the symbol table stack.
-        // Enter the identifier into the table if it's not found.
-        String targetName = token.getText().toLowerCase();
-        SymTabEntry targetId = symTabStack.lookup(targetName);
-        if (targetId == null) {
-            targetId = symTabStack.enterLocal(targetName);
-        }
-        targetId.appendLineNumber(token.getLineNumber());
-
-        // consume the identifier token
-        token = nextToken();
-
-        // Create the variable node and set it's name attribute.
-        ICodeNode variableNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.VARIABLE);
-        variableNode.setAttribute(ICodeKeyEnumImpl.ID, targetId);
+        // Parse the target variable.
+        VariableParser variableParser = new VariableParser(this);
+        ICodeNode targetNode = variableParser.parse(token);
+        TypeSpec targetType = targetNode != null
+                ? targetNode.getTypeSpec()
+                : Predefined.undefinedType;
 
         // The ASSIGN node adopts the variable node as it's first child.
-        assignNode.addChild(variableNode);
+        assignNode.addChild(targetNode);
 
-        // Synchronize on the := token.
+        // Synchronize no the := token.
         token = synchronize(COLON_EQUALS_SET);
         if (token.getType() == PascalTokenType.COLON_EQUALS) {
             // consume the :=
@@ -79,11 +71,20 @@ public class AssignmentStatementParser extends StatementParser {
             errorHandler.flag(token, PascalErrorCode.MISSING_COLON_EQUALS, this);
         }
 
-        // Parse the expression. The ASSIGN node adopts the expression's
-        // node as it's second child.
+        // Parse the expression.  The ASSIGN node adopts the expression's
+        // node as its second child.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        assignNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        assignNode.addChild(exprNode);
 
+        // Type check: Assignment compatible?
+        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
+                : Predefined.undefinedType;
+        if (!TypeChecker.areAssignmentCompatible(targetType, exprType)) {
+            errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
+        }
+
+        assignNode.setTypeSpec(targetType);
         return assignNode;
     }
 }
