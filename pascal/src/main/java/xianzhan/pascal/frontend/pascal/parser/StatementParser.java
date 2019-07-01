@@ -6,8 +6,11 @@ import xianzhan.pascal.frontend.TokenType;
 import xianzhan.pascal.frontend.pascal.PascalErrorCode;
 import xianzhan.pascal.frontend.pascal.PascalParserTD;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
+import xianzhan.pascal.intermediate.Definition;
 import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.SymTabEntry;
+import xianzhan.pascal.intermediate.impl.DefinitionEnumImpl;
 import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
 import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
 
@@ -73,30 +76,61 @@ public class StatementParser extends PascalParserTD {
             PascalTokenType pascalTokenType = (PascalTokenType) tokenType;
             switch (pascalTokenType) {
                 case BEGIN: {
-                    CompoundStatementParser compoundStatementParser =
-                            new CompoundStatementParser(this);
+                    CompoundStatementParser compoundStatementParser = new CompoundStatementParser(this);
                     statementNode = compoundStatementParser.parse(token);
                     break;
                 }
 
                 // An assignment statement begins with a variable's identifier.
                 case IDENTIFIER: {
-                    AssignmentStatementParser assignmentStatementParser =
-                            new AssignmentStatementParser(this);
-                    statementNode = assignmentStatementParser.parse(token);
+                    String name = token.getText().toLowerCase();
+                    SymTabEntry id = symTabStack.lookup(name);
+                    Definition idDefinition = id != null
+                            ? id.getDefinition()
+                            : DefinitionEnumImpl.UNDEFINED;
+
+                    // Assignment statement or procedure call.
+                    switch ((DefinitionEnumImpl) idDefinition) {
+
+                        case VARIABLE:
+                        case VALUE_PARM:
+                        case VAR_PARM:
+                        case UNDEFINED: {
+                            AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
+                            statementNode = assignmentParser.parse(token);
+                            break;
+                        }
+
+                        case FUNCTION: {
+                            AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
+                            statementNode = assignmentParser.parseFunctionNameAssignment(token);
+                            break;
+                        }
+
+                        case PROCEDURE: {
+                            CallParser callParser = new CallParser(this);
+                            statementNode = callParser.parse(token);
+                            break;
+                        }
+
+                        default: {
+                            errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
+                            // consume identifier
+                            token = nextToken();
+                        }
+                    }
+
                     break;
                 }
 
                 case REPEAT: {
-                    RepeatStatementParser repeatParser =
-                            new RepeatStatementParser(this);
+                    RepeatStatementParser repeatParser = new RepeatStatementParser(this);
                     statementNode = repeatParser.parse(token);
                     break;
                 }
 
                 case WHILE: {
-                    WhileStatementParser whileParser =
-                            new WhileStatementParser(this);
+                    WhileStatementParser whileParser = new WhileStatementParser(this);
                     statementNode = whileParser.parse(token);
                     break;
                 }
@@ -120,8 +154,7 @@ public class StatementParser extends PascalParserTD {
                 }
 
                 default: {
-                    statementNode =
-                            ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.NO_OP);
+                    statementNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.NO_OP);
                     break;
                 }
             }

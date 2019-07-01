@@ -3,6 +3,7 @@ package xianzhan.pascal.backend.interpreter.executor;
 import xianzhan.pascal.backend.interpreter.Executor;
 import xianzhan.pascal.intermediate.ICodeNode;
 import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
+import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +98,11 @@ public class SelectExecutor extends StatementExecutor {
             for (ICodeNode constantNode : constantsList) {
 
                 // Create a jump table entry.
+                // Convert a single-character string constant to a character.
                 Object value = constantNode.getAttribute(ICodeKeyEnumImpl.VALUE);
+                if (constantNode.getType() == ICodeNodeTypeEnumImpl.STRING_CONSTANT) {
+                    value = ((String) value).charAt(0);
+                }
                 jumpTable.put(value, statementNode);
             }
         }

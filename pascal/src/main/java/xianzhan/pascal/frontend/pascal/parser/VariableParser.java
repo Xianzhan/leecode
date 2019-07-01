@@ -29,6 +29,13 @@ import java.util.EnumSet;
  * @since 2019-06-25
  */
 public class VariableParser extends StatementParser {
+
+    /**
+     * Set to true to parse a function name
+     * as the target of an assignment.
+     */
+    private boolean isFunctionTarget = false;
+
     /**
      * Constructor.
      *
@@ -82,10 +89,11 @@ public class VariableParser extends StatementParser {
      */
     public ICodeNode parse(Token token, SymTabEntry variableId) throws Exception {
         // Check how the variable is defined.
-        Definition definition = variableId.getDefinition();
-        if ((definition != DefinitionEnumImpl.VARIABLE)
-                && (definition != DefinitionEnumImpl.VALUE_PARM)
-                && (definition != DefinitionEnumImpl.VAR_PARM)) {
+        Definition definitionCode = variableId.getDefinition();
+        if (!((definitionCode == DefinitionEnumImpl.VARIABLE)
+                || (definitionCode == DefinitionEnumImpl.VALUE_PARM)
+                || (definitionCode == DefinitionEnumImpl.VAR_PARM
+                || (isFunctionTarget && (definitionCode == DefinitionEnumImpl.FUNCTION))))) {
             errorHandler.flag(token, PascalErrorCode.INVALID_IDENTIFIER_USAGE, this);
         }
 
@@ -97,18 +105,21 @@ public class VariableParser extends StatementParser {
         // consume the identifier
         token = nextToken();
 
-        // Parse array subscripts or record fields.
         TypeSpec variableType = variableId.getTypeSpec();
-        while (SUBSCRIPT_FIELD_START_SET.contains(token.getType())) {
-            ICodeNode subFldNode = token.getType() == PascalTokenType.LEFT_BRACKET
-                    ? parseSubscripts(variableType)
-                    : parseField(variableType);
-            token = currentToken();
 
-            // Update the variable's type.
-            // The variable node adopts the SUBSCRIPTS or FIELD node.
-            variableType = subFldNode.getTypeSpec();
-            variableNode.addChild(subFldNode);
+        if (!isFunctionTarget) {
+            // Parse array subscripts or record fields.
+            while (SUBSCRIPT_FIELD_START_SET.contains(token.getType())) {
+                ICodeNode subFldNode = token.getType() == PascalTokenType.LEFT_BRACKET
+                        ? parseSubscripts(variableType)
+                        : parseField(variableType);
+                token = currentToken();
+
+                // Update the variable's type.
+                // The variable node adopts the SUBSCRIPTS or FIELD node.
+                variableType = subFldNode.getTypeSpec();
+                variableNode.addChild(subFldNode);
+            }
         }
 
         variableNode.setTypeSpec(variableType);
@@ -195,8 +206,7 @@ public class VariableParser extends StatementParser {
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.
      */
-    private ICodeNode parseField(TypeSpec variableType)
-            throws Exception {
+    private ICodeNode parseField(TypeSpec variableType) throws Exception {
         // Create a FIELD node.
         ICodeNode fieldNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.FIELD);
 
@@ -228,5 +238,17 @@ public class VariableParser extends StatementParser {
 
         fieldNode.setTypeSpec(variableType);
         return fieldNode;
+    }
+
+    /**
+     * Parse a function name as the target of an assignment statement.
+     *
+     * @param token the initial token.
+     * @return the root node of the generated parse tree.
+     * @throws Exception if an error occurred.
+     */
+    public ICodeNode parseFunctionNameTarget(Token token) throws Exception {
+        isFunctionTarget = true;
+        return parse(token);
     }
 }

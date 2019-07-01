@@ -24,6 +24,12 @@ import java.util.EnumSet;
 public class AssignmentStatementParser extends StatementParser {
 
     /**
+     * Set to true to parse a function name
+     * as the target of an assignment.
+     */
+    private boolean isFunctionTarget = false;
+
+    /**
      * Constructor.
      *
      * @param parent the parent parser.
@@ -54,7 +60,9 @@ public class AssignmentStatementParser extends StatementParser {
 
         // Parse the target variable.
         VariableParser variableParser = new VariableParser(this);
-        ICodeNode targetNode = variableParser.parse(token);
+        ICodeNode targetNode = isFunctionTarget
+                ? variableParser.parseFunctionNameTarget(token)
+                : variableParser.parse(token);
         TypeSpec targetType = targetNode != null
                 ? targetNode.getTypeSpec()
                 : Predefined.undefinedType;
@@ -78,7 +86,8 @@ public class AssignmentStatementParser extends StatementParser {
         assignNode.addChild(exprNode);
 
         // Type check: Assignment compatible?
-        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
+        TypeSpec exprType = exprNode != null
+                ? exprNode.getTypeSpec()
                 : Predefined.undefinedType;
         if (!TypeChecker.areAssignmentCompatible(targetType, exprType)) {
             errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
@@ -86,5 +95,17 @@ public class AssignmentStatementParser extends StatementParser {
 
         assignNode.setTypeSpec(targetType);
         return assignNode;
+    }
+
+    /**
+     * Parse an assignment to a function name.
+     *
+     * @param token token
+     * @return ICodeNode
+     * @throws Exception if an error occurred.
+     */
+    public ICodeNode parseFunctionNameAssignment(Token token) throws Exception {
+        isFunctionTarget = true;
+        return parse(token);
     }
 }

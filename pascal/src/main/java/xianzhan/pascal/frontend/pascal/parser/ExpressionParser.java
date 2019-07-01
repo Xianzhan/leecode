@@ -250,8 +250,7 @@ public class ExpressionParser extends StatementParser {
 
                     // Both real operands or one real and one integer operand
                     // ==> real result.
-                    else if (TypeChecker.isAtLeastOneReal(resultType,
-                            termType)) {
+                    else if (TypeChecker.isAtLeastOneReal(resultType, termType)) {
                         resultType = Predefined.realType;
                     } else {
                         errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
@@ -355,8 +354,7 @@ public class ExpressionParser extends StatementParser {
 
                     // Both real operands or one real and one integer operand
                     // ==> real result.
-                    else if (TypeChecker.isAtLeastOneReal(resultType,
-                            factorType)) {
+                    else if (TypeChecker.isAtLeastOneReal(resultType, factorType)) {
                         resultType = Predefined.realType;
                     } else {
                         errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
@@ -515,11 +513,7 @@ public class ExpressionParser extends StatementParser {
             }
 
             default: {
-                errorHandler.flag(
-                        token,
-                        PascalErrorCode.UNEXPECTED_TOKEN,
-                        this
-                );
+                errorHandler.flag(token, PascalErrorCode.UNEXPECTED_TOKEN, this);
                 break;
             }
         }
@@ -591,6 +585,12 @@ public class ExpressionParser extends StatementParser {
                 token = nextToken();
 
                 rootNode.setTypeSpec(type);
+                break;
+            }
+
+            case FUNCTION: {
+                CallParser callParser = new CallParser(this);
+                rootNode = callParser.parse(token);
                 break;
             }
 

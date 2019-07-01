@@ -4,17 +4,12 @@ import xianzhan.pascal.frontend.EofToken;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Token;
-import xianzhan.pascal.frontend.pascal.parser.BlockParser;
-import xianzhan.pascal.intermediate.ICode;
-import xianzhan.pascal.intermediate.ICodeFactory;
-import xianzhan.pascal.intermediate.ICodeNode;
-import xianzhan.pascal.intermediate.SymTabEntry;
-import xianzhan.pascal.intermediate.impl.DefinitionEnumImpl;
+import xianzhan.pascal.frontend.pascal.parser.ProgramParser;
 import xianzhan.pascal.intermediate.impl.Predefined;
-import xianzhan.pascal.intermediate.impl.SymTabKeyImpl;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
+import java.io.IOException;
 import java.util.EnumSet;
 
 /**
@@ -31,11 +26,6 @@ import java.util.EnumSet;
 public class PascalParserTD extends Parser {
 
     protected static PascalErrorHandler errorHandler = new PascalErrorHandler();
-
-    /**
-     * name of the routine being parsed.
-     */
-    private SymTabEntry routineId;
 
     /**
      * Constructor.
@@ -74,38 +64,19 @@ public class PascalParserTD extends Parser {
     public void parse() throws Exception {
 
         long startTime = System.currentTimeMillis();
-
-        ICode iCode = ICodeFactory.createICode();
         Predefined.initialize(symTabStack);
-
-        routineId = symTabStack.enterLocal("DummyProgramName".toLowerCase());
-        routineId.setDefinition(DefinitionEnumImpl.PROGRAM);
-        symTabStack.setProgramId(routineId);
-
-        // Push a new symbol table onto the symbol table stack and set
-        // the routine's symbol table and intermediate code.
-        routineId.setAttribute(SymTabKeyImpl.ROUTINE_SYMTAB, symTabStack.push());
-        routineId.setAttribute(SymTabKeyImpl.ROUTINE_ICODE, iCode);
-
-        BlockParser blockParser = new BlockParser(this);
 
         try {
             Token token = nextToken();
 
-            // Parse a block.
-            ICodeNode rootNode = blockParser.parse(token, routineId);
-            iCode.setRoot(rootNode);
-            symTabStack.pop();
-
-            // Look for the final period.
-            token = currentToken();
-            if (token.getType() != PascalTokenType.DOT) {
-                errorHandler.flag(token, PascalErrorCode.MISSING_PERIOD, this);
-            }
+            // Parse a program.
+            ProgramParser programParser = new ProgramParser(this);
+            programParser.parse(token, null);
             token = currentToken();
 
             // Send the parser summary message.
             float elapsedTime = (System.currentTimeMillis() - startTime) / 1000F;
+
             Message message = new Message(
                     MessageType.PARSER_SUMMARY,
                     new Number[]{
@@ -115,7 +86,7 @@ public class PascalParserTD extends Parser {
                     }
             );
             sendMessage(message);
-        } catch (java.io.IOException ex) {
+        } catch (IOException ex) {
             errorHandler.abortTranslation(PascalErrorCode.IO_ERROR, this);
         }
     }
@@ -179,9 +150,5 @@ public class PascalParserTD extends Parser {
         }
 
         return token;
-    }
-
-    public SymTabEntry getRoutineId() {
-        return routineId;
     }
 }

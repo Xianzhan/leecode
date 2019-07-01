@@ -58,10 +58,7 @@ public class ParseTreePrinter {
         this.line = new StringBuilder();
 
         // The indent is INDENT_WIDTH spaces.
-        this.indent = "";
-        for (int i = 0; i < INDENT_WIDTH; ++i) {
-            this.indent += " ";
-        }
+        this.indent = " ".repeat(INDENT_WIDTH);
     }
 
     /**

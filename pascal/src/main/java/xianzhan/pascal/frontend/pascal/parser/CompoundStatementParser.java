@@ -40,15 +40,11 @@ public class CompoundStatementParser extends StatementParser {
         token = nextToken();
 
         // Create the COMPOUND node.
-        ICodeNode compoundNode =
-                ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.COMPOUND);
+        ICodeNode compoundNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.COMPOUND);
 
         // Parse the statement list terminated by the END token.
         StatementParser statementParser = new StatementParser(this);
-        statementParser.parseList(token,
-                                  compoundNode,
-                                  PascalTokenType.END,
-                                  PascalErrorCode.MISSING_END);
+        statementParser.parseList(token, compoundNode, PascalTokenType.END, PascalErrorCode.MISSING_END);
 
         return compoundNode;
     }

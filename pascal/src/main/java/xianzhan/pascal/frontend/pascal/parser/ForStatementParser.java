@@ -151,7 +151,8 @@ public class ForStatementParser extends StatementParser {
 
         // Type check: The termination expression type must be assignment
         //             compatible with the control variable's type.
-        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
+        TypeSpec exprType = exprNode != null
+                ? exprNode.getTypeSpec()
                 : Predefined.undefinedType;
         if (!TypeChecker.areAssignmentCompatible(controlType, exprType)) {
             errorHandler.flag(token, PascalErrorCode.INCOMPATIBLE_TYPES, this);
@@ -179,6 +180,7 @@ public class ForStatementParser extends StatementParser {
         // Create an assignment with a copy of the control variable
         // to advance the value of the variable.
         ICodeNode nextAssignNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.ASSIGN);
+        nextAssignNode.setTypeSpec(controlType);
         nextAssignNode.addChild(controlVarNode.copy());
 
         // Create the arithmetic operator node:

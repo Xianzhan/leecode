@@ -1,5 +1,7 @@
 package xianzhan.pascal.intermediate.impl;
 
+import xianzhan.pascal.intermediate.Definition;
+import xianzhan.pascal.intermediate.RoutineCode;
 import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabStack;
 import xianzhan.pascal.intermediate.TypeFactory;
@@ -32,6 +34,28 @@ public class Predefined {
     public static SymTabEntry falseId;
     public static SymTabEntry trueId;
 
+    public static SymTabEntry readId;
+    public static SymTabEntry readlnId;
+    public static SymTabEntry writeId;
+    public static SymTabEntry writelnId;
+    public static SymTabEntry absId;
+    public static SymTabEntry arctanId;
+    public static SymTabEntry chrId;
+    public static SymTabEntry cosId;
+    public static SymTabEntry eofId;
+    public static SymTabEntry eolnId;
+    public static SymTabEntry expId;
+    public static SymTabEntry lnId;
+    public static SymTabEntry oddId;
+    public static SymTabEntry ordId;
+    public static SymTabEntry predId;
+    public static SymTabEntry roundId;
+    public static SymTabEntry sinId;
+    public static SymTabEntry sqrId;
+    public static SymTabEntry sqrtId;
+    public static SymTabEntry succId;
+    public static SymTabEntry truncId;
+
     /**
      * Initialize a symbol table stack with predefined identifiers.
      *
@@ -40,6 +64,7 @@ public class Predefined {
     public static void initialize(SymTabStack symTabStack) {
         initializeTypes(symTabStack);
         initializeConstants(symTabStack);
+        initializeStandardRoutines(symTabStack);
     }
 
     /**
@@ -103,5 +128,50 @@ public class Predefined {
         constants.add(falseId);
         constants.add(trueId);
         booleanType.setAttribute(TypeKeyEnumImpl.ENUMERATION_CONSTANTS, constants);
+    }
+
+    /**
+     * Initialize the standard procedures and functions.
+     *
+     * @param symTabStack the symbol table stack to initialize.
+     */
+    private static void initializeStandardRoutines(SymTabStack symTabStack) {
+        readId = enterStandard(symTabStack, DefinitionEnumImpl.PROCEDURE, "read", RoutineCodeEnumImpl.READ);
+        readlnId = enterStandard(symTabStack, DefinitionEnumImpl.PROCEDURE, "readln", RoutineCodeEnumImpl.READLN);
+        writeId = enterStandard(symTabStack, DefinitionEnumImpl.PROCEDURE, "write", RoutineCodeEnumImpl.WRITE);
+        writelnId = enterStandard(symTabStack, DefinitionEnumImpl.PROCEDURE, "writeln", RoutineCodeEnumImpl.WRITELN);
+
+        absId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "abs", RoutineCodeEnumImpl.ABS);
+        arctanId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "arctan", RoutineCodeEnumImpl.ARCTAN);
+        chrId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "chr", RoutineCodeEnumImpl.CHR);
+        cosId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "cos", RoutineCodeEnumImpl.COS);
+        eofId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "eof", RoutineCodeEnumImpl.EOF);
+        eolnId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "eoln", RoutineCodeEnumImpl.EOLN);
+        expId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "exp", RoutineCodeEnumImpl.EXP);
+        lnId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "ln", RoutineCodeEnumImpl.LN);
+        oddId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "odd", RoutineCodeEnumImpl.ODD);
+        ordId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "ord", RoutineCodeEnumImpl.ORD);
+        predId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "pred", RoutineCodeEnumImpl.PRED);
+        roundId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "round", RoutineCodeEnumImpl.ROUND);
+        sinId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "sin", RoutineCodeEnumImpl.SIN);
+        sqrId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "sqr", RoutineCodeEnumImpl.SQR);
+        sqrtId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "sqrt", RoutineCodeEnumImpl.SQRT);
+        succId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "succ", RoutineCodeEnumImpl.SUCC);
+        truncId = enterStandard(symTabStack, DefinitionEnumImpl.FUNCTION, "trunc", RoutineCodeEnumImpl.TRUNC);
+    }
+
+    /**
+     * Enter a standard procedure or function into the symbol table stack.
+     *
+     * @param symTabStack the symbol table stack to initialize.
+     * @param definition  either PROCEDURE or FUNCTION.
+     * @param name        the procedure or function name.
+     */
+    private static SymTabEntry enterStandard(SymTabStack symTabStack, Definition definition, String name, RoutineCode routineCode) {
+        SymTabEntry procId = symTabStack.enterLocal(name);
+        procId.setDefinition(definition);
+        procId.setAttribute(SymTabKeyImpl.ROUTINE_CODE, routineCode);
+
+        return procId;
     }
 }

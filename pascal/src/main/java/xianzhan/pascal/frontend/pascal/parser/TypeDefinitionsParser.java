@@ -68,11 +68,13 @@ public class TypeDefinitionsParser extends DeclarationsParser {
     /**
      * Parse type definitions.
      *
-     * @param token the initial token.
+     * @param token    the initial token.
+     * @param parentId the symbol table entry of the parent routine's name.
+     * @return null
      * @throws Exception if an error occurred.
      */
     @Override
-    public void parse(Token token) throws Exception {
+    public SymTabEntry parse(Token token, SymTabEntry parentId) throws Exception {
         token = synchronize(IDENTIFIER_SET);
 
         // Loop to parse a sequence of type definitions
@@ -91,14 +93,12 @@ public class TypeDefinitionsParser extends DeclarationsParser {
                 typeId = null;
             }
 
-            // consume the identifier token
-            token = nextToken();
+            token = nextToken();  // consume the identifier token
 
             // Synchronize on the = token.
             token = synchronize(EQUALS_SET);
             if (token.getType() == PascalTokenType.EQUALS) {
-                // consume the =
-                token = nextToken();
+                token = nextToken();  // consume the =
             } else {
                 errorHandler.flag(token, PascalErrorCode.MISSING_EQUALS, this);
             }
@@ -107,7 +107,7 @@ public class TypeDefinitionsParser extends DeclarationsParser {
             TypeSpecificationParser typeSpecificationParser = new TypeSpecificationParser(this);
             TypeSpec type = typeSpecificationParser.parse(token);
 
-            // Set identifier to be a type and set its type specifications.
+            // Set identifier to be a type and set its type specificationt.
             if (typeId != null) {
                 typeId.setDefinition(DefinitionEnumImpl.TYPE);
             }
@@ -141,5 +141,7 @@ public class TypeDefinitionsParser extends DeclarationsParser {
 
             token = synchronize(IDENTIFIER_SET);
         }
+
+        return null;
     }
 }

@@ -37,7 +37,7 @@ public class SubrangeTypeParser extends TypeSpecificationParser {
     @Override
     public TypeSpec parse(Token token) throws Exception {
         TypeSpec subrangeType = TypeFactory.createType(TypeFormEnumImpl.SUBRANGE);
-        Object minValue = null;
+        Object minValue;
         Object maxValue = null;
 
         // Parse the minimum constant.

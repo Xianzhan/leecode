@@ -45,8 +45,7 @@ public class StatementExecutor extends Executor {
             }
 
             case ASSIGN: {
-                AssignmentExecutor assignmentExecutor =
-                        new AssignmentExecutor(this);
+                AssignmentExecutor assignmentExecutor = new AssignmentExecutor(this);
                 return assignmentExecutor.execute(node);
             }
 
@@ -69,11 +68,7 @@ public class StatementExecutor extends Executor {
                 return null;
 
             default: {
-                errorHandler.flag(
-                        node,
-                        RuntimeErrorCode.UNIMPLEMENTED_FEATURE,
-                        this
-                );
+                errorHandler.flag(node, RuntimeErrorCode.UNIMPLEMENTED_FEATURE, this);
                 return null;
             }
         }

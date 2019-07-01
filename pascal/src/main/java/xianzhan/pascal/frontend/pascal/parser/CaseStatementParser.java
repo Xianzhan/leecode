@@ -433,6 +433,14 @@ public class CaseStatementParser extends StatementParser {
         return constantNode;
     }
 
+    /**
+     * Parse a character CASE constant.
+     *
+     * @param token the current token.
+     * @param value the token value string.
+     * @param sign  the sign, if any.
+     * @return the constant node.
+     */
     private ICodeNode parseCharacterConstant(Token token, String value, TokenType sign) {
         ICodeNode constantNode = null;
 

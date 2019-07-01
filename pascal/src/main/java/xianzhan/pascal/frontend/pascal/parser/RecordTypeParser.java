@@ -56,10 +56,9 @@ class RecordTypeParser extends TypeSpecificationParser {
         recordType.setAttribute(TypeKeyEnumImpl.RECORD_SYMTAB, symTabStack.push());
 
         // Parse the field declarations.
-        VariableDeclarationsParser variableDeclarationsParser =
-                new VariableDeclarationsParser(this);
+        VariableDeclarationsParser variableDeclarationsParser = new VariableDeclarationsParser(this);
         variableDeclarationsParser.setDefinition(DefinitionEnumImpl.FIELD);
-        variableDeclarationsParser.parse(token);
+        variableDeclarationsParser.parse(token, null);
 
         // Pop off the record's symbol table.
         symTabStack.pop();

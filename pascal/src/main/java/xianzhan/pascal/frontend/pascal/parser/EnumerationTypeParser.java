@@ -65,7 +65,7 @@ public class EnumerationTypeParser extends TypeSpecificationParser {
     public TypeSpec parse(Token token) throws Exception {
         TypeSpec enumerationType = TypeFactory.createType(TypeFormEnumImpl.ENUMERATION);
         int value = -1;
-        ArrayList<SymTabEntry> constants = new ArrayList<SymTabEntry>();
+        ArrayList<SymTabEntry> constants = new ArrayList<>();
 
         // consume the opening (
         token = nextToken();

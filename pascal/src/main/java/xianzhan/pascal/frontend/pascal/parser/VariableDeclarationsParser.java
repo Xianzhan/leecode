@@ -8,6 +8,7 @@ import xianzhan.pascal.frontend.pascal.PascalTokenType;
 import xianzhan.pascal.intermediate.Definition;
 import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.TypeSpec;
+import xianzhan.pascal.intermediate.impl.DefinitionEnumImpl;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -69,11 +70,13 @@ public class VariableDeclarationsParser extends DeclarationsParser {
     /**
      * Parse variable declarations.
      *
-     * @param token the initial token.
+     * @param token    the initial token.
+     * @param parentId the symbol table entry of the parent routine's name.
+     * @return null
      * @throws Exception if an error occurred.
      */
     @Override
-    public void parse(Token token) throws Exception {
+    public SymTabEntry parse(Token token, SymTabEntry parentId) throws Exception {
         token = synchronize(IDENTIFIER_SET);
 
         // Loop to parse a sequence of variable declarations
@@ -81,7 +84,7 @@ public class VariableDeclarationsParser extends DeclarationsParser {
         while (token.getType() == PascalTokenType.IDENTIFIER) {
 
             // Parse the identifier sublist and its type specification.
-            parseIdentifierSublist(token);
+            parseIdentifierSublist(token, IDENTIFIER_FOLLOW_SET, COMMA_SET);
 
             token = currentToken();
             TokenType tokenType = token.getType();
@@ -102,6 +105,8 @@ public class VariableDeclarationsParser extends DeclarationsParser {
 
             token = synchronize(IDENTIFIER_SET);
         }
+
+        return null;
     }
 
     /**
@@ -144,7 +149,9 @@ public class VariableDeclarationsParser extends DeclarationsParser {
      * @return the sublist of identifiers in a declaration.
      * @throws Exception if an error occurred.
      */
-    protected ArrayList<SymTabEntry> parseIdentifierSublist(Token token) throws Exception {
+    protected ArrayList<SymTabEntry> parseIdentifierSublist(Token token,
+                                                            EnumSet<PascalTokenType> followSet,
+                                                            EnumSet<PascalTokenType> commaSet) throws Exception {
         ArrayList<SymTabEntry> sublist = new ArrayList<>();
 
         do {
@@ -155,27 +162,31 @@ public class VariableDeclarationsParser extends DeclarationsParser {
                 sublist.add(id);
             }
 
-            token = synchronize(COMMA_SET);
+            token = synchronize(commaSet);
             TokenType tokenType = token.getType();
 
             // Look for the comma.
             if (tokenType == PascalTokenType.COMMA) {
-                token = nextToken();  // consume the comma
+                // consume the comma
+                token = nextToken();
 
-                if (IDENTIFIER_FOLLOW_SET.contains(token.getType())) {
+                if (followSet.contains(token.getType())) {
                     errorHandler.flag(token, PascalErrorCode.MISSING_IDENTIFIER, this);
                 }
             } else if (IDENTIFIER_START_SET.contains(tokenType)) {
                 errorHandler.flag(token, PascalErrorCode.MISSING_COMMA, this);
             }
-        } while (!IDENTIFIER_FOLLOW_SET.contains(token.getType()));
+        } while (!followSet.contains(token.getType()));
 
-        // Parse the type specification.
-        TypeSpec type = parseTypeSpec(token);
+        if (definition != DefinitionEnumImpl.PROGRAM_PARM) {
 
-        // Assign the type specification to each identifier in the list.
-        for (SymTabEntry variableId : sublist) {
-            variableId.setTypeSpec(type);
+            // Parse the type specification.
+            TypeSpec type = parseTypeSpec(token);
+
+            // Assign the type specification to each identifier in the list.
+            for (SymTabEntry variableId : sublist) {
+                variableId.setTypeSpec(type);
+            }
         }
 
         return sublist;
@@ -242,6 +253,12 @@ public class VariableDeclarationsParser extends DeclarationsParser {
         // Parse the type specification.
         TypeSpecificationParser typeSpecificationParser = new TypeSpecificationParser(this);
         TypeSpec type = typeSpecificationParser.parse(token);
+
+        // Formal parameters and functions must have named types.
+        if ((definition != DefinitionEnumImpl.VARIABLE) && (definition != DefinitionEnumImpl.FIELD) &&
+                (type != null) && (type.getIdentifier() == null)) {
+            errorHandler.flag(token, PascalErrorCode.INVALID_TYPE, this);
+        }
 
         return type;
     }

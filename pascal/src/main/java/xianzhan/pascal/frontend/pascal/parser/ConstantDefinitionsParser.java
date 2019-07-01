@@ -81,11 +81,13 @@ public class ConstantDefinitionsParser extends DeclarationsParser {
     /**
      * Parse constant definitions.
      *
-     * @param token the initial token.
+     * @param token    the initial token.
+     * @param parentId the symbol table entry of the parent routine's name.
+     * @return null
      * @throws Exception if an error occurred.
      */
     @Override
-    public void parse(Token token) throws Exception {
+    public SymTabEntry parse(Token token, SymTabEntry parentId) throws Exception {
         token = synchronize(IDENTIFIER_SET);
 
         // Loop to parse a sequence of constant definitions
@@ -126,10 +128,9 @@ public class ConstantDefinitionsParser extends DeclarationsParser {
                 constantId.setAttribute(SymTabKeyImpl.CONSTANT_VALUE, value);
 
                 // Set the constant's type.
-                TypeSpec constantType =
-                        constantToken.getType() == PascalTokenType.IDENTIFIER
-                                ? getConstantType(constantToken)
-                                : getConstantType(value);
+                TypeSpec constantType = constantToken.getType() == PascalTokenType.IDENTIFIER
+                        ? getConstantType(constantToken)
+                        : getConstantType(value);
                 constantId.setTypeSpec(constantType);
             }
 
@@ -152,6 +153,8 @@ public class ConstantDefinitionsParser extends DeclarationsParser {
 
             token = synchronize(IDENTIFIER_SET);
         }
+
+        return null;
     }
 
     /**

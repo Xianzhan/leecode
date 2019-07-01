@@ -33,9 +33,7 @@ public class CrossReferencer {
     private static final StringBuilder INDENT = new StringBuilder(INDENT_WIDTH);
 
     static {
-        for (int i = 0; i < INDENT_WIDTH; ++i) {
-            INDENT.append(" ");
-        }
+        INDENT.append(" ".repeat(INDENT_WIDTH));
     }
 
     /**
@@ -200,8 +198,7 @@ public class CrossReferencer {
         switch ((TypeFormEnumImpl) form) {
 
             case ENUMERATION: {
-                ArrayList<SymTabEntry> constantIds = (ArrayList<SymTabEntry>)
-                        type.getAttribute(TypeKeyEnumImpl.ENUMERATION_CONSTANTS);
+                ArrayList<SymTabEntry> constantIds = (ArrayList<SymTabEntry>) type.getAttribute(TypeKeyEnumImpl.ENUMERATION_CONSTANTS);
 
                 System.out.println(INDENT + "--- Enumeration constants ---");
 
