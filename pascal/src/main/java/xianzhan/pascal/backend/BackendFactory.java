@@ -2,16 +2,14 @@ package xianzhan.pascal.backend;
 
 import xianzhan.pascal.backend.compiler.CodeGenerator;
 import xianzhan.pascal.backend.interpreter.Executor;
+import xianzhan.pascal.intermediate.TypeSpec;
+import xianzhan.pascal.intermediate.impl.Predefined;
 
 /**
- * <h1>BackendFactory</h1>
+ * A factory class that creates compiler and interpreter components.
  *
- * <p>A factory class that creates compiler and interpreter components.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public class BackendFactory {
     /**
@@ -22,15 +20,34 @@ public class BackendFactory {
      * @throws Exception if an error occurred.
      */
     public static Backend createBackend(String operation) throws Exception {
-        if (operation.equalsIgnoreCase("compile")) {
+        if ("compile".equalsIgnoreCase(operation)) {
             return new CodeGenerator();
-        } else if (operation.equalsIgnoreCase("execute")) {
+        } else if ("execute".equalsIgnoreCase(operation)) {
             return new Executor();
         } else {
-            throw new Exception(
-                    "Backend factory: Invalid operation '"
-                    + operation + "'"
-            );
+            throw new Exception("Backend factory: Invalid operation '" + operation + "'");
+        }
+    }
+
+    /**
+     * Return the default value for a data type.
+     *
+     * @param type the data type.
+     * @return the type descriptor.
+     */
+    public static Object defaultValue(TypeSpec type) {
+        TypeSpec baseType = type.baseType();
+        if (baseType == Predefined.integerType) {
+            return 0;
+        } else if (baseType == Predefined.realType) {
+            return 0.0F;
+        } else if (baseType == Predefined.booleanType) {
+            return Boolean.FALSE;
+        } else if (baseType == Predefined.charType) {
+            return '#';
+        } else {
+            // String
+            return "#";
         }
     }
 }

@@ -1,15 +1,11 @@
 package xianzhan.pascal.frontend;
 
 /**
- * <h1>Scanner</h1>
+ * A language-independent framework class.  This abstract scanner class
+ * will be implemented by language-specific subclasses.
  *
- * <p>A language-independent framework class.  This abstract scanner class
- * will be implemented by language-specific subclasses.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public abstract class Scanner {
     /**
@@ -75,5 +71,34 @@ public abstract class Scanner {
      */
     public char nextChar() throws Exception {
         return source.nextChar();
+    }
+
+    /**
+     * Call the source's atEol() method.
+     *
+     * @return true if at the end of the source line, else return false.
+     * @throws Exception if an error occurred.
+     */
+    public boolean atEol() throws Exception {
+        return source.atEol();
+    }
+
+    /**
+     * Call the source's atEof() method.
+     *
+     * @return true if at the end of the source file, else return false.
+     * @throws Exception if an error occurred.
+     */
+    public boolean atEof() throws Exception {
+        return source.atEof();
+    }
+
+    /**
+     * Call the source's skipToNextLine() method.
+     *
+     * @throws Exception if an error occurred.
+     */
+    public void skipToNextLine() throws Exception {
+        source.skipToNextLine();
     }
 }

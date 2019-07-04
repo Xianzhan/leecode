@@ -6,14 +6,10 @@ import xianzhan.pascal.frontend.pascal.PascalToken;
 import xianzhan.pascal.frontend.pascal.PascalTokenType;
 
 /**
- * <h1>PascalStringToken</h1>
+ * Pascal string tokens.
  *
- * <p> Pascal string tokens.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-12
  */
 public class PascalStringToken extends PascalToken {
     /**

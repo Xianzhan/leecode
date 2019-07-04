@@ -1,34 +1,65 @@
 package xianzhan.pascal.backend.interpreter;
 
 import xianzhan.pascal.backend.Backend;
-import xianzhan.pascal.backend.interpreter.executor.StatementExecutor;
+import xianzhan.pascal.backend.interpreter.executor.CallDeclaredExecutor;
+import xianzhan.pascal.frontend.Scanner;
+import xianzhan.pascal.frontend.Source;
+import xianzhan.pascal.frontend.pascal.PascalScanner;
 import xianzhan.pascal.intermediate.ICode;
+import xianzhan.pascal.intermediate.ICodeFactory;
 import xianzhan.pascal.intermediate.ICodeNode;
+import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabStack;
+import xianzhan.pascal.intermediate.impl.ICodeKeyEnumImpl;
+import xianzhan.pascal.intermediate.impl.ICodeNodeTypeEnumImpl;
 import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
- * <h1>Executor</h1>
+ * The executor for an interpreter back end.
  *
- * <p>The executor for an interpreter back end.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public class Executor extends Backend {
 
     protected static int                 executionCount;
+    protected static RuntimeStack        runtimeStack;
     protected static RuntimeErrorHandler errorHandler;
+
+    /**
+     * Standard input
+     */
+    protected static Scanner     standardIn;
+    /**
+     * Standard output
+     */
+    protected static PrintWriter standardOut;
 
     static {
         executionCount = 0;
+        runtimeStack = MemoryFactory.createRuntimeStack();
         errorHandler = new RuntimeErrorHandler();
+
+        try {
+            standardIn = new PascalScanner(
+                    new Source(
+                            new BufferedReader(
+                                    new InputStreamReader(System.in))));
+            standardOut = new PrintWriter(new PrintStream(System.out));
+        } catch (IOException ignore) {
+
+        }
     }
 
-    public Executor() {}
+    public Executor() {
+    }
 
     /**
      * Constructor for subclasses.
@@ -51,14 +82,18 @@ public class Executor extends Backend {
     public void process(ICode iCode, SymTabStack symTabStack) throws Exception {
 
         this.symTabStack = symTabStack;
-        this.iCode = iCode;
 
         long startTime = System.currentTimeMillis();
 
-        // Get the root node of the intermediate code and execute.
-        ICodeNode rootNode = iCode.getRoot();
-        StatementExecutor statementExecutor = new StatementExecutor(this);
-        statementExecutor.execute(rootNode);
+        SymTabEntry programId = symTabStack.getProgramId();
+
+        // Construct an artificial CALL node to the main program.
+        ICodeNode callNode = ICodeFactory.createICodeNode(ICodeNodeTypeEnumImpl.CALL);
+        callNode.setAttribute(ICodeKeyEnumImpl.ID, programId);
+
+        // Execute the main program.
+        CallDeclaredExecutor callExecutor = new CallDeclaredExecutor(this);
+        callExecutor.execute(callNode);
 
         float elapsedTime = (System.currentTimeMillis() - startTime) / 1000F;
         int runtimeErrors = RuntimeErrorHandler.getErrorCount();

@@ -3,14 +3,10 @@ package xianzhan.pascal.intermediate;
 import java.util.ArrayList;
 
 /**
- * <h1>SymTab</h1>
+ * The framework interface that represents the symbol table.
  *
- * <p>The framework interface that represents the symbol table.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public interface SymTab {
 
@@ -38,6 +34,8 @@ public interface SymTab {
     SymTabEntry lookup(String name);
 
     /**
+     * return a list of symbol table entries sorted by name.
+     *
      * @return a list of symbol table entries sorted by name.
      */
     ArrayList<SymTabEntry> sortedEntries();

@@ -10,14 +10,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * <h1>Source</h1>
+ * The framework class that represents the source program.
  *
- * <p>The framework class that represents the source program.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public class Source implements MessageProducer {
     /**
@@ -145,6 +141,39 @@ public class Source implements MessageProducer {
 
         int nextPos = currentPos + 1;
         return nextPos < line.length() ? line.charAt(nextPos) : EOL;
+    }
+
+    /**
+     * @return true if at the end of the line, else return false.
+     * @throws Exception if an error occurred.
+     */
+    public boolean atEol() throws Exception {
+        return (line != null) && (currentPos == line.length());
+    }
+
+    /**
+     * @return true if at the end of the file, else return false.
+     * @throws Exception if an error occurred.
+     */
+    public boolean atEof() throws Exception {
+        // First time?
+        if (currentPos == -2) {
+            readLine();
+        }
+
+        return line == null;
+    }
+
+    /**
+     * Skip the rest of the current input line
+     * by forcing the next read to read a new line.
+     *
+     * @throws Exception if an error occurred.
+     */
+    public void skipToNextLine() throws Exception {
+        if (line != null) {
+            currentPos = line.length() + 1;
+        }
     }
 
     /**

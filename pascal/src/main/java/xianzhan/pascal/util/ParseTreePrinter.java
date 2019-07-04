@@ -80,8 +80,7 @@ public class ParseTreePrinter {
      */
     private void printRoutine(SymTabEntry routineId) {
         Definition definition = routineId.getDefinition();
-        System.out.println("\n*** " + definition.toString() +
-                " " + routineId.getName() + " ***\n");
+        System.out.println("\n*** " + definition.toString() + " " + routineId.getName() + " ***\n");
 
         // Print the intermediate code in the routine's symbol table entry.
         ICode iCode = (ICode) routineId.getAttribute(SymTabKeyImpl.ROUTINE_ICODE);

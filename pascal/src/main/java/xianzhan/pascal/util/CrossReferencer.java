@@ -179,8 +179,7 @@ public class CrossReferencer {
             SymTabEntry typeId = type.getIdentifier();
             String typeName = typeId != null ? typeId.getName() : "<unnamed>";
 
-            System.out.println(INDENT + "Type form = " + form +
-                    ", Type id = " + typeName);
+            System.out.println(INDENT + "Type form = " + form + ", Type id = " + typeName);
         }
     }
 
