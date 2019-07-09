@@ -1,6 +1,7 @@
 package xianzhan.pascal.backend.interpreter;
 
 import xianzhan.pascal.backend.Backend;
+import xianzhan.pascal.backend.BackendFactory;
 import xianzhan.pascal.backend.interpreter.executor.CallDeclaredExecutor;
 import xianzhan.pascal.frontend.Scanner;
 import xianzhan.pascal.frontend.Source;
@@ -16,6 +17,7 @@ import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -42,23 +44,27 @@ public class Executor extends Backend {
      */
     protected static PrintWriter standardOut;
 
+    /**
+     * interactive source-level debugger
+     */
+    protected Debugger debugger;
+
     static {
         executionCount = 0;
         runtimeStack = MemoryFactory.createRuntimeStack();
         errorHandler = new RuntimeErrorHandler();
-
-        try {
-            standardIn = new PascalScanner(
-                    new Source(
-                            new BufferedReader(
-                                    new InputStreamReader(System.in))));
-            standardOut = new PrintWriter(new PrintStream(System.out));
-        } catch (IOException ignore) {
-
-        }
+        standardOut = new PrintWriter(new PrintStream(System.out));
     }
 
-    public Executor() {
+    public Executor(String inputPath) {
+        try {
+            standardIn = inputPath != null
+                    ? new PascalScanner(new Source(new BufferedReader(new FileReader(inputPath))))
+                    : new PascalScanner(new Source(new BufferedReader(new InputStreamReader(System.in))));
+        } catch (IOException ignored) {
+        }
+
+        debugger = BackendFactory.createDebugger(DebuggerType.COMMAND_LINE, this, runtimeStack);
     }
 
     /**
@@ -67,7 +73,7 @@ public class Executor extends Backend {
      * @param parent the parent executor.
      */
     public Executor(Executor parent) {
-
+        this.debugger = parent.debugger;
     }
 
     /**

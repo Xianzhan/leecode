@@ -16,6 +16,7 @@ import xianzhan.pascal.util.CrossReferencer;
 import xianzhan.pascal.util.ParseTreePrinter;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 /**
@@ -82,11 +83,12 @@ public class Pascal {
     /**
      * Compile or interpret a Pascal source program.
      *
-     * @param operation either "compile" or "execute".
-     * @param filePath  the source file path.
-     * @param flags     the command line flags.
+     * @param operation  either "compile" or "execute".
+     * @param sourcePath the source file path.
+     * @param inputPath  the input file path.
+     * @param flags      the command line flags.
      */
-    public Pascal(String operation, String filePath, String flags) {
+    public Pascal(String operation, String sourcePath, String inputPath, String flags) {
         try {
             intermediate = flags.indexOf('i') > -1;
             xref = flags.indexOf('x') > -1;
@@ -96,13 +98,13 @@ public class Pascal {
             call = flags.indexOf('c') > -1;
             printReturn = flags.indexOf('r') > -1;
 
-            source = new Source(new BufferedReader(new FileReader(filePath)));
+            source = new Source(new BufferedReader(new FileReader(sourcePath)));
             source.addMessageListener(new SourceMessageListener());
 
             parser = FrontendFactory.createParser("Pascal", "top-down", source);
             parser.addMessageListener(new ParserMessageListener());
 
-            backend = BackendFactory.createBackend(operation);
+            backend = BackendFactory.createBackend(operation, inputPath);
             backend.addMessageListener(new BackendMessageListener());
 
             parser.parse();
@@ -135,7 +137,7 @@ public class Pascal {
     /**
      * –i (intermediate) and  –x (cross-reference)
      */
-    private static final String FLAGS = "[-ix]";
+    private static final String FLAGS = "[-ixlafcr]";
     private static final String USAGE =
             "Usage: Pascal execute|compile " + FLAGS + " <source file path>";
 
@@ -162,13 +164,29 @@ public class Pascal {
                 flags.append(args[i].substring(1));
             }
 
+            String sourcePath;
+            String inputPath = null;
+
             // Source path.
             if (i < args.length) {
                 String path = args[i];
-                new Pascal(operation, path, flags.toString());
+                sourcePath = args[i];
             } else {
                 throw new Exception();
             }
+
+            // Runtime input data file path.
+            if (++i < args.length) {
+                inputPath = args[i];
+
+                File inputFile = new File(inputPath);
+                if (!inputFile.exists()) {
+                    System.out.println("Input file '" + inputPath + "' does not exist.");
+                    throw new Exception();
+                }
+            }
+
+            new Pascal(operation, sourcePath, inputPath, flags.toString());
         } catch (Exception ex) {
             System.out.println(USAGE);
         }

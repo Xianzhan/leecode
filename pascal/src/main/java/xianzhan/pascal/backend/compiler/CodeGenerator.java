@@ -7,14 +7,10 @@ import xianzhan.pascal.message.Message;
 import xianzhan.pascal.message.MessageType;
 
 /**
- * <h1>CodeGenerator</h1>
+ * The code generator for a compiler back end.
  *
- * <p>The code generator for a compiler back end.</p>
- *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- *
- * @author Ronald Mak
+ * @author xianzhan
+ * @since 2019-05-08
  */
 public class CodeGenerator extends Backend {
     /**
