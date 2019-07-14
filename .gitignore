@@ -4,3 +4,12 @@ target
 # idea
 .idea
 *.iml
+
+# vscode
+.vscode
+
+# java
+*.class
+
+# jni
+*.dll
