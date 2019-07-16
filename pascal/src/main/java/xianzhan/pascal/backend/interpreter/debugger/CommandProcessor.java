@@ -51,7 +51,7 @@ public class CommandProcessor {
         switch (type) {
 
             case SOURCE_LINE: {
-                int lineNumber = (Integer) message.getBody();
+                int lineNumber = (int) message.getBody();
 
                 if (stepping) {
                     debugger.atStatement(lineNumber);
@@ -83,11 +83,10 @@ public class CommandProcessor {
                 String variableName = ((String) body[1]).toLowerCase();
 
                 if (debugger.isWatchpoint(variableName)) {
-                    int lineNumber = (Integer) body[0];
+                    int lineNumber = (int) body[0];
                     Object value = body[2];
 
-                    debugger.atWatchpointAssignment(lineNumber, variableName,
-                            value);
+                    debugger.atWatchpointAssignment(lineNumber, variableName, value);
                 }
 
                 break;
@@ -95,7 +94,7 @@ public class CommandProcessor {
 
             case CALL: {
                 Object[] body = (Object[]) message.getBody();
-                int lineNumber = (Integer) body[0];
+                int lineNumber = (int) body[0];
                 String routineName = (String) body[1];
 
                 debugger.callRoutine(lineNumber, routineName);
@@ -104,7 +103,7 @@ public class CommandProcessor {
 
             case RETURN: {
                 Object[] body = (Object[]) message.getBody();
-                int lineNumber = (Integer) body[0];
+                int lineNumber = (int) body[0];
                 String routineName = (String) body[1];
 
                 debugger.returnRoutine(lineNumber, routineName);

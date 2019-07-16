@@ -6,6 +6,7 @@ import xianzhan.pascal.backend.interpreter.DebuggerType;
 import xianzhan.pascal.backend.interpreter.Executor;
 import xianzhan.pascal.backend.interpreter.RuntimeStack;
 import xianzhan.pascal.backend.interpreter.debugger.CommandLineDebugger;
+import xianzhan.pascal.backend.interpreter.debugger.GUIDebugger;
 import xianzhan.pascal.intermediate.TypeSpec;
 import xianzhan.pascal.intermediate.impl.Predefined;
 
@@ -49,7 +50,7 @@ public class BackendFactory {
             }
 
             case GUI: {
-                return null;
+                return new GUIDebugger(backend, runtimeStack);
             }
 
             default: {

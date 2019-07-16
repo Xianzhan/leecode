@@ -5,6 +5,7 @@ import xianzhan.pascal.backend.BackendFactory;
 import xianzhan.pascal.frontend.FrontendFactory;
 import xianzhan.pascal.frontend.Parser;
 import xianzhan.pascal.frontend.Source;
+import xianzhan.pascal.ide.IDEControl;
 import xianzhan.pascal.intermediate.ICode;
 import xianzhan.pascal.intermediate.SymTabEntry;
 import xianzhan.pascal.intermediate.SymTabStack;
@@ -139,7 +140,7 @@ public class Pascal {
      */
     private static final String FLAGS = "[-ixlafcr]";
     private static final String USAGE =
-            "Usage: Pascal execute|compile " + FLAGS + " <source file path>";
+            "Usage: Pascal execute|compile " + FLAGS + " <source file path> [ <input file path> ]";
 
     /**
      * The main method.
@@ -169,7 +170,6 @@ public class Pascal {
 
             // Source path.
             if (i < args.length) {
-                String path = args[i];
                 sourcePath = args[i];
             } else {
                 throw new Exception();
@@ -192,7 +192,7 @@ public class Pascal {
         }
     }
 
-    private static final String SOURCE_LINE_FORMAT = "%03d %s";
+    private static final String SOURCE_LINE_FORMAT = IDEControl.LISTING_TAG + "%03d %s";
 
     /**
      * Listener for source messages.
@@ -223,9 +223,8 @@ public class Pascal {
     }
 
     private static final String PARSER_SUMMARY_FORMAT =
-            "\n%,20d source lines."
-                    + "\n%,20d syntax errors."
-                    + "\n%,20.2f seconds total parsing time.\n";
+            IDEControl.PARSER_TAG + "%,d source lines, %,d syntax errors, " +
+                    "%,.2f seconds total parsing time.\n";
 
     private static final int PREFIX_WIDTH = 5;
 
@@ -261,14 +260,10 @@ public class Pascal {
                     String tokenText = (String) body[2];
                     String errorMessage = (String) body[3];
 
-                    int spaceCount = PREFIX_WIDTH + position;
                     StringBuilder flagBuffer = new StringBuilder();
 
-                    // Spaces up to the error position.
-                    flagBuffer.append(" ".repeat(Math.max(0, spaceCount - 1)));
-
-                    // A pointer to the error followed by the error message.
-                    flagBuffer.append("^\n*** ").append(errorMessage);
+                    flagBuffer.append(IDEControl.SYNTAX_TAG);
+                    flagBuffer.append(String.format("%d: %s", lineNumber, errorMessage));
 
                     // Text, if any, of the bad token.
                     if (tokenText != null) {
@@ -286,9 +281,8 @@ public class Pascal {
     }
 
     private static final String INTERPRETER_SUMMARY_FORMAT =
-            "\n%,20d statements executed." +
-                    "\n%,20d runtime errors." +
-                    "\n%,20.2f seconds total execution time.\n";
+            IDEControl.INTERPRETER_TAG + "%,d statements executed, %,d runtime errors, " +
+                    "%,.2f seconds total execution time.\n";
 
     private static final String COMPILER_SUMMARY_FORMAT =
             "\n%,20d instructions generated." +

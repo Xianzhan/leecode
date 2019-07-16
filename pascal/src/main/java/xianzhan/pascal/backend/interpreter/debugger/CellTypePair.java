@@ -147,7 +147,7 @@ public class CellTypePair {
                 || (type == Predefined.charType && value instanceof Character)
         ) {
             if (type.baseType() == Predefined.integerType) {
-                rangeCheck((Integer) value, type, "Value out of range.");
+                rangeCheck((int) value, type, "Value out of range.");
             }
             cell.setValue(value);
         } else {

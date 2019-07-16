@@ -239,7 +239,7 @@ public class StatementExecutor extends Executor {
      * @return the value to use.
      */
     protected Object checkRange(ICodeNode node, TypeSpec type, Object value) {
-        if (type.getForm() == TypeFormEnumImpl.SUBRANGE) {
+        if (type != null && type.getForm() == TypeFormEnumImpl.SUBRANGE) {
             int minValue = (Integer) type.getAttribute(TypeKeyEnumImpl.SUBRANGE_MIN_VALUE);
             int maxValue = (Integer) type.getAttribute(TypeKeyEnumImpl.SUBRANGE_MAX_VALUE);
 

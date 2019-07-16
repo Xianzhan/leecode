@@ -83,7 +83,7 @@ public class AssignmentExecutor extends StatementExecutor {
         // String assignment:
         //   target length < value length: truncate the value
         //   target length > value length: blank pad the value
-        else if (targetType.isPascalString()) {
+        else if (targetType != null && targetType.isPascalString()) {
             int targetLength = (Integer) targetType.getAttribute(TypeKeyEnumImpl.ARRAY_ELEMENT_COUNT);
             int valueLength = (Integer) valueType.getAttribute(TypeKeyEnumImpl.ARRAY_ELEMENT_COUNT);
             String stringValue = (String) value;
