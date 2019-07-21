@@ -46,4 +46,4 @@ java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute
 
 # 资源
 
-<Writing Compilers and Interpreters> --- Ronald Mak
+《Writing Compilers and Interpreters》 --- Ronald Mak
