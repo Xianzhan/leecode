@@ -1,6 +1,7 @@
 <!-- TOC -->
 
 - [命令](#命令)
+- [资源](#资源)
 
 <!-- /TOC -->
 
@@ -42,3 +43,7 @@ java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal compile
 java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute "*/leecode/pascal/target/classes/newton.pas"
 java -classpath "*/leecode/pascal/target/classes" xianzhan.pascal.Pascal execute -lafcr "*/leecode/pascal/target/classes/newton.pas"
 ```
+
+# 资源
+
+<Writing Compilers and Interpreters> --- Ronald Mak
