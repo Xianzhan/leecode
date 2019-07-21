@@ -39,4 +39,18 @@ public interface SymTab {
      * @return a list of symbol table entries sorted by name.
      */
     ArrayList<SymTabEntry> sortedEntries();
+
+    /**
+     * return the next local variables array slot number.
+     *
+     * @return the next local variables array slot number.
+     */
+    int nextSlotNumber();
+
+    /**
+     * return the maximum local variables array slot number.
+     *
+     * @return the maximum local variables array slot number.
+     */
+    int maxSlotNumber();
 }

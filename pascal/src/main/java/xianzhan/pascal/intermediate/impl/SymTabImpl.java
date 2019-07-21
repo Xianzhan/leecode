@@ -15,10 +15,23 @@ import java.util.TreeMap;
  */
 public class SymTabImpl extends TreeMap<String, SymTabEntry> implements SymTab {
 
+    /**
+     * Scope nesting level of this entry
+     */
     private int nestingLevel;
+    /**
+     * local variables array slot number
+     */
+    private int slotNumber;
+    /**
+     * max slot number value
+     */
+    private int maxSlotNumber;
 
     public SymTabImpl(int nestingLevel) {
         this.nestingLevel = nestingLevel;
+        this.slotNumber = -1;
+        this.maxSlotNumber = 0;
     }
 
     /**
@@ -60,5 +73,23 @@ public class SymTabImpl extends TreeMap<String, SymTabEntry> implements SymTab {
     @Override
     public int getNestingLevel() {
         return nestingLevel;
+    }
+
+
+    /**
+     * @return the next local variables array slot number.
+     */
+    @Override
+    public int nextSlotNumber() {
+        maxSlotNumber = ++slotNumber;
+        return slotNumber;
+    }
+
+    /**
+     * @return the maximum local variables array slot number.
+     */
+    @Override
+    public int maxSlotNumber() {
+        return maxSlotNumber;
     }
 }
