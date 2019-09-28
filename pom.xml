@@ -24,7 +24,7 @@
         <project.reporting.outputEncoding>
             UTF-8
         </project.reporting.outputEncoding>
-        <java.version>12</java.version>
+        <java.version>13</java.version>
         <module.version>1.0.0</module.version>
     </properties>
 
@@ -35,8 +35,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>12</source>
-                    <target>12</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
