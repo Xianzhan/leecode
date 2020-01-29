@@ -13,8 +13,8 @@
     <modules>
         <module>core</module>
         <module>misc</module>
-        <module>tank-online</module>
-        <module>pascal</module>
+        <module>gui-tank-online</module>
+        <module>compiler-pascal</module>
         <module>gui</module>
     </modules>
 
