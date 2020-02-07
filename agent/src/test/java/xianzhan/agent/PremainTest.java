@@ -1,5 +1,7 @@
 package xianzhan.agent;
 
+import xianzhan.agent.enhance.EnhanceClass;
+
 public class PremainTest {
 
     /**
@@ -8,6 +10,9 @@ public class PremainTest {
      * @param args 参数
      */
     public static void main(String[] args) {
-        System.out.println("Premain Test");
+        System.out.println("PremainTest#main");
+
+        EnhanceClass enhanceClass = new EnhanceClass();
+        enhanceClass.test();
     }
 }

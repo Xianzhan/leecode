@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Premain-Class: xianzhan.agent.Premain
 Can-Redefine-Classes: true
+Can-Retransform-Classes: true

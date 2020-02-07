@@ -18,7 +18,7 @@
 
     <build>
         <!-- mvn clean package -->
-        <finalName>agent-hello</finalName>
+        <finalName>agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,6 +42,9 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                    <!-- 跳过测试 -->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

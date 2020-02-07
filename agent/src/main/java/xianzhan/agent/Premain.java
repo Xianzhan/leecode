@@ -1,5 +1,7 @@
 package xianzhan.agent;
 
+import xianzhan.agent.instrument.TransformerImpl;
+
 import java.lang.instrument.Instrumentation;
 
 /**
@@ -18,6 +20,10 @@ public class Premain {
      * @param inst      用于修改字节码
      */
     public static void premain(String agentArgs, Instrumentation inst) {
+        // hello world
         System.out.println(String.format("Premain agentArgs: [%s]", agentArgs));
+
+        // 使用 ClassFileTransformer 修改字节码
+        inst.addTransformer(new TransformerImpl(), true);
     }
 }

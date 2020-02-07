@@ -16,7 +16,7 @@
         <module>gui-tank-online</module>
         <module>compiler-pascal</module>
         <module>gui</module>
-        <module>agent-hello01</module>
+        <module>agent</module>
     </modules>
 
     <properties>
