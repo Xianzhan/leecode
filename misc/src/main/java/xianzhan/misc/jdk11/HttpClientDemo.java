@@ -44,7 +44,7 @@ public class HttpClientDemo {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        String uri = "http://t.weather.sojson.com/api/weather/city/101030100";
+        String uri = "http://www.baidu.com";
         syncGET(uri);
         asyncGET(uri);
     }

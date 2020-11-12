@@ -11,20 +11,27 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>core</module>
         <module>misc</module>
-        <module>gui-tank-online</module>
-        <module>compiler-pascal</module>
-        <module>gui</module>
-        <module>agent</module>
+        <module>leecode-base</module>
     </modules>
 
     <properties>
-        <java.version>13</java.version>
+        <java.version>15</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <module.version>1.0.0</module.version>
+
+        <junit.version>5.7.0</junit.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
